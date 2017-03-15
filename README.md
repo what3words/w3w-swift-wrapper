@@ -21,7 +21,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-    pod 'w3w-swift-wrapper'
+    pod 'what3words', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
 end
 ```
 
@@ -44,7 +44,7 @@ let package = Package(
     name: "YOUR_PROJECT_NAME",
     targets: [],
     dependencies: [
-        .Package(url: "https://github.com/what3words/w3w-swift-wrapper.git", versions: Version(1, .max, .max)),
+        .Package(url: "https://github.com/what3words/w3w-swift-wrapper.git", versions: Version(1,0,0)..<Version(1, .max, .max)),
     ]
 )
 ```
