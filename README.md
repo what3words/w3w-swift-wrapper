@@ -21,7 +21,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
-	pod 'w3w-swift-wrapper'
+    pod 'what3words', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
 end
 ```
 
@@ -44,7 +44,7 @@ let package = Package(
     name: "YOUR_PROJECT_NAME",
     targets: [],
     dependencies: [
-        .Package(url: "https://github.com/what3words/w3w-swift-wrapper.git", versions: Version(1, .max, .max)),
+        .Package(url: "https://github.com/what3words/w3w-swift-wrapper.git", versions: Version(1,0,0)..<Version(1, .max, .max)),
     ]
 )
 ```
@@ -62,7 +62,7 @@ This function takes the words parameter as a string of 3 words `'table.book.chai
 
 The returned payload from the `forwardGeocode` method is described in the [what3words REST API documentation](https://docs.what3words.com/api/v2/#forward-result).
 
-##Reverse geocoding
+## Reverse geocoding
 
 Reverse geocodes coordinates, expressed as latitude and longitude to a 3 word address.
 
@@ -71,7 +71,7 @@ This function takes the latitude and longitude as a CLLocationCoordinate2D objec
 The returned payload from the `reverseGeocode` method is described in the [what3words REST API documentation](https://docs.what3words.com/api/v2/#reverse-result).
 
 
-##AutoSuggest
+## AutoSuggest
 
 Returns a list of 3 word addresses based on user input and other parameters.
 
@@ -113,7 +113,7 @@ W3wGeocoder.setup(with: "<Secret API Key>")
 ### Forward Geocode
 ```swift
 W3wGeocoder.shared.forwardGeocode(addr: "index.home.raft") { (result, error) in
-	print(result)
+    print(result)
 }
 ```
 
@@ -121,6 +121,6 @@ W3wGeocoder.shared.forwardGeocode(addr: "index.home.raft") { (result, error) in
 ```swift
 let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
 W3wGeocoder.shared.reverseGeocode(coords: coords) { (result, error) in
-	print(result)
+    print(result)
 }
 ```
