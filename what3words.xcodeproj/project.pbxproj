@@ -11,8 +11,9 @@
 		5B4A28271E754E6F00260099 /* ReverseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28261E754E6F00260099 /* ReverseTests.swift */; };
 		5B4A28291E754E6F00260099 /* what3words.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B4A281B1E754E6E00260099 /* what3words.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B4A28341E754EC900260099 /* W3wGeocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28331E754EC900260099 /* W3wGeocoder.swift */; };
-		5B4A283B1E756CE800260099 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B4A28391E756C8300260099 /* Config.plist */; };
 		9103701A1E785D2600325D7F /* AutosuggestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910370191E785D2600325D7F /* AutosuggestTests.swift */; };
+		91A853381E7AE38600CB0460 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A853371E7AE38600CB0460 /* Utils.swift */; };
+		91A8533D1E7AE40700CB0460 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 91A8533B1E7AE3F600CB0460 /* Config.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,8 +34,9 @@
 		5B4A28261E754E6F00260099 /* ReverseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseTests.swift; sourceTree = "<group>"; };
 		5B4A28281E754E6F00260099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B4A28331E754EC900260099 /* W3wGeocoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = W3wGeocoder.swift; sourceTree = "<group>"; };
-		5B4A28391E756C8300260099 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		910370191E785D2600325D7F /* AutosuggestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutosuggestTests.swift; sourceTree = "<group>"; };
+		91A853371E7AE38600CB0460 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		91A8533B1E7AE3F600CB0460 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +82,7 @@
 			children = (
 				5B4A281B1E754E6E00260099 /* what3words.h */,
 				5B4A281C1E754E6E00260099 /* Info.plist */,
-				5B4A28391E756C8300260099 /* Config.plist */,
+				91A8533B1E7AE3F600CB0460 /* Config.plist */,
 			);
 			path = what3words;
 			sourceTree = "<group>";
@@ -90,6 +92,7 @@
 			children = (
 				5B4A28261E754E6F00260099 /* ReverseTests.swift */,
 				910370191E785D2600325D7F /* AutosuggestTests.swift */,
+				91A853371E7AE38600CB0460 /* Utils.swift */,
 				5B4A28281E754E6F00260099 /* Info.plist */,
 			);
 			path = what3wordsTests;
@@ -206,7 +209,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B4A283B1E756CE800260099 /* Config.plist in Resources */,
+				91A8533D1E7AE40700CB0460 /* Config.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +230,7 @@
 			files = (
 				5B4A28271E754E6F00260099 /* ReverseTests.swift in Sources */,
 				9103701A1E785D2600325D7F /* AutosuggestTests.swift in Sources */,
+				91A853381E7AE38600CB0460 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

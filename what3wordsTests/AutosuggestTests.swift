@@ -58,6 +58,38 @@ class AutosuggestTests: XCTestCase {
     waitForExpectations(timeout: 3.0, handler: nil)
   }
   
+  func testMultilingualAutosuggest() {
+    let expectation = self.expectation(description: "Autosuggest")
+    W3wGeocoder.shared.multilingualAutosuggest(addr: "geschaft.planter.carciofi") { (result, error) in
+      if let suggestions = result?["suggestions"] as? [[String: Any]] {
+        XCTAssertEqual(suggestions.count, 3)
+        XCTAssertEqual(suggestions.first?["words"] as? String, "esche.piante.carciofi")
+      } else {
+        XCTFail("Invalid response")
+      }
+      
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  func testVoiceAutosuggest() {
+    let expectation = self.expectation(description: "Autosuggest")
+    W3wGeocoder.shared.voiceAutosuggest(json: Utils.json) { (result, error) in
+      if let suggestions = result?["suggestions"] as? [[String: Any]] {
+        XCTAssertEqual(suggestions.count, 3)
+        XCTAssertEqual(suggestions.first?["words"] as? String, "tend.artichokes.perch")
+      } else {
+        XCTFail("Invalid response")
+      }
+      
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
   func testStandardBlend() {
     let expectation = self.expectation(description: "Autosuggest")
     W3wGeocoder.shared.standardBlend(addr: "plan.clips.a", completion: { (result, error) in
@@ -96,6 +128,38 @@ class AutosuggestTests: XCTestCase {
       if let blends = result?["blends"] as? [[String: Any]] {
         XCTAssertEqual(blends.count, 3)
         XCTAssertEqual(blends.first?["words"] as? String, "plan.clips.area")
+      } else {
+        XCTFail("Invalid response")
+      }
+      
+      XCTAssertNil(error)
+      expectation.fulfill()
+    })
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  func testMultilingualStandardBlend() {
+    let expectation = self.expectation(description: "Autosuggest")
+    W3wGeocoder.shared.multilingualStandardBlend(addr: "geschaft.planter.car", completion: { (result, error) in
+      if let blends = result?["blends"] as? [[String: Any]] {
+        XCTAssertEqual(blends.count, 3)
+        XCTAssertEqual(blends.first?["words"] as? String, "séchant.planter.cran")
+      } else {
+        XCTFail("Invalid response")
+      }
+      
+      XCTAssertNil(error)
+      expectation.fulfill()
+    })
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  func testVoiceStandardBlend() {
+    let expectation = self.expectation(description: "Autosuggest")
+    W3wGeocoder.shared.voiceStandardBlend(json: Utils.json, completion: { (result, error) in
+      if let blends = result?["blends"] as? [[String: Any]] {
+        XCTAssertEqual(blends.count, 3)
+        XCTAssertEqual(blends.first?["words"] as? String, "tend.artichokes.perch")
       } else {
         XCTFail("Invalid response")
       }
