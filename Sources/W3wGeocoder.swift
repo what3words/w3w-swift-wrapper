@@ -35,20 +35,20 @@ public struct W3wGeocoder {
   }
   
   /**
-   * You'll need to register for a what3words API key to access the API.
-   * Setup W3wGeocoder with your own apiKey.
-   * @param key What3Words api key
+   You'll need to register for a what3words API key to access the API.
+   Setup W3wGeocoder with your own apiKey.
+   - parameter apiKey: What3Words api key
    */
   public static func setup(with apiKey: String) {
     self.instance = W3wGeocoder(apiKey: apiKey)
   }
   
   /**
-   * Forward geocodes a 3 word address to a position, expressed as coordinates of latitude and longitude.
-   * @param addr A 3 word address as a string
-   * @param lang A supported 3 word address language as an ISO 639-1 2 letter code. Defaults to en
-   * @param display Return display type; can be one of full (the default), terse (less output) or minimal (the bare minimum)
-   * @param completion A W3wGeocodeResponseHandler completion handler
+   Forward geocodes a 3 word address to a position, expressed as coordinates of latitude and longitude.
+   - parameter addr: A 3 word address as a string
+   - parameter lang: A supported 3 word address language as an ISO 639-1 2 letter code. Defaults to en
+   - parameter display: Return display type; can be one of full (the default), terse (less output) or minimal (the bare minimum)
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
   public func forwardGeocode(addr: String, lang: String = "en", display: String = "full", completion: @escaping W3wGeocodeResponseHandler) {
     let params: [String: String] = ["addr": addr, "key": apiKey, "lang": lang, "display": display ]
@@ -56,11 +56,11 @@ public struct W3wGeocoder {
   }
   
   /**
-   * Reverse geocodes coordinates, expressed as latitude and longitude to a 3 word address.
-   * @param coords A CLLocationCoordinate2D object
-   * @param lang A supported 3 word address language as an ISO 639-1 2 letter code. Defaults to en
-   * @param display Return display type; can be one of full (the default), terse (less output) or minimal (the bare minimum)
-   * @param completion A W3wGeocodeResponseHandler completion handler
+   Reverse geocodes coordinates, expressed as latitude and longitude to a 3 word address.
+   - parameter coords: A CLLocationCoordinate2D object
+   - parameter lang: A supported 3 word address language as an ISO 639-1 2 letter code. Defaults to en
+   - parameter display: Return display type; can be one of full (the default), terse (less output) or minimal (the bare minimum)
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
   public func reverseGeocode(coords: CLLocationCoordinate2D, lang: String = "en", display: String = "full", completion: @escaping W3wGeocodeResponseHandler) {
     let params: [String: String] = ["coords": "\(coords.latitude),\(coords.longitude)", "key": apiKey, "lang": lang, "display": display ]
@@ -68,14 +68,14 @@ public struct W3wGeocoder {
   }
   
   /**
-   * Returns a list of 3 word addresses based on user input and other parameters.
-   * @param addr The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
-   * @param lang For autosuggest the lang parameter is required; for autosuggest-ml, the lang parameter is optional. If specified, this parameter must be a supported 3 word address language as an ISO 639-1 2 letter code
-   * @param focus A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
-   * @param clip Restricts results to those within a geographical area. If omitted defaults to clip=none. More details here: https://docs.what3words.com/api/v2/#autosuggest-clip
-   * @param count The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum. The default is 3
-   * @param display Return display type; can be one of full (the default) or terse
-   * @param completion A W3wGeocodeResponseHandler completion handler
+   Returns a list of 3 word addresses based on user input and other parameters.
+   - parameter addr: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
+   - parameter lang: For autosuggest the lang parameter is required; for autosuggest-ml, the lang parameter is optional. If specified, this parameter must be a supported 3 word address language as an ISO 639-1 2 letter code
+   - parameter focus: A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
+   - parameter clip: Restricts results to those within a geographical area. If omitted defaults to clip=none. More details here: https://docs.what3words.com/api/v2/#autosuggest-clip
+   - parameter count: The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum. The default is 3
+   - parameter display: Return display type; can be one of full (the default) or terse
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
   public func autosuggest(addr: String, lang: String = "en", focus: CLLocationCoordinate2D? = nil, clip: String? = nil, count: Int = 3, display: String = "full", completion: @escaping W3wGeocodeResponseHandler) {
     var params: [String: String] = ["addr": addr, "key": apiKey, "lang": lang, "count": "\(count)", "display": display]
@@ -90,15 +90,15 @@ public struct W3wGeocoder {
   }
   
   /**
-   * Returns a list of 3 word addresses based on user input and other parameters.
-   * The multilingual autosuggest-ml resource can accept an optional language. If specified, this will ensure that the autosuggest-ml resource will look for suggestions in this language, in addition to any other languages that yield relevant suggestions.
-   * @param addr The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
-   * @param lang For autosuggest-ml, the lang parameter is optional. If specified, this parameter must be a supported 3 word address language as an ISO 639-1 2 letter code
-   * @param focus A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
-   * @param clip Restricts results to those within a geographical area. If omitted defaults to clip=none. More details here: https://docs.what3words.com/api/v2/#autosuggest-clip
-   * @param count The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum. The default is 3
-   * @param display Return display type; can be one of full (the default) or terse
-   * @param completion A W3wGeocodeResponseHandler completion handler
+   Returns a list of 3 word addresses based on user input and other parameters.
+   The multilingual autosuggest-ml resource can accept an optional language. If specified, this will ensure that the autosuggest-ml resource will look for suggestions in this language, in addition to any other languages that yield relevant suggestions.
+   - parameter addr: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
+   - parameter lang: For autosuggest-ml, the lang parameter is optional. If specified, this parameter must be a supported 3 word address language as an ISO 639-1 2 letter code
+   - parameter focus: A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
+   - parameter clip: Restricts results to those within a geographical area. If omitted defaults to clip=none. More details here: https://docs.what3words.com/api/v2/#autosuggest-clip
+   - parameter count: The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum. The default is 3
+   - parameter display: Return display type; can be one of full (the default) or terse
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
   public func multilingualAutosuggest(addr: String, lang: String? = nil, focus: CLLocationCoordinate2D? = nil, clip: String? = nil, count: Int = 3, display: String = "full", completion: @escaping W3wGeocodeResponseHandler) {
     var params: [String: String] = ["addr": addr, "key": apiKey, "count": "\(count)", "display": display]
@@ -116,14 +116,14 @@ public struct W3wGeocoder {
   }
   
   /**
-   * Returns a list of 3 word addresses based on an input string of URL encoded Nuance Vocon Hybrid JSON. Please note that this resource does not provide speech recognition capabilities and that a separate licensing agreement is required with Nuance to use the VoCon Hybrid SDK.
-   * @param json Nuance VoCon Hybrid JSON, which must be URL encoded.
-   * @param lang A supported 3 word address language as an ISO 639-1 2 letter code
-   * @param focus A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
-   * @param clip Restricts results to those within a geographical area. If omitted defaults to clip=none. More details here: https://docs.what3words.com/api/v2/#autosuggest-clip
-   * @param count The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum. The default is 3
-   * @param display Return display type; can be one of full (the default) or terse
-   * @param completion A W3wGeocodeResponseHandler completion handler
+   Returns a list of 3 word addresses based on an input string of URL encoded Nuance Vocon Hybrid JSON. Please note that this resource does not provide speech recognition capabilities and that a separate licensing agreement is required with Nuance to use the VoCon Hybrid SDK.
+   - parameter json: Nuance VoCon Hybrid JSON, which must be URL encoded.
+   - parameter lang: A supported 3 word address language as an ISO 639-1 2 letter code
+   - parameter focus: A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
+   - parameter clip: Restricts results to those within a geographical area. If omitted defaults to clip=none. More details here: https://docs.what3words.com/api/v2/#autosuggest-clip
+   - parameter count: The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum. The default is 3
+   - parameter display: Return display type; can be one of full (the default) or terse
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
   public func voiceAutosuggest(json: String, lang: String = "en", focus: CLLocationCoordinate2D? = nil, clip: String? = nil, count: Int = 3, display: String = "full", completion: @escaping W3wGeocodeResponseHandler) {
     var params: [String: String] = ["json": json, "key": apiKey, "lang": lang, "count": "\(count)", "display": display]
@@ -138,11 +138,11 @@ public struct W3wGeocoder {
   }
   
   /**
-   * Returns a blend of the three most relevant 3 word address candidates for a given location, based on a full or partial 3 word address.
-   * @param addr The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
-   * @param lang For autosuggest the lang parameter is required; for autosuggest-ml, the lang parameter is optional. If specified, this parameter must be a supported 3 word address language as an ISO 639-1 2 letter code
-   * @param focus A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
-   * @param completion A W3wGeocodeResponseHandler completion handler
+   Returns a blend of the three most relevant 3 word address candidates for a given location, based on a full or partial 3 word address.
+   - parameter addr: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
+   - parameter lang: For autosuggest the lang parameter is required; for autosuggest-ml, the lang parameter is optional. If specified, this parameter must be a supported 3 word address language as an ISO 639-1 2 letter code
+   - parameter focus: A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
   public func standardBlend(addr: String, lang: String = "en", focus: CLLocationCoordinate2D? = nil, completion: @escaping W3wGeocodeResponseHandler) {
     var params: [String: String] = ["addr": addr, "key": apiKey, "lang": lang]
@@ -154,12 +154,12 @@ public struct W3wGeocoder {
   }
   
   /**
-   * Returns a blend of the three most relevant 3 word address candidates for a given location, based on a full or partial 3 word address.
-   * The multilingual standardblend-ml resource can accept an optional language. If specified, this will ensure that the standardblend-ml resource will look for results in this language, in addition to any other languages that yield relevant results.
-   * @param addr The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
-   * @param lang For autosuggest-ml, the lang parameter is optional. If specified, this parameter must be a supported 3 word address language as an ISO 639-1 2 letter code
-   * @param focus A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
-   * @param completion A W3wGeocodeResponseHandler completion handler
+   Returns a blend of the three most relevant 3 word address candidates for a given location, based on a full or partial 3 word address.
+   The multilingual standardblend-ml resource can accept an optional language. If specified, this will ensure that the standardblend-ml resource will look for results in this language, in addition to any other languages that yield relevant results.
+   - parameter addr: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word
+   - parameter lang: For autosuggest-ml, the lang parameter is optional. If specified, this parameter must be a supported 3 word address language as an ISO 639-1 2 letter code
+   - parameter focus: A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
   public func multilingualStandardBlend(addr: String, lang: String? = nil, focus: CLLocationCoordinate2D? = nil, completion: @escaping W3wGeocodeResponseHandler) {
     var params: [String: String] = ["addr": addr, "key": apiKey]
@@ -174,11 +174,11 @@ public struct W3wGeocoder {
   }
   
   /**
-   * Returns a blend of the three most relevant 3 word address candidates for a given location, based on an input string of URL encoded Nuance Vocon Hybrid JSONa>. Please note that this resource does not provide speech recognition capabilities and that a separate licensing agreement is required with Nuance to use the VoCon Hybrid SDK
-   * @param json Nuance VoCon Hybrid JSON, which must be URL encoded.
-   * @param lang For autosuggest the lang parameter is required
-   * @param focus A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
-   * @param completion A W3wGeocodeResponseHandler completion handler
+   Returns a blend of the three most relevant 3 word address candidates for a given location, based on an input string of URL encoded Nuance Vocon Hybrid JSONa>. Please note that this resource does not provide speech recognition capabilities and that a separate licensing agreement is required with Nuance to use the VoCon Hybrid SDK
+   - parameter json: Nuance VoCon Hybrid JSON, which must be URL encoded.
+   - parameter lang: For autosuggest the lang parameter is required
+   - parameter focus: A location, specified as a latitude,longitude used to refine the results. If specified, the results will be weighted to give preference to those near the specified location in addition to considering similarity to the addr string. If omitted the default behaviour is to weight results for similarity to the addr string only
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
   public func voiceStandardBlend(json: String, lang: String = "en", focus: CLLocationCoordinate2D? = nil, completion: @escaping W3wGeocodeResponseHandler) {
     var params: [String: String] = ["json": json, "lang": lang, "key": apiKey]
@@ -190,9 +190,9 @@ public struct W3wGeocoder {
   }
   
   /**
-   * Returns a section of the 3m x 3m what3words grid for a given area.
-   * @param bbox Bounding box, specified by the northeast and southwest corner coordinates, for which the grid should be returned. Example value: 52.208867,0.117540,52.207988,0.116126
-   * @param completion A W3wGeocodeResponseHandler completion handler
+   Returns a section of the 3m x 3m what3words grid for a given area.
+   - parameter bbox: Bounding box, specified by the northeast and southwest corner coordinates, for which the grid should be returned. Example value: 52.208867,0.117540,52.207988,0.116126
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
   public func grid(bbox: String, completion: @escaping W3wGeocodeResponseHandler) {
     let params: [String: String] = ["bbox": bbox, "key": apiKey]
@@ -201,8 +201,8 @@ public struct W3wGeocoder {
   }
   
   /**
-   * Retrieves a list of the currently loaded and available 3 word address languages.
-   * @param completion A W3wGeocodeResponseHandler completion handler
+   Retrieves a list of the currently loaded and available 3 word address languages.
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
   public func languages(completion: @escaping W3wGeocodeResponseHandler) {
     let params: [String: String] = ["key": apiKey]
