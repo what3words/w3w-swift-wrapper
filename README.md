@@ -124,3 +124,52 @@ W3wGeocoder.shared.reverseGeocode(coords: coords) { (result, error) in
     print(result)
 }
 ```
+
+### AutoSuggest
+```swift
+W3wGeocoder.shared.autosuggest(addr: "index.home.raft") { (result, error) in
+    print(result)
+}
+```
+
+### Multilingual AutoSuggest
+```swift
+W3wGeocoder.shared.multilingualAutosuggest(addr: "index.home.raft") { (result, error) in
+    print(result)
+}
+```
+
+### Voice AutoSuggest
+```swift
+W3wGeocoder.shared.voiceAutosuggest(json: <json>) { (result, error) in
+    print(result)
+}
+```
+
+### StandardBlend
+```swift
+W3wGeocoder.shared.standardBlend(addr: "plan.clips.a", completion: { (result, error) in
+    print(result)
+}
+```
+
+### Multilingual StandardBlend
+```swift
+W3wGeocoder.shared.multilingualStandardBlend(addr: "plan.clips.a", completion: { (result, error) in
+    print(result)
+}
+```
+
+### Voice StandardBlend
+```swift
+W3wGeocoder.shared.voiceStandardBlend(json: <json>, completion: { (result, error) in
+    print(result)
+}
+```
+
+### Get Available Languages
+```swift
+W3wGeocoder.shared.languages { (result, error) in
+    print(result)
+}
+```
