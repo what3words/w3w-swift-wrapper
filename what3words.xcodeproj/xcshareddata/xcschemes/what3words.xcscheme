@@ -37,6 +37,11 @@
                BlueprintName = "what3wordsTests"
                ReferencedContainer = "container:what3words.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "ReverseTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
