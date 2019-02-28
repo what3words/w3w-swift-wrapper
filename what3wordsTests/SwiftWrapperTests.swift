@@ -17,7 +17,7 @@ class SwiftWrapperTests: XCTestCase {
   override class func setUp() {
     super.setUp()
 
-    W3wGeocoder.setup(with: "AQ449REH")
+    W3wGeocoder.setup(with: "<Your Secret Key>")
   }
   
   
