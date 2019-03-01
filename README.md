@@ -6,7 +6,9 @@ A swift library to use the [what3words REST API](https://docs.what3words.com/api
 
 The what3words Swift wrapper gives you programmatic access to convert a 3 word address to coordinates, to convert coordinates to a 3 word address, and to determine the currently support 3 word address languages.
 
-## Authentication
+This repository conains an Xcode project that builds a framework, and tests for the wrapper.  You may instead choose to skip the framework and simply drag and drop the `W3wGeocoder.swift` file into your project.
+
+# Authentication
 
 To use this library you’ll need a what3words API key, which can be signed up for [here](https://map.what3words.com/register?dev=true).
 
@@ -51,22 +53,39 @@ let package = Package(
 
 Note that the [Swift Package Manager](https://swift.org/package-manager) is still in early design and development, for more information checkout its [GitHub Page](https://github.com/apple/swift-package-manager)
 
-#### Manually (iOS 7+, OS X 10.10+)
+#### Manually
 
-To use this library in your project manually just drag W3wGeocoder.swift to the project tree
+You can manually drag W3wGeocoder.swift into the project tree.  You can then skip the import statement in your code.
 
 ### Import
 
+If you used the framework via a package manager then use the following:
+
 ```swift
 import what3words
+import CoreLocation
 ```
+
+Note: If you skipped the framework and manually dragged and dropped the W3wGeocoder.swift then you don't need use the import statement.
 
 ### Initialise
 
 ```swift
 W3wGeocoder.setup(with: "<Secret API Key>")
 ```
+### Usage
 
+Calls to the API are done thourgh a shared singleton. Also, each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used. If there was a problem with any call, it will be indicated in the error object. Eg:
+
+```
+W3wGeocoder.shared.convertToCoordinates(words: "index.home.raft") { (result, error) in
+  if let e = error as? what3words.W3wGeocoder.W3wError {
+      print(e.code, e.message)
+  } else {
+      print(result)
+  }
+}
+```
 
 ## Convert To Coordinates
 Convert a 3 word address to a position, expressed as coordinates of latitude and longitude.

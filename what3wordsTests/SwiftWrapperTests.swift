@@ -39,7 +39,7 @@ class SwiftWrapperTests: XCTestCase {
 
 
   func testConvertTo3waDifferentLanguage() {
-    let expectation = self.expectation(description: "Forward Geocode")
+    let expectation = self.expectation(description: "Convert to Words")
     W3wGeocoder.shared.convertTo3wa(coordinates: CLLocationCoordinate2D(latitude: 51.521238, longitude: -0.203607), language: "fr") { (result, error) in
 
       if let words = result?["words"] as? String {
@@ -99,6 +99,25 @@ class SwiftWrapperTests: XCTestCase {
   }
 
 
+  func testGridSection2() {
+    let expectation = self.expectation(description: "Grid")
+
+    let box = BoundingBox(southWest: CLLocationCoordinate2D(latitude: 52.208867, longitude:0.117540), northEast: CLLocationCoordinate2D(latitude: 52.207988, longitude:0.116126))
+
+    W3wGeocoder.shared.gridSection(box:box) { (result, error) in
+
+      print(result)
+
+      let lines = result?["lines"] as? [[String: Any]]
+      XCTAssertNotNil(lines)
+      XCTAssertNotNil(result)
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+
+
 
   func testLanguages() {
     let expectation = self.expectation(description: "Languages")
@@ -138,16 +157,163 @@ class SwiftWrapperTests: XCTestCase {
     waitForExpectations(timeout: 3.0, handler: nil)
   }
 
+//options: BoundingBox(southWest: , northEast:
+
+
+  func testAutosuggestWtihBoundingBox1() {
+    let expectation = self.expectation(description: "Autosuggest")
+    
+    W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options:BoundingBox(south_lat: 51.521, west_lng: -0.343, north_lat: 52.6, east_lng: 2.3324)) { (result, error) in
+
+    print(result)
+    
+      if let suggestions = result?["suggestions"] as? [[String: Any]] {
+        XCTAssertEqual(suggestions.first?["words"] as? String, "restate.piante.carciofo")
+      } else {
+        XCTFail("Invalid response")
+      }
+
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+
+
+
+  func testAutosuggestWtihBoundingBox2() {
+    let expectation = self.expectation(description: "Autosuggest")
+    
+    let southWest = CLLocationCoordinate2D(latitude: 51.521, longitude:-0.343)
+    let northEast = CLLocationCoordinate2D(latitude: 52.6, longitude:2.3324)
+    
+    W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options:BoundingBox(southWest: southWest, northEast: northEast)) { (result, error) in
+
+    print(result)
+    
+      if let suggestions = result?["suggestions"] as? [[String: Any]] {
+        XCTAssertEqual(suggestions.first?["words"] as? String, "restate.piante.carciofo")
+      } else {
+        XCTFail("Invalid response")
+      }
+
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+
 
 
   func testAutosuggestWithFocus() {
     let expectation = self.expectation(description: "Autosuggest")
 
-    W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: Focus(focus: CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)),FallbackLanguage(language: "de")) { (result, error) in
+    W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: Focus(focus: CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)),NumberFocusResults(numberFocusResults: 2)) { (result, error) in
     
+    print(result)
+   
       if let suggestions = result?["suggestions"] as? [[String: Any]] {
         XCTAssertEqual(suggestions.count, 3)
         XCTAssertEqual(suggestions.first?["words"] as? String, "restate.piante.carciofo")
+      } else {
+        XCTFail("Invalid response")
+      }
+
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+
+
+  
+  func testAutosuggestWithCountry() {
+    let expectation = self.expectation(description: "Autosuggest")
+
+    W3wGeocoder.shared.autosuggest(input: "oui.oui.oui", options: BoundingCountry(country: "fr")) { (result, error) in
+
+    print(result)
+   
+      if let suggestions = result?["suggestions"] as? [[String: Any]] {
+        XCTAssertEqual(suggestions.count, 3)
+        XCTAssertEqual(suggestions.first?["words"] as? String, "oust.souk.souk")
+      } else {
+        XCTFail("Invalid response")
+      }
+
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+
+  
+  func testAutosuggestWithCircle1() {
+    let expectation = self.expectation(description: "Autosuggest")
+
+    W3wGeocoder.shared.autosuggest(input: "mitiger.tarir.prolong", options: BoundingCircle(lat: 51.521238, lng: -0.203607, kilometers: 1.0)) { (result, error) in
+
+    print(result)
+   
+      if let suggestions = result?["suggestions"] as? [[String: Any]] {
+        XCTAssertEqual(suggestions.count, 1)
+        XCTAssertEqual(suggestions.first?["words"] as? String, "mitiger.tarir.prolonger")
+      } else {
+        XCTFail("Invalid response")
+      }
+
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+
+
+  
+  func testAutosuggestWithCircle2() {
+    let expectation = self.expectation(description: "Autosuggest")
+
+    let centre = CLLocationCoordinate2D(latitude: 51.521238, longitude: -0.203607)
+
+    W3wGeocoder.shared.autosuggest(input: "mitiger.tarir.prolong", options:BoundingCircle(centre: centre, kilometers: 1.0)) { (result, error) in
+
+    print(result)
+   
+      if let suggestions = result?["suggestions"] as? [[String: Any]] {
+        XCTAssertEqual(suggestions.count, 1)
+        XCTAssertEqual(suggestions.first?["words"] as? String, "mitiger.tarir.prolonger")
+      } else {
+        XCTFail("Invalid response")
+      }
+
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+
+  
+  func testAutosuggestWithPolygon() {
+    let expectation = self.expectation(description: "Autosuggest")
+
+    let centre = CLLocationCoordinate2D(latitude: 51.521238, longitude: -0.203607)
+
+    let polygon = [
+          CLLocationCoordinate2D(latitude:51.0, longitude:0.0),
+          CLLocationCoordinate2D(latitude:51.0, longitude:0.1),
+          CLLocationCoordinate2D(latitude:51.1, longitude:0.1),
+          CLLocationCoordinate2D(latitude:51.1, longitude:0.0),
+          CLLocationCoordinate2D(latitude:51.0, longitude:0.0),
+          ];
+    //,,,51.521,-0.343
+
+    W3wGeocoder.shared.autosuggest(input: "scenes.irritated.sparkles", options:BoundingPolygon(polygon: polygon)) { (result, error) in
+
+    print(result)
+   
+      if let suggestions = result?["suggestions"] as? [[String: Any]] {
+        XCTAssertEqual(suggestions.count, 1)
+        XCTAssertEqual(suggestions.first?["words"] as? String, "scenes.irritated.sparkles")
       } else {
         XCTFail("Invalid response")
       }
@@ -165,6 +331,24 @@ class SwiftWrapperTests: XCTestCase {
     W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: FallbackLanguage(language: "de")) { (result, error) in
       if let suggestions = result?["suggestions"] as? [[String: Any]] {
         XCTAssertEqual(suggestions.count, 3)
+        XCTAssertEqual(suggestions.first?["words"] as? String, "esche.piante.carciofi")
+      } else {
+        XCTFail("Invalid response")
+      }
+      
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+
+
+
+  func testAutosuggestNumberResults() {
+    let expectation = self.expectation(description: "Autosuggest")
+    W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: NumberResults(numberOfResults: 5)) { (result, error) in
+      if let suggestions = result?["suggestions"] as? [[String: Any]] {
+        XCTAssertEqual(suggestions.count, 5)
         XCTAssertEqual(suggestions.first?["words"] as? String, "esche.piante.carciofi")
       } else {
         XCTFail("Invalid response")

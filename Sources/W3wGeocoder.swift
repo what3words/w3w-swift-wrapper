@@ -108,6 +108,32 @@ public struct W3wGeocoder {
   }
 
   /**
+   Returns a section of the 3m x 3m what3words grid for a given area.
+   - parameter southWest: The southwest corner of the box
+   - parameter northEast: The northeast corner of the box
+   - parameter format: Return data format type; can be one of json (the default) or geojson Example value:format=Format.json
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
+   */
+  public func gridSection(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D, format: Format = .json, completion: @escaping W3wGeocodeResponseHandler) {
+    self.gridSection(south_lat: southWest.latitude, west_lng: southWest.longitude, north_lat: northEast.latitude, east_lng: northEast.longitude, completion: completion)
+  }
+
+
+  /**
+   Returns a section of the 3m x 3m what3words grid for a given area.
+   - parameter southWest: The southwest corner of the box
+   - parameter northEast: The northeast corner of the box
+   - parameter format: Return data format type; can be one of json (the default) or geojson Example value:format=Format.json
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
+   */
+  public func gridSection(box:BoundingBox, format: Format = .json, completion: @escaping W3wGeocodeResponseHandler) {
+    let params: [String: String] = ["bounding-box": box.value(), "format": format.rawValue]
+
+    self.performRequest(path: "/grid-section", params: params, completion: completion)
+  }
+
+
+  /**
    Retrieves a list of the currently loaded and available 3 word address languages.
    - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
@@ -182,6 +208,7 @@ public class AutoSuggestOption {
 
 
 public class FallbackLanguage : AutoSuggestOption {
+  /// For normal text input, specifies a fallback language, which will help guide AutoSuggest if the input is particularly messy.
   init(language:String) {
     super.init();
     k = "language";
@@ -190,14 +217,16 @@ public class FallbackLanguage : AutoSuggestOption {
 }
 
 public class NumberResults : AutoSuggestOption {
+  /// The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum.
   init(numberOfResults:Int) {
     super.init();
-    k = "number-results";
+    k = "n-results";
     v = "\(numberOfResults)"
   }
 }
 
 public class Focus : AutoSuggestOption {
+  /// This is a location, specified as a latitude (often where the user making the query is). If specified, the results will be weighted to give preference to those near the focus
   init(focus:CLLocationCoordinate2D) {
     super.init();
     k = "focus";
@@ -207,15 +236,17 @@ public class Focus : AutoSuggestOption {
 
 
 public class NumberFocusResults : AutoSuggestOption {
+  /// Specifies the number of results (must be <= n-results) within the results set which will have a focus. Defaults to n-results. This allows you to run autosuggest with a mix of focussed and unfocussed results, to give you a "blend" of the two.
   init(numberFocusResults:Int) {
     super.init();
-    k = "number-focus-results";
+    k = "n-focus-results";
     v = "\(numberFocusResults)"
   }
 }
 
 
 public class InputType : AutoSuggestOption {
+  /// Uses InputTypeEnum which allows vocon-hybrid and nmdp-asr
   init(inputType:InputTypeEnum) {
     super.init();
     k = "input-type";
@@ -225,6 +256,7 @@ public class InputType : AutoSuggestOption {
 
 
 public class BoundingCountry : AutoSuggestOption {
+  /// Restricts autosuggest to only return results inside the countries specified by comma-separated list of uppercase ISO 3166-1 alpha-2 country codes
   init(country:String) {
     super.init();
     k = "clip-to-country";
@@ -234,22 +266,39 @@ public class BoundingCountry : AutoSuggestOption {
 
 
 public class BoundingCircle : AutoSuggestOption {
+  /// Restrict results to a circle
   init(lat:Double, lng:Double, kilometers:Double) {
     super.init();
     k = "clip-to-circle";
     v = "\(lat),\(lng),\(kilometers)"
   }
+
+  /// Restrict results to a circle
+  init(centre:CLLocationCoordinate2D, kilometers:Double) {
+    super.init();
+    k = "clip-to-circle";
+    v = "\(centre.latitude),\(centre.longitude),\(kilometers)"
+  }
 }
 
 public class BoundingBox : AutoSuggestOption {
+  /// Restrict autosuggest results to a bounding box, specified by coordinates. Where south_lat <= north_lat and west_lng <= east_lng
   init(south_lat:Double, west_lng:Double, north_lat:Double, east_lng:Double) {
     super.init()
     k = "clip-to-bounding-box"
     v = "\(south_lat),\(west_lng),\(north_lat),\(east_lng)"
     }
+  
+  /// Restrict autosuggest results to a bounding box, specified by coordinates. Where south_lat <= north_lat and west_lng <= east_lng
+  init(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D) {
+    super.init()
+    k = "clip-to-bounding-box"
+    v = "\(southWest.latitude),\(southWest.longitude),\(northEast.latitude),\(northEast.longitude)"
+    }
   }
 
 public class BoundingPolygon : AutoSuggestOption {
+  /// Restrict autosuggest results to a polygon, specified by a comma-separated list of lat,lng pairs. The polygon should be closed, i.e. the first element should be repeated as the last element; also the list should contain at least 4 entries. The API is currently limited to accepting up to 25 pairs.
   init(polygon:[CLLocationCoordinate2D])
       {
       super.init()
