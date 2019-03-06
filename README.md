@@ -75,7 +75,7 @@ W3wGeocoder.setup(with: "<Secret API Key>")
 ```
 ### Usage
 
-Calls to the API are done thourgh a shared singleton. Also, each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used. If there was a problem with any call, it will be indicated in the error object. Eg:
+Calls to the API are done thourgh a shared singleton. Also, each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used.  The return values are helper objects containing the relevant values.  If there was a problem with any call, it will be indicated by the error object. Eg:
 
 ```
 W3wGeocoder.shared.convertToCoordinates(words: "index.home.raft") { (result, error) in
@@ -96,10 +96,10 @@ The returned payload from the `convertToCoordinates` method is described in the 
 
 #### Code Example
 ```swift
-W3wGeocoder.shared.convertToCoordinates(words: "index.home.raft") { (result, error) in
-    print(result)
-}
-```
+let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
+W3wGeocoder.shared.convertTo3wa(coordinates: coords) { (place, error) in
+    print(place?.coordinates.latitude, place?.coordinates.longitude)
+}```
 
 ## Convert To 3 Word Address
 
@@ -111,11 +111,9 @@ The returned payload from the `convertTo3wa` method is described in the [what3wo
 
 #### Code Example
 ```swift
-let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
-W3wGeocoder.shared.convertTo3wa(coordinates: coords) { (result, error) in
-    print(result)
-}
-```
+W3wGeocoder.shared.convertToCoordinates(words: "index.home.raft") { (place, error) in
+  print(place?.words)
+}```
 
 ## Available Languages
 
@@ -125,8 +123,8 @@ The returned payload from the `convertTo3wa` method is described in the [what3wo
 
 #### Code Example
 ```swift
-W3wGeocoder.shared.availableLanguages() { (result, error) in
-    print(result)
+W3wGeocoder.shared.availableLanguages() { (languages, error) in
+    print(languages)
 }
 ```
 
@@ -171,22 +169,39 @@ The returned payload from the `autosuggest` method is described in the [what3wor
 
 The first parameter `input` is the partial three words, or voice data.  It is followed by a varidic list of AutoSuggestOption objects.  The last parameter is the completion block.
 
-#### Code Example
+#### Code Example One
 ```swift
-let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
-W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: Focus(focus: coords), FallbackLanguage(language: "de")) { (result, error) in
-    print(result)
+W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: ClipToCountry(country:"DE")) { (suggestions, error) in
+    print(suggestions)
 }
 ```
+
+#### Code Example Two
+```swift
+let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
+W3wGeocoder.shared.autosuggest(input: flottons.annulons.garço", options: Focus(focus: coords), FallbackLanguage(language: "fr")) { (suggestions, error) in
+    print(suggestions)
+}
+```
+
+
+#### Code Example Three
+```swift
+let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
+W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: Focus(focus: coords), FallbackLanguage(language: "de")) { (suggestions, error) in
+    print(suggestions)
+}
+```
+
 
 ## Handling Errors
 
 All functions call the completion block with `error` as the second parameter.  Be sure to check it for possible problems.
 
 ```php
-{ (result, error) in
-    if let e = error as? what3words.W3wGeocoder.W3wError {
-        print(e)
+W3wGeocoder.shared.convertToCoordinates(words: "index.home.raft") { (result, error) in
+      if let e = error {
+        print(e.code, e.message)
     }
 }
 ```
