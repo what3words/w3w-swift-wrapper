@@ -11,7 +11,18 @@ import Foundation
 import CoreLocation
 
 
-public typealias W3wGeocodeResponseHandler = ((_ result: [String: Any]?, _ error: Error?) -> Void)
+public struct W3wError: Error {
+  public let code: String
+  public let message: String
+}
+
+
+public typealias W3wGeocodeResponseHandler  = ((_ result: [String: Any]?, _ error: W3wError?) -> Void)
+public typealias W3wResponsePlace           = ((_ result: W3wPlace?, _ error: W3wError?) -> Void)
+public typealias W3wResponseSuggestions     = ((_ result: [W3wSuggestion]?, _ error: W3wError?) -> Void)
+public typealias W3wResponseGrid            = ((_ result: [W3wLine]?, _ error: W3wError?) -> Void)
+public typealias W3wResponseLanguages       = ((_ result: [W3wLanguage]?, _ error: W3wError?) -> Void)
+
 
 public struct W3wGeocoder {
   
@@ -51,9 +62,15 @@ public struct W3wGeocoder {
    - parameter format: Return data format type; can be one of json (the default) or geojson
    - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
-  public func convertToCoordinates(words: String, format: Format = .json, completion: @escaping W3wGeocodeResponseHandler) {
+  public func convertToCoordinates(words: String, format: Format = .json, completion: @escaping W3wResponsePlace) {
     let params: [String: String] = ["words": words, "format": format.rawValue ]
-    self.performRequest(path: "/convert-to-coordinates", params: params, completion: completion)
+    self.performRequest(path: "/convert-to-coordinates", params: params) { (result, error) in
+      if let place = result {
+        completion(W3wPlace(result: place), error)
+      } else {
+        completion(nil, error)
+      }
+    }
   }
   
   /**
@@ -63,9 +80,15 @@ public struct W3wGeocoder {
    - parameter format: Return data format type; can be one of json (the default) or geojson
    - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
-  public func convertTo3wa(coordinates: CLLocationCoordinate2D, language: String = "en", format: Format = .json, completion: @escaping W3wGeocodeResponseHandler) {
+  public func convertTo3wa(coordinates: CLLocationCoordinate2D, language: String = "en", format: Format = .json, completion: @escaping W3wResponsePlace) {
     let params: [String: String] = ["coordinates": "\(coordinates.latitude),\(coordinates.longitude)", "language": language, "format": format.rawValue ]
-    self.performRequest(path: "/convert-to-3wa", params: params, completion: completion)
+    self.performRequest(path: "/convert-to-3wa", params: params) { (result, error) in
+      if let place = result {
+        completion(W3wPlace(result: place), error)
+      } else {
+        completion(nil, error)
+      }
+    }
   }
   
   /**
@@ -84,15 +107,21 @@ public struct W3wGeocoder {
    - option InputType(inputType:InputTypeEnum): For power users, used to specify voice input mode. Can be text (default), vocon-hybrid or nmdp-asr. See voice recognition section for more details.
    - option FallbackLanguage(language:String): For normal text input, specifies a fallback language, which will help guide AutoSuggest if the input is particularly messy. If specified, this parameter must be a supported 3 word address language as an ISO 639-1 2 letter code. For voice input (see voice section), language must always be specified.
    */
-  public func autosuggest(input: String, options: AutoSuggestOption..., completion: @escaping W3wGeocodeResponseHandler) {
+  public func autosuggest(input: String, options: AutoSuggestOption..., completion: @escaping W3wResponseSuggestions) {
     var params: [String: String] = ["input": input]
     
     for option in options {
       params[option.key()] = option.value()
     }
 
-    self.performRequest(path: "/autosuggest", params: params, completion: completion)
+    self.performRequest(path: "/autosuggest", params: params) { (result, error) in
+      if let suggestions = result {
+        completion(W3wSuggestions(result: suggestions).suggestions, error)
+      } else {
+        completion(nil, error)
+      }
     }
+  }
   
  
   /**
@@ -101,10 +130,16 @@ public struct W3wGeocoder {
    - parameter format: Return data format type; can be one of json (the default) or geojson Example value:format=Format.json
    - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
-  public func gridSection(south_lat:Double, west_lng:Double, north_lat:Double, east_lng:Double, format: Format = .json, completion: @escaping W3wGeocodeResponseHandler) {
+  public func gridSection(south_lat:Double, west_lng:Double, north_lat:Double, east_lng:Double, format: Format = .json, completion: @escaping W3wResponseGrid) {
     let params: [String: String] = ["bounding-box": "\(south_lat),\(west_lng),\(north_lat),\(east_lng)", "format": format.rawValue]
 
-    self.performRequest(path: "/grid-section", params: params, completion: completion)
+    self.performRequest(path: "/grid-section", params: params) { (result, error) in
+      if let lines = result {
+        completion(W3wLines(result: lines).lines, error)
+      } else {
+        completion(nil, error)
+      }
+    }
   }
 
   /**
@@ -114,22 +149,8 @@ public struct W3wGeocoder {
    - parameter format: Return data format type; can be one of json (the default) or geojson Example value:format=Format.json
    - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
-  public func gridSection(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D, format: Format = .json, completion: @escaping W3wGeocodeResponseHandler) {
+  public func gridSection(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D, format: Format = .json, completion: @escaping W3wResponseGrid) {
     self.gridSection(south_lat: southWest.latitude, west_lng: southWest.longitude, north_lat: northEast.latitude, east_lng: northEast.longitude, completion: completion)
-  }
-
-
-  /**
-   Returns a section of the 3m x 3m what3words grid for a given area.
-   - parameter southWest: The southwest corner of the box
-   - parameter northEast: The northeast corner of the box
-   - parameter format: Return data format type; can be one of json (the default) or geojson Example value:format=Format.json
-   - parameter completion: A W3wGeocodeResponseHandler completion handler
-   */
-  public func gridSection(box:BoundingBox, format: Format = .json, completion: @escaping W3wGeocodeResponseHandler) {
-    let params: [String: String] = ["bounding-box": box.value(), "format": format.rawValue]
-
-    self.performRequest(path: "/grid-section", params: params, completion: completion)
   }
 
 
@@ -137,16 +158,17 @@ public struct W3wGeocoder {
    Retrieves a list of the currently loaded and available 3 word address languages.
    - parameter completion: A W3wGeocodeResponseHandler completion handler
    */
-  public func availableLanguages(completion: @escaping W3wGeocodeResponseHandler) {
-    self.performRequest(path: "/available-languages", params: [:], completion: completion)
+  public func availableLanguages(completion: @escaping W3wResponseLanguages) {
+    self.performRequest(path: "/available-languages", params: [:]) { (result, error) in
+      if let lines = result {
+        completion(W3wLanguages(result: lines).languages, error)
+      } else {
+        completion(nil, error)
+      }
+    }
   }
 
   // MARK: API Request
-  
-  public struct W3wError: Error {
-    public let code: String
-    public let message: String
-  }
   
   private func performRequest(path: String, params: [String: String], completion: @escaping W3wGeocodeResponseHandler) {
     
@@ -255,7 +277,7 @@ public class InputType : AutoSuggestOption {
 }
 
 
-public class BoundingCountry : AutoSuggestOption {
+public class ClipToCountry : AutoSuggestOption {
   /// Restricts autosuggest to only return results inside the countries specified by comma-separated list of uppercase ISO 3166-1 alpha-2 country codes
   init(country:String) {
     super.init();
@@ -320,3 +342,123 @@ public enum Format : String {
   case json = "json"
   case geojson = "geojson"
 }
+
+
+/// Helper object representing a W3W place
+public struct W3wPlace {
+  var country:String
+  var southWest:CLLocationCoordinate2D
+  var northEast:CLLocationCoordinate2D
+  var nearestPlace:String
+  var coordinates:CLLocationCoordinate2D
+  var words:String
+  var language:String
+  var map:String
+
+  init(result:[String: Any]?) {
+    country      = result?["country"] as? String ?? ""
+    nearestPlace = result?["nearest-place"] as? String ?? ""
+    words        = result?["words"] as? String ?? ""
+    language     = result?["language"] as? String ?? ""
+    map          = result?["map"] as? String ?? ""
+    northEast    = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
+    southWest    = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
+    coordinates  = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
+
+    if let square = result?["square"] as? Dictionary<String, Any?>? {
+      if let ne = square?["northeast"] as? Dictionary<String, Any?>? {
+        northEast = CLLocationCoordinate2D(latitude: ne!["lat"] as! CLLocationDegrees, longitude: ne!["lng"] as! CLLocationDegrees)
+        }
+      
+      if let sw = square?["southwest"] as? Dictionary<String, Any?>? {
+        southWest = CLLocationCoordinate2D(latitude: sw!["lat"] as! CLLocationDegrees, longitude: sw!["lng"] as! CLLocationDegrees)
+        }
+      }
+    
+    if let coord = result?["coordinates"] as? Dictionary<String, Any?>? {
+      if let c = coord {
+        coordinates = CLLocationCoordinate2D(latitude: c["lat"] as! CLLocationDegrees, longitude: c["lng"] as! CLLocationDegrees)
+      }
+    }
+  }
+}
+
+/// Helper object representing a W3W grid line
+public struct W3wLine {
+  let start:CLLocationCoordinate2D
+  let end:CLLocationCoordinate2D
+  }
+
+public struct W3wLines {
+  var lines:[W3wLine] = []
+
+  init(result:[String: Any]?) {
+    if let r = result {
+      if let lineArray = r["lines"] as? Array<Any?>? {
+        for startEnd in lineArray! {
+          if let sa = startEnd as? Dictionary<String, Any?> {
+            if let start = sa["start"] as? Dictionary<String, Any?>, let end = sa["end"] as? Dictionary<String, Any?> {
+              let line = W3wLine(start: CLLocationCoordinate2D(latitude: start["lat"] as! CLLocationDegrees, longitude: start["lng"] as! CLLocationDegrees), end: CLLocationCoordinate2D(latitude: end["lat"] as! CLLocationDegrees, longitude: end["lng"] as! CLLocationDegrees))
+              lines.append(line)
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/// Helper object representing a W3W language
+public struct W3wLanguage {
+  let name:String
+  let code:String
+  let nativeName:String
+}
+
+public struct W3wLanguages {
+  var languages:[W3wLanguage] = []
+  
+  init(result:[String: Any]?) {
+    if let l = result {
+      if let list = l["languages"] as? Array<Any?>? {
+        for ll in list! {
+          if let lang = ll as? Dictionary<String, Any?> {
+            let language = W3wLanguage(name: lang["name"] as? String ?? "", code: lang["code"] as? String ?? "", nativeName: lang["native_name"] as? String ?? "")
+            languages.append(language)
+          }
+        }
+      }
+    }
+  }
+}
+
+/// Helper object representing a W3W suggestion
+public struct W3wSuggestion {
+  let country:String
+  let nearestPlace:String
+  let words:String
+  let rank:Int
+  let language:String
+}
+
+
+public struct W3wSuggestions {
+  var suggestions:[W3wSuggestion] = []
+
+  init(result:[String: Any]?) {
+    if let s = result {
+      if let list = s["suggestions"] as? Array<Any?>? {
+        for ss in list! {
+          if let sugg = ss as? Dictionary<String, Any?> {
+            let suggestion = W3wSuggestion(country: sugg["country"] as? String ?? "", nearestPlace: sugg["nearest-place"] as? String ?? "", words: sugg["words"] as? String ?? "", rank: sugg["rank"] as? Int ?? 0, language: sugg["language"] as? String ?? "")
+            suggestions.append(suggestion)
+          }
+        }
+      }
+    }
+  }
+}
+
+
+

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01AFD89A223016E6002BD237 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01AFD899223016E6002BD237 /* main.swift */; };
+		01AFD89E22301825002BD237 /* W3wGeocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28331E754EC900260099 /* W3wGeocoder.swift */; };
 		5B4A28221E754E6F00260099 /* what3words.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B4A28181E754E6E00260099 /* what3words.framework */; };
 		5B4A28271E754E6F00260099 /* SwiftWrapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28261E754E6F00260099 /* SwiftWrapperTests.swift */; };
 		5B4A28291E754E6F00260099 /* what3words.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B4A281B1E754E6E00260099 /* what3words.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -23,7 +25,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		01AFD895223016E6002BD237 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		01AFD897223016E6002BD237 /* Example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Example; sourceTree = BUILT_PRODUCTS_DIR; };
+		01AFD899223016E6002BD237 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5B4A28181E754E6E00260099 /* what3words.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = what3words.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B4A281B1E754E6E00260099 /* what3words.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = what3words.h; sourceTree = "<group>"; };
 		5B4A281C1E754E6E00260099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -34,6 +50,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		01AFD894223016E6002BD237 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B4A28141E754E6E00260099 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -52,12 +75,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01AFD898223016E6002BD237 /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				01AFD899223016E6002BD237 /* main.swift */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
 		5B4A280E1E754E6E00260099 = {
 			isa = PBXGroup;
 			children = (
 				5B4A28321E754EB600260099 /* Sources */,
 				5B4A281A1E754E6E00260099 /* what3words */,
 				5B4A28251E754E6F00260099 /* what3wordsTests */,
+				01AFD898223016E6002BD237 /* Example */,
 				5B4A28191E754E6E00260099 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -67,6 +99,7 @@
 			children = (
 				5B4A28181E754E6E00260099 /* what3words.framework */,
 				5B4A28211E754E6F00260099 /* what3wordsTests.xctest */,
+				01AFD897223016E6002BD237 /* Example */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -111,6 +144,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		01AFD896223016E6002BD237 /* Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01AFD89D223016E6002BD237 /* Build configuration list for PBXNativeTarget "Example" */;
+			buildPhases = (
+				01AFD893223016E6002BD237 /* Sources */,
+				01AFD894223016E6002BD237 /* Frameworks */,
+				01AFD895223016E6002BD237 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Example;
+			productName = Example;
+			productReference = 01AFD897223016E6002BD237 /* Example */;
+			productType = "com.apple.product-type.tool";
+		};
 		5B4A28171E754E6E00260099 /* what3words */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5B4A282C1E754E6F00260099 /* Build configuration list for PBXNativeTarget "what3words" */;
@@ -153,10 +203,15 @@
 		5B4A280F1E754E6E00260099 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0820;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = What3Words;
 				TargetAttributes = {
+					01AFD896223016E6002BD237 = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = YC9564MTQY;
+						ProvisioningStyle = Automatic;
+					};
 					5B4A28171E754E6E00260099 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = YC9564MTQY;
@@ -185,6 +240,7 @@
 			targets = (
 				5B4A28171E754E6E00260099 /* what3words */,
 				5B4A28201E754E6F00260099 /* what3wordsTests */,
+				01AFD896223016E6002BD237 /* Example */,
 			);
 		};
 /* End PBXProject section */
@@ -207,6 +263,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		01AFD893223016E6002BD237 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01AFD89A223016E6002BD237 /* main.swift in Sources */,
+				01AFD89E22301825002BD237 /* W3wGeocoder.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B4A28131E754E6E00260099 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -234,6 +299,61 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		01AFD89B223016E6002BD237 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YC9564MTQY;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		01AFD89C223016E6002BD237 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YC9564MTQY;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
 		5B4A282A1E754E6F00260099 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -406,6 +526,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		01AFD89D223016E6002BD237 /* Build configuration list for PBXNativeTarget "Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01AFD89B223016E6002BD237 /* Debug */,
+				01AFD89C223016E6002BD237 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5B4A28121E754E6E00260099 /* Build configuration list for PBXProject "what3words" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

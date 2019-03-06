@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "what3words"
-  s.version     = "1.0.0"
+  s.version     = "2.0.0"
   s.summary     = "w3w-swift-wrapper allows you to convert a 3 word address to coordinates or to convert coordinates to a 3 word address"
   s.homepage    = "https://github.com/what3words/w3w-swift-wrapper"
   s.license     = { :type => "MIT" }
@@ -12,6 +12,6 @@ Pod::Spec.new do |s|
   s.source   = { :git => "https://github.com/what3words/w3w-swift-wrapper.git", :tag => s.version }
   s.source_files = "Sources/*.swift"
   s.pod_target_xcconfig =  {
-		'SWIFT_VERSION' => '3.0',
+		'SWIFT_VERSION' => '4.0',
   }
 end
