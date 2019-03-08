@@ -87,20 +87,6 @@ W3wGeocoder.shared.convertToCoordinates(words: "index.home.raft") { (result, err
 }
 ```
 
-## Convert To Coordinates
-Convert a 3 word address to a position, expressed as coordinates of latitude and longitude.
-
-This function takes the words parameter as a string of 3 words `'table.book.chair'`
-
-The returned payload from the `convertToCoordinates` method is described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#convert-to-coordinates).
-
-#### Code Example
-```swift
-let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
-W3wGeocoder.shared.convertTo3wa(coordinates: coords) { (place, error) in
-    print(place?.coordinates.latitude, place?.coordinates.longitude)
-}```
-
 ## Convert To 3 Word Address
 
 Convert coordinates, expressed as latitude and longitude to a 3 word address.
@@ -111,33 +97,24 @@ The returned payload from the `convertTo3wa` method is described in the [what3wo
 
 #### Code Example
 ```swift
-W3wGeocoder.shared.convertToCoordinates(words: "index.home.raft") { (place, error) in
-  print(place?.words)
-}```
-
-## Available Languages
-
-This function returns the currently supported languages.  It will return the two letter code, and the name of the language both in that language and in English.
-
-The returned payload from the `convertTo3wa` method is described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#available-languages)
-
-#### Code Example
-```swift
-W3wGeocoder.shared.availableLanguages() { (languages, error) in
-    print(languages)
+let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
+W3wGeocoder.shared.convertTo3wa(coordinates: coords) { (place, error) in
+    print(place?.words)
 }
 ```
 
-## Grid Section
 
-Returns a section of the 3m x 3m what3words grid for a given area. The requested box must not exceed 4km from corner to corner, or a BadBoundingBoxTooBig error will be returned. Latitudes must be >= -90 and <= 90, but longitudes are allowed to wrap around 180. To specify a bounding-box that crosses the anti-meridian, use longitude greater than 180. Example value: 50.0, 179.995, 50.01, 180.0005. 
+## Convert To Coordinates
+Convert a 3 word address to a position, expressed as coordinates of latitude and longitude.
 
-The returned payload from the `gridSection` function  is described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#grid-section)
+This function takes the words parameter as a string of 3 words `'table.book.chair'`
+
+The returned payload from the `convertToCoordinates` method is described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#convert-to-coordinates).
 
 #### Code Example
 ```swift
-W3wGeocoder.shared.gridSection(south_lat: 52.208867, west_lng: 0.117540, north_lat: 52.207988, east_lng: 0.116126) { (result, error) in
-    print(result)
+W3wGeocoder.shared.convertToCoordinates(words: "index.home.raft") { (place, error) in
+    print(place?.coordinates.latitude, place?.coordinates.longitude)
 }
 ```
 
@@ -172,7 +149,9 @@ The first parameter `input` is the partial three words, or voice data.  It is fo
 #### Code Example One
 ```swift
 W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: ClipToCountry(country:"DE")) { (suggestions, error) in
-    print(suggestions)
+    for suggestion in suggestions ?? [] {
+      print("\(suggestion.words) is near \(suggestion.nearestPlace) - Country Code:\(suggestion.country)")
+    }
 }
 ```
 
@@ -190,6 +169,31 @@ W3wGeocoder.shared.autosuggest(input: flottons.annulons.garço", options: Focus(
 let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
 W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: Focus(focus: coords), FallbackLanguage(language: "de")) { (suggestions, error) in
     print(suggestions)
+}
+```
+## Available Languages
+
+This function returns the currently supported languages.  It will return the two letter code, and the name of the language both in that language and in English.
+
+The returned payload from the `convertTo3wa` method is described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#available-languages)
+
+#### Code Example
+```swift
+W3wGeocoder.shared.availableLanguages() { (languages, error) in
+    print(languages)
+}
+```
+
+## Grid Section
+
+Returns a section of the 3m x 3m what3words grid for a given area. The requested box must not exceed 4km from corner to corner, or a BadBoundingBoxTooBig error will be returned. Latitudes must be >= -90 and <= 90, but longitudes are allowed to wrap around 180. To specify a bounding-box that crosses the anti-meridian, use longitude greater than 180. Example value: 50.0, 179.995, 50.01, 180.0005. 
+
+The returned payload from the `gridSection` function  is described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#grid-section)
+
+#### Code Example
+```swift
+W3wGeocoder.shared.gridSection(south_lat: 52.208867, west_lng: 0.117540, north_lat: 52.207988, east_lng: 0.116126) { (lines, error) in
+    print(lines)
 }
 ```
 
