@@ -75,17 +75,7 @@ W3wGeocoder.setup(with: "<Secret API Key>")
 ```
 ### Usage
 
-Calls to the API are done thourgh a shared singleton. Also, each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used.  The return values are helper objects containing the relevant values.  If there was a problem with any call, it will be indicated by the error object. Eg:
-
-```
-W3wGeocoder.shared.convertToCoordinates(words: "index.home.raft") { (result, error) in
-  if let e = error as? what3words.W3wGeocoder.W3wError {
-      print(e.code, e.message)
-  } else {
-      print(result)
-  }
-}
-```
+Calls to the API are done thourgh a shared singleton. Also, each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used.  The return values are helper objects containing the relevant values.  If there was a problem with any call, it will be indicated by the error object.  See example below.
 
 ## Convert To 3 Word Address
 
