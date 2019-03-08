@@ -438,7 +438,7 @@ public struct W3wSuggestion {
   let country:String
   let nearestPlace:String
   let words:String
-  let distanceToFocus:Float
+  let distanceToFocusKm:Float
   let rank:Int
   let language:String
 }
@@ -452,7 +452,7 @@ public struct W3wSuggestions {
       if let list = s["suggestions"] as? Array<Any?>? {
         for ss in list! {
           if let sugg = ss as? Dictionary<String, Any?> {
-            let suggestion = W3wSuggestion(country: sugg["country"] as? String ?? "", nearestPlace: sugg["nearestPlace"] as? String ?? "", words: sugg["words"] as? String ?? "", distanceToFocus: sugg["distanceToFocusKm"] as? Float ?? 0.0, rank: sugg["rank"] as? Int ?? 0, language: sugg["language"] as? String ?? "")
+            let suggestion = W3wSuggestion(country: sugg["country"] as? String ?? "", nearestPlace: sugg["nearestPlace"] as? String ?? "", words: sugg["words"] as? String ?? "", distanceToFocusKm: sugg["distanceToFocusKm"] as? Float ?? 0.0, rank: sugg["rank"] as? Int ?? 0, language: sugg["language"] as? String ?? "")
             suggestions.append(suggestion)
           }
         }
