@@ -6,20 +6,20 @@ A swift library to use the [what3words REST API](https://docs.what3words.com/api
 
 The what3words Swift wrapper gives you programmatic access to convert a 3 word address to coordinates, to convert coordinates to a 3 word address, and to determine the currently support 3 word address languages.
 
-This repository conains an Xcode project that builds a framework, and tests for the wrapper.  You may instead choose to skip the framework and simply drag and drop the `W3wGeocoder.swift` file into your project.
+This repository contains an Xcode project that builds a framework, and tests for the wrapper.  You may instead choose to skip the framework and simply drag and drop the `W3wGeocoder.swift` file into your project.
 
 # Authentication
 
-To use this library you’ll need a what3words API key, which can be signed up for [here](https://map.what3words.com/register?dev=true).
+To use this library you’ll need a what3words API key, which can be signed up for [here](https://accounts.what3words.com/register?dev=true).
 
 # Installation
 
-#### CocoaPods (iOS 8+, OS X 10.9+)
+#### CocoaPods (iOS 9+, OS X 10.9+)
 
 You can use [CocoaPods](http://cocoapods.org/) to install `w3w-swift-wrapper`by adding it to your `Podfile`:
 
 ```ruby
-platform :ios, '8.0'
+platform :ios, '9.0'
 use_frameworks!
 
 target 'MyApp' do
@@ -75,7 +75,7 @@ W3wGeocoder.setup(with: "<Secret API Key>")
 ```
 ### Usage
 
-Calls to the API are done thourgh a shared singleton. Also, each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used.  The return values are helper objects containing the relevant values.  If there was a problem with any call, it will be indicated by the error object.  See example below.
+Calls to the API are done through a shared singleton. Also, each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used.  The return values are helper objects containing the relevant values.  If there was a problem with any call, it will be indicated by the error object.  See example below.
 
 ## Convert To 3 Word Address
 

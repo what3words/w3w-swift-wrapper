@@ -346,16 +346,16 @@ public enum Format : String {
 
 /// Helper object representing a W3W place
 public struct W3wPlace {
-  var country:String
-  var southWest:CLLocationCoordinate2D
-  var northEast:CLLocationCoordinate2D
-  var nearestPlace:String
-  var coordinates:CLLocationCoordinate2D
-  var words:String
-  var language:String
-  var map:String
+  public var country:String
+  public var southWest:CLLocationCoordinate2D
+  public var northEast:CLLocationCoordinate2D
+  public var nearestPlace:String
+  public var coordinates:CLLocationCoordinate2D
+  public var words:String
+  public var language:String
+  public var map:String
 
-  init(result:[String: Any]?) {
+  public init(result:[String: Any]?) {
     country      = result?["country"] as? String ?? ""
     nearestPlace = result?["nearestPlace"] as? String ?? ""
     words        = result?["words"] as? String ?? ""
@@ -385,8 +385,8 @@ public struct W3wPlace {
 
 /// Helper object representing a W3W grid line
 public struct W3wLine {
-  let start:CLLocationCoordinate2D
-  let end:CLLocationCoordinate2D
+  public let start:CLLocationCoordinate2D
+  public let end:CLLocationCoordinate2D
   }
 
 public struct W3wLines {
@@ -411,9 +411,9 @@ public struct W3wLines {
 
 /// Helper object representing a W3W language
 public struct W3wLanguage {
-  let name:String
-  let code:String
-  let nativeName:String
+  public let name:String
+  public let code:String
+  public let nativeName:String
 }
 
 public struct W3wLanguages {
@@ -435,12 +435,12 @@ public struct W3wLanguages {
 
 /// Helper object representing a W3W suggestion
 public struct W3wSuggestion {
-  let country:String
-  let nearestPlace:String
-  let words:String
-  let distanceToFocusKm:Float
-  let rank:Int
-  let language:String
+  public let country:String
+  public let nearestPlace:String
+  public let words:String
+  public let distanceToFocusKm:Float
+  public let rank:Int
+  public let language:String
 }
 
 
