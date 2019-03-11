@@ -231,7 +231,7 @@ public class AutoSuggestOption {
 
 public class FallbackLanguage : AutoSuggestOption {
   /// For normal text input, specifies a fallback language, which will help guide AutoSuggest if the input is particularly messy.
-  init(language:String) {
+  public init(language:String) {
     super.init();
     k = "language";
     v = language
@@ -240,7 +240,7 @@ public class FallbackLanguage : AutoSuggestOption {
 
 public class NumberResults : AutoSuggestOption {
   /// The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum.
-  init(numberOfResults:Int) {
+  public init(numberOfResults:Int) {
     super.init();
     k = "n-results";
     v = "\(numberOfResults)"
@@ -249,7 +249,7 @@ public class NumberResults : AutoSuggestOption {
 
 public class Focus : AutoSuggestOption {
   /// This is a location, specified as a latitude (often where the user making the query is). If specified, the results will be weighted to give preference to those near the focus
-  init(focus:CLLocationCoordinate2D) {
+  public init(focus:CLLocationCoordinate2D) {
     super.init();
     k = "focus";
     v = "\(focus.latitude),\(focus.longitude)"
@@ -259,7 +259,7 @@ public class Focus : AutoSuggestOption {
 
 public class NumberFocusResults : AutoSuggestOption {
   /// Specifies the number of results (must be <= n-results) within the results set which will have a focus. Defaults to n-results. This allows you to run autosuggest with a mix of focussed and unfocussed results, to give you a "blend" of the two.
-  init(numberFocusResults:Int) {
+  public init(numberFocusResults:Int) {
     super.init();
     k = "n-focus-results";
     v = "\(numberFocusResults)"
@@ -269,7 +269,7 @@ public class NumberFocusResults : AutoSuggestOption {
 
 public class InputType : AutoSuggestOption {
   /// Uses InputTypeEnum which allows vocon-hybrid and nmdp-asr
-  init(inputType:InputTypeEnum) {
+  public init(inputType:InputTypeEnum) {
     super.init();
     k = "input-type";
     v = inputType.rawValue
@@ -279,7 +279,7 @@ public class InputType : AutoSuggestOption {
 
 public class ClipToCountry : AutoSuggestOption {
   /// Restricts autosuggest to only return results inside the countries specified by comma-separated list of uppercase ISO 3166-1 alpha-2 country codes
-  init(country:String) {
+  public init(country:String) {
     super.init();
     k = "clip-to-country";
     v = "\(country)"
@@ -289,14 +289,14 @@ public class ClipToCountry : AutoSuggestOption {
 
 public class BoundingCircle : AutoSuggestOption {
   /// Restrict results to a circle
-  init(lat:Double, lng:Double, kilometers:Double) {
+  public init(lat:Double, lng:Double, kilometers:Double) {
     super.init();
     k = "clip-to-circle";
     v = "\(lat),\(lng),\(kilometers)"
   }
 
   /// Restrict results to a circle
-  init(centre:CLLocationCoordinate2D, kilometers:Double) {
+  public init(centre:CLLocationCoordinate2D, kilometers:Double) {
     super.init();
     k = "clip-to-circle";
     v = "\(centre.latitude),\(centre.longitude),\(kilometers)"
@@ -305,14 +305,14 @@ public class BoundingCircle : AutoSuggestOption {
 
 public class BoundingBox : AutoSuggestOption {
   /// Restrict autosuggest results to a bounding box, specified by coordinates. Where south_lat <= north_lat and west_lng <= east_lng
-  init(south_lat:Double, west_lng:Double, north_lat:Double, east_lng:Double) {
+  public init(south_lat:Double, west_lng:Double, north_lat:Double, east_lng:Double) {
     super.init()
     k = "clip-to-bounding-box"
     v = "\(south_lat),\(west_lng),\(north_lat),\(east_lng)"
     }
   
   /// Restrict autosuggest results to a bounding box, specified by coordinates. Where south_lat <= north_lat and west_lng <= east_lng
-  init(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D) {
+  public init(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D) {
     super.init()
     k = "clip-to-bounding-box"
     v = "\(southWest.latitude),\(southWest.longitude),\(northEast.latitude),\(northEast.longitude)"
@@ -321,7 +321,7 @@ public class BoundingBox : AutoSuggestOption {
 
 public class BoundingPolygon : AutoSuggestOption {
   /// Restrict autosuggest results to a polygon, specified by a comma-separated list of lat,lng pairs. The polygon should be closed, i.e. the first element should be repeated as the last element; also the list should contain at least 4 entries. The API is currently limited to accepting up to 25 pairs.
-  init(polygon:[CLLocationCoordinate2D])
+  public init(polygon:[CLLocationCoordinate2D])
       {
       super.init()
 
