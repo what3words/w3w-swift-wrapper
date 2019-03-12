@@ -40,6 +40,7 @@
 /* Begin PBXFileReference section */
 		01AFD897223016E6002BD237 /* Example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Example; sourceTree = BUILT_PRODUCTS_DIR; };
 		01AFD899223016E6002BD237 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		01AFD9652236C472002BD237 /* what3words.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = what3words.framework; path = ../../temp/TestCartObjcX/Carthage/Build/iOS/what3words.framework; sourceTree = "<group>"; };
 		5B4A28181E754E6E00260099 /* what3words.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = what3words.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B4A281B1E754E6E00260099 /* what3words.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = what3words.h; sourceTree = "<group>"; };
 		5B4A281C1E754E6E00260099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -83,6 +84,14 @@
 			path = Example;
 			sourceTree = "<group>";
 		};
+		01AFD9642236C472002BD237 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				01AFD9652236C472002BD237 /* what3words.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5B4A280E1E754E6E00260099 = {
 			isa = PBXGroup;
 			children = (
@@ -91,6 +100,7 @@
 				5B4A28251E754E6F00260099 /* what3wordsTests */,
 				01AFD898223016E6002BD237 /* Example */,
 				5B4A28191E754E6E00260099 /* Products */,
+				01AFD9642236C472002BD237 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

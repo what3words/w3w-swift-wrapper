@@ -4,7 +4,13 @@ A swift library to use the [what3words REST API](https://docs.what3words.com/api
 
 # Overview
 
-The what3words Swift wrapper gives you programmatic access to convert a 3 word address to coordinates, to convert coordinates to a 3 word address, and to determine the currently support 3 word address languages.
+The what3words Swift wrapper gives you programmatic access to 
+
+* convert a 3 word address to coordinates 
+* convert coordinates to a 3 word address
+* autosuggest functionality which takes a slightly incorrect 3 word address, and suggests a list of valid 3 word addresses
+* obtain a section of the 3m x 3m what3words grid for a bounding box.
+* determine the currently support 3 word address languages.
 
 This repository contains an Xcode project that builds a framework, and tests for the wrapper.  You may instead choose to skip the framework and simply drag and drop the `W3wGeocoder.swift` file into your project.
 
@@ -40,16 +46,14 @@ github "what3words/w3w-swift-wrapper"
 You can use [The Swift Package Manager](https://swift.org/package-manager) to install `w3w-swift-wrapper` by adding the proper description to your `Package.swift` file:
 
 ```swift
-import PackageDescription
-
-let package = Package(
-    name: "YOUR_PROJECT_NAME",
-    targets: [],
-    dependencies: [
-        .Package(url: "https://github.com/what3words/w3w-swift-wrapper.git", versions: Version(3,0,0)..<Version(1, .max, .max)),
-    ]
-)
+.package(url: "https://github.com/what3words/w3w-swift-wrapper.git", .branch("master"))
 ```
+and add "what3words" to the dependancies:
+
+```swift
+dependencies: ["what3words"]),
+```
+
 
 Note that the [Swift Package Manager](https://swift.org/package-manager) is still in early design and development, for more information checkout its [GitHub Page](https://github.com/apple/swift-package-manager)
 
@@ -163,7 +167,7 @@ W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: Focu
 ```
 ## Available Languages
 
-This function returns the currently supported languages.  It will return the two letter code, and the name of the language both in that language and in English.
+This function returns the currently supported languages.  It will return the two letter code ([ISO 639](https://en.wikipedia.org/wiki/ISO_639)), and the name of the language both in that language and in English.
 
 The returned payload from the `convertTo3wa` method is described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#available-languages)
 
