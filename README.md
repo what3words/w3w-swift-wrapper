@@ -20,7 +20,7 @@ To use this library you’ll need a what3words API key, which can be signed up f
 
 # Installation
 
-#### CocoaPods (iOS 9+, OS X 10.9+)
+#### CocoaPods (iOS 8+, OS X 10.10+)
 
 You can use [CocoaPods](http://cocoapods.org/) to install `w3w-swift-wrapper`by adding it to your `Podfile`:
 
