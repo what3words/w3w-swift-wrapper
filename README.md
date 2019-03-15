@@ -25,7 +25,7 @@ To use this library you’ll need a what3words API key, which can be signed up f
 You can use [CocoaPods](http://cocoapods.org/) to install `w3w-swift-wrapper`by adding it to your `Podfile`:
 
 ```ruby
-platform :ios, '9.0'
+platform :ios, '8.0'
 use_frameworks!
 
 target 'MyApp' do
@@ -142,7 +142,7 @@ The first parameter `input` is the partial three words, or voice data.  It is fo
 
 #### Code Example One
 ```swift
-W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: ClipToCountry(country:"DE")) { (suggestions, error) in
+W3wGeocoder.shared.autosuggest(input: "fun.with.code") { (suggestions, error) in
     for suggestion in suggestions ?? [] {
       print("\(suggestion.words) is near \(suggestion.nearestPlace) - Country Code:\(suggestion.country)")
     }
@@ -150,18 +150,23 @@ W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: Clip
 ```
 
 #### Code Example Two
+Focus on one particular place
+
 ```swift
 let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
-W3wGeocoder.shared.autosuggest(input: flottons.annulons.garço", options: Focus(focus: coords), FallbackLanguage(language: "fr")) { (suggestions, error) in
+W3wGeocoder.shared.autosuggest(input: "flottons.annulons.garço", options: Focus(focus: coords)) { (suggestions, error) in
     print(suggestions)
 }
+
 ```
 
 
 #### Code Example Three
+ Focus on (51.4243877,-0.34745) and ask for 6 suggestions.
+ 
 ```swift
 let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
-W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: Focus(focus: coords), FallbackLanguage(language: "de")) { (suggestions, error) in
+W3wGeocoder.shared.autosuggest(input: "index.raft.ho", options: Focus(focus: coords), NumberResults(numberOfResults: 6) ) { (suggestions, error) in
     print(suggestions)
 }
 ```
