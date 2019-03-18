@@ -17,7 +17,7 @@ class SwiftWrapperTests: XCTestCase {
   override class func setUp() {
     super.setUp()
 
-W3wGeocoder.setup(with: "<Secret API Key>")
+  W3wGeocoder.setup(with: "<Secret API Key>")
   }
   
   
@@ -223,8 +223,6 @@ W3wGeocoder.setup(with: "<Secret API Key>")
   func testAutosuggestWithPolygon() {
     let expectation = self.expectation(description: "Autosuggest")
 
-    let centre = CLLocationCoordinate2D(latitude: 51.521238, longitude: -0.203607)
-
     let polygon = [
           CLLocationCoordinate2D(latitude:51.0, longitude:0.0),
           CLLocationCoordinate2D(latitude:51.0, longitude:0.1),
@@ -234,7 +232,7 @@ W3wGeocoder.setup(with: "<Secret API Key>")
           ];
     //,,,51.521,-0.343
 
-    W3wGeocoder.shared.autosuggest(input: "scenes.irritated.sparkles", options:BoundingPolygon(polygon: polygon)) { (suggestions, error) in
+    W3wGeocoder.shared.autosuggest(input: "scenes.irritated.sparkle", options:BoundingPolygon(polygon: polygon)) { (suggestions, error) in
 
       XCTAssertEqual(suggestions?.count, 1)
       XCTAssertEqual(suggestions?.first?.words, "scenes.irritated.sparkles")
@@ -242,6 +240,7 @@ W3wGeocoder.setup(with: "<Secret API Key>")
 
       expectation.fulfill()
     }
+    
     waitForExpectations(timeout: 3.0, handler: nil)
   }
 
@@ -249,10 +248,10 @@ W3wGeocoder.setup(with: "<Secret API Key>")
   
   func testMultilingualAutosuggest() {
     let expectation = self.expectation(description: "Autosuggest")
-    W3wGeocoder.shared.autosuggest(input: "geschaft.planter.carciofi", options: FallbackLanguage(language: "de")) { (suggestions, error) in
+    W3wGeocoder.shared.autosuggest(input: "aaa.aaa.aaa", options: FallbackLanguage(language: "de")) { (suggestions, error) in
 
       XCTAssertEqual(suggestions?.count, 3)
-      XCTAssertEqual(suggestions?.first?.words, "esche.piante.carciofi")
+      XCTAssertEqual(suggestions?.first?.words, "saal.saal.saal")
       XCTAssertNil(error)
 
       expectation.fulfill()
