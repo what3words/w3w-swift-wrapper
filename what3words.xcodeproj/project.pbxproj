@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01AFD89A223016E6002BD237 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01AFD899223016E6002BD237 /* main.swift */; };
+		01AFD89E22301825002BD237 /* W3wGeocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28331E754EC900260099 /* W3wGeocoder.swift */; };
 		5B4A28221E754E6F00260099 /* what3words.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B4A28181E754E6E00260099 /* what3words.framework */; };
-		5B4A28271E754E6F00260099 /* ReverseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28261E754E6F00260099 /* ReverseTests.swift */; };
+		5B4A28271E754E6F00260099 /* SwiftWrapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28261E754E6F00260099 /* SwiftWrapperTests.swift */; };
 		5B4A28291E754E6F00260099 /* what3words.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B4A281B1E754E6E00260099 /* what3words.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B4A28341E754EC900260099 /* W3wGeocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28331E754EC900260099 /* W3wGeocoder.swift */; };
-		9103701A1E785D2600325D7F /* AutosuggestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910370191E785D2600325D7F /* AutosuggestTests.swift */; };
-		91A853381E7AE38600CB0460 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A853371E7AE38600CB0460 /* Utils.swift */; };
-		91A8533D1E7AE40700CB0460 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 91A8533B1E7AE3F600CB0460 /* Config.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,20 +25,39 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		01AFD895223016E6002BD237 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		01AFD897223016E6002BD237 /* Example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Example; sourceTree = BUILT_PRODUCTS_DIR; };
+		01AFD899223016E6002BD237 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		01AFD9652236C472002BD237 /* what3words.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = what3words.framework; path = ../../temp/TestCartObjcX/Carthage/Build/iOS/what3words.framework; sourceTree = "<group>"; };
 		5B4A28181E754E6E00260099 /* what3words.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = what3words.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B4A281B1E754E6E00260099 /* what3words.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = what3words.h; sourceTree = "<group>"; };
 		5B4A281C1E754E6E00260099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B4A28211E754E6F00260099 /* what3wordsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = what3wordsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B4A28261E754E6F00260099 /* ReverseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseTests.swift; sourceTree = "<group>"; };
+		5B4A28261E754E6F00260099 /* SwiftWrapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftWrapperTests.swift; sourceTree = "<group>"; };
 		5B4A28281E754E6F00260099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B4A28331E754EC900260099 /* W3wGeocoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = W3wGeocoder.swift; sourceTree = "<group>"; };
-		910370191E785D2600325D7F /* AutosuggestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutosuggestTests.swift; sourceTree = "<group>"; };
-		91A853371E7AE38600CB0460 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		91A8533B1E7AE3F600CB0460 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		01AFD894223016E6002BD237 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B4A28141E754E6E00260099 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -58,13 +76,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01AFD898223016E6002BD237 /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				01AFD899223016E6002BD237 /* main.swift */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
+		01AFD9642236C472002BD237 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				01AFD9652236C472002BD237 /* what3words.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5B4A280E1E754E6E00260099 = {
 			isa = PBXGroup;
 			children = (
 				5B4A28321E754EB600260099 /* Sources */,
 				5B4A281A1E754E6E00260099 /* what3words */,
 				5B4A28251E754E6F00260099 /* what3wordsTests */,
+				01AFD898223016E6002BD237 /* Example */,
 				5B4A28191E754E6E00260099 /* Products */,
+				01AFD9642236C472002BD237 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,6 +109,7 @@
 			children = (
 				5B4A28181E754E6E00260099 /* what3words.framework */,
 				5B4A28211E754E6F00260099 /* what3wordsTests.xctest */,
+				01AFD897223016E6002BD237 /* Example */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -82,7 +119,6 @@
 			children = (
 				5B4A281B1E754E6E00260099 /* what3words.h */,
 				5B4A281C1E754E6E00260099 /* Info.plist */,
-				91A8533B1E7AE3F600CB0460 /* Config.plist */,
 			);
 			path = what3words;
 			sourceTree = "<group>";
@@ -90,9 +126,7 @@
 		5B4A28251E754E6F00260099 /* what3wordsTests */ = {
 			isa = PBXGroup;
 			children = (
-				5B4A28261E754E6F00260099 /* ReverseTests.swift */,
-				910370191E785D2600325D7F /* AutosuggestTests.swift */,
-				91A853371E7AE38600CB0460 /* Utils.swift */,
+				5B4A28261E754E6F00260099 /* SwiftWrapperTests.swift */,
 				5B4A28281E754E6F00260099 /* Info.plist */,
 			);
 			path = what3wordsTests;
@@ -120,6 +154,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		01AFD896223016E6002BD237 /* Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01AFD89D223016E6002BD237 /* Build configuration list for PBXNativeTarget "Example" */;
+			buildPhases = (
+				01AFD893223016E6002BD237 /* Sources */,
+				01AFD894223016E6002BD237 /* Frameworks */,
+				01AFD895223016E6002BD237 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Example;
+			productName = Example;
+			productReference = 01AFD897223016E6002BD237 /* Example */;
+			productType = "com.apple.product-type.tool";
+		};
 		5B4A28171E754E6E00260099 /* what3words */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5B4A282C1E754E6F00260099 /* Build configuration list for PBXNativeTarget "what3words" */;
@@ -162,19 +213,25 @@
 		5B4A280F1E754E6E00260099 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = What3Words;
 				TargetAttributes = {
+					01AFD896223016E6002BD237 = {
+						CreatedOnToolsVersion = 10.1;
+						DevelopmentTeam = YC9564MTQY;
+						ProvisioningStyle = Automatic;
+					};
 					5B4A28171E754E6E00260099 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = YC9564MTQY;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = "";
 						ProvisioningStyle = Automatic;
 					};
 					5B4A28201E754E6F00260099 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = YC9564MTQY;
+						LastSwiftMigration = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -193,6 +250,7 @@
 			targets = (
 				5B4A28171E754E6E00260099 /* what3words */,
 				5B4A28201E754E6F00260099 /* what3wordsTests */,
+				01AFD896223016E6002BD237 /* Example */,
 			);
 		};
 /* End PBXProject section */
@@ -209,13 +267,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91A8533D1E7AE40700CB0460 /* Config.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		01AFD893223016E6002BD237 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01AFD89A223016E6002BD237 /* main.swift in Sources */,
+				01AFD89E22301825002BD237 /* W3wGeocoder.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B4A28131E754E6E00260099 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -228,9 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B4A28271E754E6F00260099 /* ReverseTests.swift in Sources */,
-				9103701A1E785D2600325D7F /* AutosuggestTests.swift in Sources */,
-				91A853381E7AE38600CB0460 /* Utils.swift in Sources */,
+				5B4A28271E754E6F00260099 /* SwiftWrapperTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,24 +309,88 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		01AFD89B223016E6002BD237 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YC9564MTQY;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		01AFD89C223016E6002BD237 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YC9564MTQY;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
 		5B4A282A1E754E6F00260099 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -301,21 +429,30 @@
 		5B4A282B1E754E6F00260099 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -361,7 +498,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -381,7 +519,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.what3words.what3words;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -389,12 +528,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = YC9564MTQY;
 				INFOPLIST_FILE = what3wordsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.what3words.what3wordsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -402,18 +544,29 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = YC9564MTQY;
 				INFOPLIST_FILE = what3wordsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.what3words.what3wordsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		01AFD89D223016E6002BD237 /* Build configuration list for PBXNativeTarget "Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01AFD89B223016E6002BD237 /* Debug */,
+				01AFD89C223016E6002BD237 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5B4A28121E754E6E00260099 /* Build configuration list for PBXProject "what3words" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
