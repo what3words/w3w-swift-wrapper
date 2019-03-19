@@ -2,6 +2,8 @@
 
 A swift library to use the [what3words REST API](https://docs.what3words.com/api/v3/).
 
+A definitive guide can be found on What3Words' 
+
 # Overview
 
 The what3words Swift wrapper gives you programmatic access to 
