@@ -196,11 +196,15 @@ public struct W3wGeocoder {
         completion(nil, W3wError(code: "BadData", message: "Malformed JSON data returned"))
         return
       }
-      
+
+      #if swift(>=5.0)
+      let json = jsonData
+      #else
       guard let json = jsonData else {
         completion(nil, W3wError(code: "Invalid", message: "Invalid response"))
         return
       }
+      #endif
 
       if let error = json["error"] as? [String: Any], let code = error["code"] as? String, let message = error["message"] as? String {
         completion(nil, W3wError(code: code, message: message))
