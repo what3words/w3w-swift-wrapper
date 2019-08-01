@@ -24,7 +24,7 @@ public typealias W3wResponseGrid            = ((_ result: [W3wLine]?, _ error: W
 public typealias W3wResponseLanguages       = ((_ result: [W3wLanguage]?, _ error: W3wError?) -> Void)
 
 
-public struct W3wGeocoder {
+public class W3wGeocoder {
   
   private static var kApiUrl = "https://api.what3words.com/v3"
   
@@ -35,8 +35,10 @@ public struct W3wGeocoder {
     self.apiKey = apiKey
   }
   
+  private var version_header = "what3words-Swift/x.x.x (Swift x.x.x; iOS x.x.x)"
+  
   private init() {
-  }
+    }
   
   public static var shared: W3wGeocoder {
     get {
@@ -54,6 +56,7 @@ public struct W3wGeocoder {
    */
   public static func setup(with apiKey: String) {
     self.instance = W3wGeocoder(apiKey: apiKey)
+    self.instance?.figureOutVersions()
   }
   
   /**
@@ -186,7 +189,11 @@ public struct W3wGeocoder {
       return
     }
     
-    let task = URLSession.shared.dataTask(with: url) { (data, _, error) in
+    var request = URLRequest(url: url)
+
+    request.setValue(version_header, forHTTPHeaderField: "X-W3W-Wrapper")
+  
+    let task = URLSession.shared.dataTask(with: request) { (data, _, error) in
       guard let data = data else {
         completion(nil, W3wError(code: "BadConnection", message: error?.localizedDescription ?? "Unknown Cause"))
         return
@@ -207,15 +214,46 @@ public struct W3wGeocoder {
         return
       }
       
-    //  if let status = json["status"] as? [String: Any], let code = status["code"] as? Int, let message = status["message"] as? String {
-    //    completion(nil, W3wError(code: code, message: message))
-    //    return
-    //  }
-      
       completion(json, nil)
     }
     task.resume()
   }
+
+  // Establish the various version numbers in order to set an HTTP header for the URL session
+  // ugly, but haven't found a better, way, if anyone knows a better way to get the swift version at runtime, let us know...
+  private func figureOutVersions() {
+    #if os(macOS)
+    let os_name        = "Mac"
+    #else
+    let os_name        = UIDevice.current.systemName
+    #endif
+    let os_version     = ProcessInfo().operatingSystemVersion
+    var swift_version  = "x.x"
+    var api_version    = "x.x.x"
+
+    #if swift(>=7)
+      swift_version = "7.x"
+    #elseif swift(>=6)
+      swift_version = "6.x"
+    #elseif swift(>=5)
+      swift_version = "5.x"
+    #elseif swift(>=4)
+      swift_version = "4.x"
+    #elseif swift(>=3)
+      swift_version = "3.x"
+    #elseif swift(>=2)
+      swift_version = "2.x"
+    #else
+      swift_version = "1.x"
+    #endif
+    
+    if let shortVersion = Bundle(for: W3wGeocoder.self).infoDictionary?["CFBundleShortVersionString"] as? String {
+      api_version = shortVersion
+    }
+
+    version_header  = "what3words-Swift/" + api_version + " (Swift " + swift_version + "; " + os_name + " "  + String(os_version.majorVersion) + "."  + String(os_version.minorVersion) + "."  + String(os_version.patchVersion) + ")"
+  }
+
 }
 
   // MARK: AutoSuggest Options

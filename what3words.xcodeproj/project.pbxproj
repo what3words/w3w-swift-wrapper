@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0125BCA822F2F1570008D66A /* W3wGeocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28331E754EC900260099 /* W3wGeocoder.swift */; };
 		01AFD89A223016E6002BD237 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01AFD899223016E6002BD237 /* main.swift */; };
-		01AFD89E22301825002BD237 /* W3wGeocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28331E754EC900260099 /* W3wGeocoder.swift */; };
 		5B4A28221E754E6F00260099 /* what3words.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B4A28181E754E6E00260099 /* what3words.framework */; };
 		5B4A28271E754E6F00260099 /* SwiftWrapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4A28261E754E6F00260099 /* SwiftWrapperTests.swift */; };
 		5B4A28291E754E6F00260099 /* what3words.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B4A281B1E754E6E00260099 /* what3words.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -40,7 +40,6 @@
 /* Begin PBXFileReference section */
 		01AFD897223016E6002BD237 /* Example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Example; sourceTree = BUILT_PRODUCTS_DIR; };
 		01AFD899223016E6002BD237 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		01AFD9652236C472002BD237 /* what3words.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = what3words.framework; path = ../../temp/TestCartObjcX/Carthage/Build/iOS/what3words.framework; sourceTree = "<group>"; };
 		5B4A28181E754E6E00260099 /* what3words.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = what3words.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B4A281B1E754E6E00260099 /* what3words.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = what3words.h; sourceTree = "<group>"; };
 		5B4A281C1E754E6E00260099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -84,14 +83,6 @@
 			path = Example;
 			sourceTree = "<group>";
 		};
-		01AFD9642236C472002BD237 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				01AFD9652236C472002BD237 /* what3words.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		5B4A280E1E754E6E00260099 = {
 			isa = PBXGroup;
 			children = (
@@ -100,7 +91,6 @@
 				5B4A28251E754E6F00260099 /* what3wordsTests */,
 				01AFD898223016E6002BD237 /* Example */,
 				5B4A28191E754E6E00260099 /* Products */,
-				01AFD9642236C472002BD237 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -241,6 +231,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 5B4A280E1E754E6E00260099;
@@ -278,7 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01AFD89A223016E6002BD237 /* main.swift in Sources */,
-				01AFD89E22301825002BD237 /* W3wGeocoder.swift in Sources */,
+				0125BCA822F2F1570008D66A /* W3wGeocoder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,6 +318,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YC9564MTQY;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -355,6 +347,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YC9564MTQY;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_FAST_MATH = YES;
