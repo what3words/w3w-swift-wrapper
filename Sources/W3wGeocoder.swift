@@ -39,6 +39,7 @@ public class W3wGeocoder {
   }
   
   private var version_header = "what3words-Swift/x.x.x (Swift x.x.x; iOS x.x.x)"
+  private var bundle_header  = ""
   
   private init() {
     }
@@ -195,6 +196,7 @@ public class W3wGeocoder {
     var request = URLRequest(url: url)
 
     request.setValue(version_header, forHTTPHeaderField: "X-W3W-Wrapper")
+    request.setValue(bundle_header, forHTTPHeaderField: "X-Ios-Bundle-Identifier")
   
     let task = URLSession.shared.dataTask(with: request) { (data, _, error) in
       guard let data = data else {
@@ -260,6 +262,7 @@ public class W3wGeocoder {
     }
 
     version_header  = "what3words-Swift/" + api_version + " (Swift " + swift_version + "; " + os_name + " "  + String(os_version.majorVersion) + "."  + String(os_version.minorVersion) + "."  + String(os_version.patchVersion) + ")"
+    bundle_header   = Bundle.main.bundleIdentifier ?? ""
   }
 
 }

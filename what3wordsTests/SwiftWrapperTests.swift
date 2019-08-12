@@ -65,8 +65,10 @@ class SwiftWrapperTests: XCTestCase {
     let expectation = self.expectation(description: "Grid")
     W3wGeocoder.shared.gridSection(south_lat: 52.208867, west_lng: 0.117540, north_lat: 52.207988, east_lng: 0.116126) { (grid, error) in
 
-      XCTAssertGreaterThan(grid!.count, 0, "Grid lines missing")
       XCTAssertNotNil(grid)
+      if let g = grid {
+        XCTAssertGreaterThan(g.count, 0, "Grid lines missing")
+      }
       XCTAssertNil(error)
       expectation.fulfill()
     }
@@ -79,7 +81,9 @@ class SwiftWrapperTests: XCTestCase {
 
     W3wGeocoder.shared.gridSection(southWest: CLLocationCoordinate2D(latitude: 52.208867, longitude:0.117540), northEast: CLLocationCoordinate2D(latitude: 52.207988, longitude:0.116126)) { (grid, error) in
 
-      XCTAssertGreaterThan(grid!.count, 0, "Grid lines missing")
+      if let g = grid {
+        XCTAssertGreaterThan(g.count, 0, "Grid lines missing")
+      }
       XCTAssertNotNil(grid)
       XCTAssertNil(error)
       expectation.fulfill()
@@ -94,7 +98,9 @@ class SwiftWrapperTests: XCTestCase {
     W3wGeocoder.shared.availableLanguages() { (languages, error) in
 
       XCTAssertNotNil(languages)
-      XCTAssertGreaterThan(languages!.count, 0, "No languages returned")
+      if let l = languages {
+        XCTAssertGreaterThan(l.count, 0, "No languages returned")
+      }
       XCTAssertNotNil(languages?.first?.code)
       XCTAssertNotNil(languages?.first?.name)
       XCTAssertNotNil(languages?.first?.nativeName)
