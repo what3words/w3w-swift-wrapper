@@ -9,6 +9,9 @@
 
 import Foundation
 import CoreLocation
+#if !os(macOS)
+import UIKit
+#endif
 
 
 public struct W3wError: Error {
@@ -199,11 +202,16 @@ public class W3wGeocoder {
         return
       }
       
-      guard let jsonData = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+      var jsonData:[String: Any]?
+      
+      do {
+        jsonData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+      }
+      catch {
         completion(nil, W3wError(code: "BadData", message: "Malformed JSON data returned"))
         return
       }
-      
+
       guard let json = jsonData else {
         completion(nil, W3wError(code: "Invalid", message: "Invalid response"))
         return
