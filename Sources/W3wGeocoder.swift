@@ -114,7 +114,7 @@ public class W3wGeocoder {
    - option InputType(inputType:InputTypeEnum): For power users, used to specify voice input mode. Can be text (default), vocon-hybrid or nmdp-asr. See voice recognition section for more details.
    - option FallbackLanguage(language:String): For normal text input, specifies a fallback language, which will help guide AutoSuggest if the input is particularly messy. If specified, this parameter must be a supported 3 word address language as an ISO 639-1 2 letter code. For voice input (see voice section), language must always be specified.
    */
-  public func autosuggest(input: String, options: AutoSuggestOption..., completion: @escaping W3wResponseSuggestions) {
+  public func autosuggest(input: String, options: [AutoSuggestOption], completion: @escaping W3wResponseSuggestions) {
     var params: [String: String] = ["input": input]
     
     for option in options {
@@ -129,7 +129,17 @@ public class W3wGeocoder {
       }
     }
   }
+
+
+  /**
+   Convenience function to allow use of option list without array
+   */
+  public func autosuggest(input: String, options: AutoSuggestOption..., completion: @escaping W3wResponseSuggestions) {
+    autosuggest(input: input, options: options, completion: completion)
+    }
   
+  
+
  
   /**
    Returns a section of the 3m x 3m what3words grid for a given area.
@@ -184,6 +194,7 @@ public class W3wGeocoder {
     var queryItems: [URLQueryItem] = [URLQueryItem(name: "key", value: apiKey)]
     for (name, value) in params {
       let item = URLQueryItem(name: name, value: value)
+      //let item = URLQueryItem(name: name, value: value.replacingOccurrences(of: ":", with: "%3A"))
       queryItems.append(item)
     }
     urlComponents.queryItems = queryItems
@@ -336,6 +347,20 @@ public class ClipToCountry : AutoSuggestOption {
 }
 
 
+public class PreferLand : AutoSuggestOption {
+  /// Restricts autosuggest to only return results inside the countries specified by comma-separated list of uppercase ISO 3166-1 alpha-2 country codes
+  public init(land:Bool) {
+    super.init();
+    k = "prefer-land";
+    if (land) {
+      v = "true"
+    } else {
+      v = "false"
+    }
+  }
+}
+
+
 public class BoundingCircle : AutoSuggestOption {
   /// Restrict results to a circle
   public init(lat:Double, lng:Double, kilometers:Double) {
@@ -383,8 +408,9 @@ public class BoundingPolygon : AutoSuggestOption {
 }
 
 public enum InputTypeEnum : String {
-  case voconHybrid = "vocon-hybrid"
-  case nmdpAsr     = "nmdp-asr"
+  case voconHybrid  = "vocon-hybrid"
+  case nmdpAsr      = "nmdp-asr"
+  case genericVoice = "generic-voice"
 }
 
 public enum Format : String {
