@@ -11,7 +11,5 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "8.0"
   s.source   = { :git => "https://github.com/what3words/w3w-swift-wrapper.git", :tag => s.version }
   s.source_files = "Sources/*.swift"
-  s.pod_target_xcconfig =  {
-		'SWIFT_VERSION' => '4.0',
-  }
+  s.swift_version = '5.0'
 end
