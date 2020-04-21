@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "what3words"
-  s.version     = "3.1.0"
+  s.version     = "3.3.1"
   s.summary     = "w3w-swift-wrapper allows you to convert a 3 word address to coordinates or to convert coordinates to a 3 word address"
   s.homepage    = "https://github.com/what3words/w3w-swift-wrapper"
   s.license     = { :type => "MIT" }
