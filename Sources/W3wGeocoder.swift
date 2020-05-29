@@ -12,6 +12,9 @@ import CoreLocation
 #if !os(macOS)
 import UIKit
 #endif
+#if os(watchOS)
+import WatchKit
+#endif
 
 
 public struct W3wError: Error {
@@ -245,6 +248,8 @@ public class W3wGeocoder {
   private func figureOutVersions() {
     #if os(macOS)
     let os_name        = "Mac"
+    #elseif os(watchOS)
+    let os_name        = WKInterfaceDevice.current().systemName
     #else
     let os_name        = UIDevice.current.systemName
     #endif
