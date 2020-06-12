@@ -152,7 +152,7 @@ public class W3wGeocoder {
 
     self.performRequest(path: "/grid-section", params: params) { (result, error) in
       if let lines = result {
-        completion(W3wLines(result: lines).lines, error)
+        completion(W3wLines(result: lines, format: format).lines, error)
       } else {
         completion(nil, error)
       }
@@ -465,22 +465,50 @@ public struct W3wLine {
   }
 
 public struct W3wLines {
-  var lines:[W3wLine] = []
-
-  init(result:[String: Any]?) {
-    if let r = result {
-      if let lineArray = r["lines"] as? Array<Any?>? {
-        for startEnd in lineArray! {
-          if let sa = startEnd as? Dictionary<String, Any?> {
-            if let start = sa["start"] as? Dictionary<String, Any?>, let end = sa["end"] as? Dictionary<String, Any?> {
-              let line = W3wLine(start: CLLocationCoordinate2D(latitude: start["lat"] as! CLLocationDegrees, longitude: start["lng"] as! CLLocationDegrees), end: CLLocationCoordinate2D(latitude: end["lat"] as! CLLocationDegrees, longitude: end["lng"] as! CLLocationDegrees))
-              lines.append(line)
+    var lines:[W3wLine] = []
+    
+    init(result:[String: Any]?, format: Format) {
+        guard let r = result else { return }
+        
+        switch format {
+        case .json:
+            guard let lineArray = r["lines"] as? Array<Any?> else { return }
+            
+            for startEnd in lineArray {
+                guard
+                    let sa = startEnd as? Dictionary<String, Any?>,
+                    let start = sa["start"] as? Dictionary<String, Any?>,
+                    let end = sa["end"] as? Dictionary<String, Any?>
+                else { continue }
+                
+                let line = W3wLine(start: CLLocationCoordinate2D(latitude: start["lat"] as! CLLocationDegrees, longitude: start["lng"] as! CLLocationDegrees), end: CLLocationCoordinate2D(latitude: end["lat"] as! CLLocationDegrees, longitude: end["lng"] as! CLLocationDegrees))
+                lines.append(line)
             }
-          }
+        case .geojson:
+            guard
+                let features = r["features"] as? Array<Dictionary<String, Any?>?>,
+                let feature = features[0],
+                let geometry = feature["geometry"] as? Dictionary<String, Any?>,
+                let coordinates = geometry["coordinates"] as? Array<Array<Any>?>
+            else { return }
+            
+            for coord in coordinates {
+                guard
+                    let coord = coord,
+                    let start = coord[0] as? Array<CLLocationDegrees>,
+                    let end = coord[1] as? Array<CLLocationDegrees>,
+                    start.count == 2,
+                    end.count == 2
+                else { continue }
+                
+                let line = W3wLine(
+                    start: CLLocationCoordinate2D(latitude: start[1], longitude: start[0]),
+                    end: CLLocationCoordinate2D(latitude: end[1], longitude: end[0])
+                    )
+                lines.append(line)
+            }
         }
-      }
     }
-  }
 }
 
 
