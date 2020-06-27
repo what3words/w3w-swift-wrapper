@@ -230,7 +230,7 @@ class SwiftWrapperTests: XCTestCase {
     W3wGeocoder.shared.autosuggest(input: "bisect.nourishment.genuineness", options: PreferLand(land: false), Focus(focus: CLLocationCoordinate2D(latitude: 50.842404, longitude: 4.361177))) { (suggestions, error) in
     
       XCTAssertEqual(suggestions?.count, 3)
-      if (suggestions!.count > 2) {
+      if ((suggestions?.count ?? 0) > 2) {
         XCTAssertEqual(suggestions?[2].country, "ZZ")
         }
       XCTAssertNil(error)
@@ -363,6 +363,7 @@ class SwiftWrapperTests: XCTestCase {
     let expectation = self.expectation(description: "Invalida 3wa")
     W3wGeocoder.shared.convertToCoordinates(words: "index.raft") { (place, error) in
 
+      XCTAssertNotEqual(error?.code, "BadData")
       XCTAssertNil(place?.words)
       XCTAssertNotNil(error)
       XCTAssertNil(place)

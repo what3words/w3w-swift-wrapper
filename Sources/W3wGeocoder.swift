@@ -37,8 +37,9 @@ public class W3wGeocoder {
   private static var instance: W3wGeocoder?
   private var apiKey: String!
   
-  private init(apiKey: String) {
+  private init(apiKey: String, apiUrl: String) {
     self.apiKey = apiKey
+    W3wGeocoder.kApiUrl = apiUrl
   }
   
   private var version_header = "what3words-Swift/x.x.x (Swift x.x.x; iOS x.x.x)"
@@ -62,7 +63,17 @@ public class W3wGeocoder {
    - parameter apiKey: What3Words api key
    */
   public static func setup(with apiKey: String) {
-    self.instance = W3wGeocoder(apiKey: apiKey)
+    self.instance = W3wGeocoder(apiKey: apiKey, apiUrl: kApiUrl)
+    self.instance?.figureOutVersions()
+  }
+  
+  /**
+   You'll need to register for a what3words API key to access the API.
+   Setup W3wGeocoder with your own apiKey.
+   - parameter apiKey: What3Words api key
+   */
+  public static func setup(with apiKey: String, apiUrl: String) {
+    self.instance = W3wGeocoder(apiKey: apiKey, apiUrl: apiUrl)
     self.instance?.figureOutVersions()
   }
   
