@@ -42,7 +42,7 @@ W3wGeocoder.shared.autosuggest(input: "freshen.overlook.clo", options: france, p
 
       // on success print the result
       } else if let p = place {
-        print("The coordinates for \(p.words) are (\(p.coordinates.latitude),\(p.coordinates.latitude))")
+        print("The coordinates for \(p.words) are (\(p.coordinates.latitude),\(p.coordinates.longitude))")
       }
     }
 
