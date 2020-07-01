@@ -79,6 +79,12 @@ Note: If you skipped the framework and manually dragged and dropped the W3wGeoco
 ```swift
 W3wGeocoder.setup(with: "<Secret API Key>")
 ```
+If you run our Enterprise Suite API Server yourself, you may specifty the URL to your own server like so:
+
+```swift
+W3wGeocoder.setup(with: "<Secret API Key>", apiUrl: "https://api.yourserver.com")
+```
+
 ### Usage
 
 Calls to the API are done through a shared singleton. Also, each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used.  The return values are helper objects containing the relevant values.  If there was a problem with any call, it will be indicated by the error object.  See example below.
