@@ -37,16 +37,19 @@ public class W3wGeocoder {
   private static var instance: W3wGeocoder?
   private var apiKey: String!
   
+  let api_version    = "3.5.0"
+  private var version_header = "what3words-Swift/x.x.x (Swift x.x.x; iOS x.x.x)"
+  private var bundle_header  = ""
+  private var customHeaders  = [String:String]()
+
+  private init() {
+  }
+  
   private init(apiKey: String, apiUrl: String) {
     self.apiKey = apiKey
     W3wGeocoder.kApiUrl = apiUrl
+    self.figureOutVersions()
   }
-  
-  private var version_header = "what3words-Swift/x.x.x (Swift x.x.x; iOS x.x.x)"
-  private var bundle_header  = ""
-  
-  private init() {
-    }
   
   public static var shared: W3wGeocoder {
     get {
@@ -64,18 +67,52 @@ public class W3wGeocoder {
    */
   public static func setup(with apiKey: String) {
     self.instance = W3wGeocoder(apiKey: apiKey, apiUrl: kApiUrl)
-    self.instance?.figureOutVersions()
   }
   
   /**
-   You'll need to register for a what3words API key to access the API.
-   Setup W3wGeocoder with your own apiKey.
+   This function is intended for use by our enterprise customers who
+   run a private version of our API server.  Most people will use setup(with: apiKey)
    - parameter apiKey: What3Words api key
+   - parameter apiUrl: Url for custom server - for enterprise customers
    */
   public static func setup(with apiKey: String, apiUrl: String) {
     self.instance = W3wGeocoder(apiKey: apiKey, apiUrl: apiUrl)
-    self.instance?.figureOutVersions()
   }
+  
+  
+  /**
+   This function is intended for use by our enterprise customers who
+   run a private version of our API server.  Most people will use setup(with: apiKey)
+   this version also allows for custom HTTP headers to be specified.  These
+   headers will be passed on every subsequent API call
+   - parameter apiKey: What3Words api key
+   - parameter apiUrl: Url for custom server - for enterprise customers
+   - parameter customHeaders: additional HTTP headers to send on requests - for enterprise customers
+   */
+  public static func setup(with apiKey: String, apiUrl: String, customHeaders: [String: String]) {
+    self.instance = W3wGeocoder(apiKey: apiKey, apiUrl: apiUrl)
+    self.instance?.set(customHeaders: customHeaders)
+  }
+  
+  
+  /**
+   This function is intended for use by our enterprise customers who
+   run a private version of our API server.  Most people will noy use this
+   Set a custom header to be sent on the next and all subsequent API calls
+   - parameter customHeaders: additional HTTP headers to send on requests - for enterprise customers
+   */
+  public func set(customHeaders: [String: String]) {
+    self.customHeaders = customHeaders
+  }
+  
+  
+  /**
+   Clears all previously set custom headers - for enterprise customers
+   */
+  public func clearCustomHeaders() {
+    customHeaders = [:]
+  }
+  
   
   /**
    Converts a 3 word address to a position, expressed as coordinates of latitude and longitude.
@@ -222,7 +259,12 @@ public class W3wGeocoder {
 
     request.setValue(version_header, forHTTPHeaderField: "X-W3W-Wrapper")
     request.setValue(bundle_header, forHTTPHeaderField: "X-Ios-Bundle-Identifier")
-  
+    
+    // add custom headers if any
+    for (name, value) in customHeaders {
+      request.setValue(value, forHTTPHeaderField: name)
+    }
+
     let task = URLSession.shared.dataTask(with: request) { (data, _, error) in
       guard let data = data else {
         completion(nil, W3wError(code: "BadConnection", message: error?.localizedDescription ?? "Unknown Cause"))
@@ -266,7 +308,7 @@ public class W3wGeocoder {
     #endif
     let os_version     = ProcessInfo().operatingSystemVersion
     var swift_version  = "x.x"
-    var api_version    = "x.x.x"
+    //var api_version    = "x.x.x"
 
     #if swift(>=7)
       swift_version = "7.x"
@@ -284,9 +326,9 @@ public class W3wGeocoder {
       swift_version = "1.x"
     #endif
     
-    if let shortVersion = Bundle(for: W3wGeocoder.self).infoDictionary?["CFBundleShortVersionString"] as? String {
-      api_version = shortVersion
-    }
+//    if let shortVersion = Bundle(for: W3wGeocoder.self).infoDictionary?["CFBundleShortVersionString"] as? String {
+//      api_version = shortVersion
+//    }
 
     version_header  = "what3words-Swift/" + api_version + " (Swift " + swift_version + "; " + os_name + " "  + String(os_version.majorVersion) + "."  + String(os_version.minorVersion) + "."  + String(os_version.patchVersion) + ")"
     bundle_header   = Bundle.main.bundleIdentifier ?? ""

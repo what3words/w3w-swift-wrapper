@@ -13,11 +13,27 @@ import CoreLocation
 
 class SwiftWrapperTests: XCTestCase {
   
+  var headers = [String:String]()
   
-  override class func setUp() {
+  // run all tests twice, once with no custom headers and one with
+  override func invokeTest() {
+    
+    // run without headers
+    super.invokeTest()
+    
+    headers["x-test-1"] = "test-one"
+    headers["x-test-2"] = "test-two"
+
+    // run with headers
+    super.invokeTest()
+  }
+  
+  
+  override func setUp() {
     super.setUp()
 
-  W3wGeocoder.setup(with: "<Secret API Key>")
+    W3wGeocoder.setup(with: "<Secret API Key>")
+    W3wGeocoder.shared.set(customHeaders: headers)
   }
   
   
@@ -375,5 +391,23 @@ class SwiftWrapperTests: XCTestCase {
 
 
 
+  /// this makes sure the hardcoded version number matches it's counterpart in the info.plist file
+  /// at the time of this writing, we couldn't find a way to extract the plist version number in both
+  /// Cocoapod and Swift Package Manager installations, so opted for a hard coded redundant
+  /// version number.  If anyone has ideas, let us know
+  func testVersionNumber() {
+    
+    var plist_api_version = ""
+    
+    if let shortVersion = Bundle(for: W3wGeocoder.self).infoDictionary?["CFBundleShortVersionString"] as? String {
+      plist_api_version = shortVersion
+    }
+    
+    let hard_coded_api_version = W3wGeocoder.shared.api_version
+    
+    XCTAssertEqual(plist_api_version, hard_coded_api_version)
+  }
+  
+  
   
 }
