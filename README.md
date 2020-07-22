@@ -76,13 +76,21 @@ Note: If you skipped the framework and manually dragged and dropped the W3wGeoco
 
 ### Initialise
 
+Use the following code with your API key to initialize the API:
+
 ```swift
 W3wGeocoder.setup(with: "<Secret API Key>")
 ```
-If you run our Enterprise Suite API Server yourself, you may specifty the URL to your own server like so:
+In the case that you run our Enterprise Suite API Server yourself, you may specifty the URL to your own server like so:
 
 ```swift
 W3wGeocoder.setup(with: "<Secret API Key>", apiUrl: "https://api.yourserver.com")
+```
+
+Additinally, if you run the Enterprise Suite API Server there is another optional `setup()` parameter: `customHeaders`.  Use this if you need to send custom headers to your own server:
+
+```swift
+W3wGeocoder.setup(with: "<Secret API Key>", apiUrl: "https://api.yourserver.com", customHeaders: ["x-header-1":"value-1", "x-header-2":"value-2"])
 ```
 
 ### Usage
