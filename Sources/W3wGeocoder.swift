@@ -31,23 +31,30 @@ public typealias W3wResponseLanguages       = ((_ result: [W3wLanguage]?, _ erro
 
 
 public class W3wGeocoder {
-  
+
   private static var kApiUrl = "https://api.what3words.com/v3"
-  
+
   private static var instance: W3wGeocoder?
   private var apiKey: String!
-  
+  private var requestHeaders: [String: String] = [:]
+
   private init(apiKey: String, apiUrl: String) {
     self.apiKey = apiKey
     W3wGeocoder.kApiUrl = apiUrl
   }
-  
+
+  private init(apiKey: String, apiUrl: String, requestHeaders: [String: String]) {
+    self.apiKey = apiKey
+    W3wGeocoder.kApiUrl = apiUrl
+    self.requestHeaders = requestHeaders
+  }
+
   private var version_header = "what3words-Swift/x.x.x (Swift x.x.x; iOS x.x.x)"
   private var bundle_header  = ""
-  
+
   private init() {
     }
-  
+
   public static var shared: W3wGeocoder {
     get {
       guard let instance = W3wGeocoder.instance else {
@@ -56,7 +63,7 @@ public class W3wGeocoder {
       return instance
     }
   }
-  
+
   /**
    You'll need to register for a what3words API key to access the API.
    Setup W3wGeocoder with your own apiKey.
@@ -66,7 +73,7 @@ public class W3wGeocoder {
     self.instance = W3wGeocoder(apiKey: apiKey, apiUrl: kApiUrl)
     self.instance?.figureOutVersions()
   }
-  
+
   /**
    You'll need to register for a what3words API key to access the API.
    Setup W3wGeocoder with your own apiKey.
@@ -76,7 +83,18 @@ public class W3wGeocoder {
     self.instance = W3wGeocoder(apiKey: apiKey, apiUrl: apiUrl)
     self.instance?.figureOutVersions()
   }
-  
+
+  /**
+   Setup W3wGeocoder with your own apiKey and private server url.
+   - parameter apiKey: What3Words api key
+   - parameter apiUrl: Private server url
+   - parameter requestHeaders: Request headers
+  */
+  public static func setup(with apiKey: String, apiUrl: String, requestHeaders: [String: String]) {
+    self.instance = W3wGeocoder(apiKey: apiKey, apiUrl: apiUrl, requestHeaders: requestHeaders)
+    self.instance?.figureOutVersions()
+  }
+
   /**
    Converts a 3 word address to a position, expressed as coordinates of latitude and longitude.
    - parameter words: A 3 word address as a string
@@ -93,7 +111,7 @@ public class W3wGeocoder {
       }
     }
   }
-  
+
   /**
    Returns a three word address from a latitude and longitude
    - parameter coordinates: A CLLocationCoordinate2D object
@@ -111,13 +129,13 @@ public class W3wGeocoder {
       }
     }
   }
-  
+
   /**
    Returns a list of 3 word addresses based on user input and other parameters.
    - parameter input: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
    - options are provided by instantiating AutoSuggestOption objects in the varidic length parameter list.  Eg:
         -  autosuggest(input: "filled.count.soap", options: FallbackLanguage("en"), BoundingCircle(51.4243877, -0.3474524, 4.0), NumberResults(5), completion_handler)
-   
+
    - option NumberResults(numberOfResults:String): The number of AutoSuggest results to return. A maximum of 100 results can be specified, if a number greater than this is requested, this will be truncated to the maximum. The default is 3
    - option Focus(focus:CLLocationCoordinate2D): This is a location, specified as a latitude (often where the user making the query is). If specified, the results will be weighted to give preference to those near the focus. For convenience, longitude is allowed to wrap around the 180 line, so 361 is equivalent to 1.
    - option NumberFocusResults(numberFocusResults:Int): Specifies the number of results (must be <= n-results) within the results set which will have a focus. Defaults to n-results. This allows you to run autosuggest with a mix of focussed and unfocussed results, to give you a "blend" of the two. This is exactly what the old V2 standarblend did, and standardblend behaviour can easily be replicated by passing n-focus-results=1, which will return just one focussed result and the rest unfocussed.
@@ -130,7 +148,7 @@ public class W3wGeocoder {
    */
   public func autosuggest(input: String, options: [AutoSuggestOption], completion: @escaping W3wResponseSuggestions) {
     var params: [String: String] = ["input": input]
-    
+
     for option in options {
       params[option.key()] = option.value()
     }
@@ -151,10 +169,10 @@ public class W3wGeocoder {
   public func autosuggest(input: String, options: AutoSuggestOption..., completion: @escaping W3wResponseSuggestions) {
     autosuggest(input: input, options: options, completion: completion)
     }
-  
-  
 
- 
+
+
+
   /**
    Returns a section of the 3m x 3m what3words grid for a given area.
    - parameter bounding-box: Bounding box, as a lat,lng,lat,lng, for which the grid should be returned. The requested box must not exceed 4km from corner to corner, or a BadBoundingBoxTooBig error will be returned. Latitudes must be >= -90 and <= 90, but longitudes are allowed to wrap around 180. To specify a bounding-box that crosses the anti-meridian, use longitude greater than 180. Example value: "50.0,179.995,50.01,180.0005" .
@@ -200,9 +218,9 @@ public class W3wGeocoder {
   }
 
   // MARK: API Request
-  
+
   private func performRequest(path: String, params: [String: String], completion: @escaping W3wGeocodeResponseHandler) {
-    
+
     var urlComponents = URLComponents(string: W3wGeocoder.kApiUrl + path)!
 
     var queryItems: [URLQueryItem] = [URLQueryItem(name: "key", value: apiKey)]
@@ -212,25 +230,31 @@ public class W3wGeocoder {
       queryItems.append(item)
     }
     urlComponents.queryItems = queryItems
-    
+
     guard let url = urlComponents.url else {
       assertionFailure("Invalid url: \(urlComponents)")
       return
     }
-    
+
     var request = URLRequest(url: url)
 
     request.setValue(version_header, forHTTPHeaderField: "X-W3W-Wrapper")
     request.setValue(bundle_header, forHTTPHeaderField: "X-Ios-Bundle-Identifier")
-  
+
+    if !requestHeaders.isEmpty {
+      for (key, value) in requestHeaders {
+        request.setValue(value, forHTTPHeaderField: key)
+      }
+    }
+
     let task = URLSession.shared.dataTask(with: request) { (data, _, error) in
       guard let data = data else {
         completion(nil, W3wError(code: "BadConnection", message: error?.localizedDescription ?? "Unknown Cause"))
         return
       }
-      
+
       var jsonData:[String: Any]?
-      
+
       do {
         jsonData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
       }
@@ -248,7 +272,7 @@ public class W3wGeocoder {
         completion(nil, W3wError(code: code, message: message))
         return
       }
-      
+
       completion(json, nil)
     }
     task.resume()
@@ -283,7 +307,7 @@ public class W3wGeocoder {
     #else
       swift_version = "1.x"
     #endif
-    
+
     if let shortVersion = Bundle(for: W3wGeocoder.self).infoDictionary?["CFBundleShortVersionString"] as? String {
       api_version = shortVersion
     }
@@ -400,7 +424,7 @@ public class BoundingBox : AutoSuggestOption {
     k = "clip-to-bounding-box"
     v = "\(south_lat),\(west_lng),\(north_lat),\(east_lng)"
     }
-  
+
   /// Restrict autosuggest results to a bounding box, specified by coordinates. Where south_lat <= north_lat and west_lng <= east_lng
   public init(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D) {
     super.init()
@@ -460,12 +484,12 @@ public struct W3wPlace {
       if let ne = square?["northeast"] as? Dictionary<String, Any?>? {
         northEast = CLLocationCoordinate2D(latitude: ne!["lat"] as! CLLocationDegrees, longitude: ne!["lng"] as! CLLocationDegrees)
         }
-      
+
       if let sw = square?["southwest"] as? Dictionary<String, Any?>? {
         southWest = CLLocationCoordinate2D(latitude: sw!["lat"] as! CLLocationDegrees, longitude: sw!["lng"] as! CLLocationDegrees)
         }
       }
-    
+
     if let coord = result?["coordinates"] as? Dictionary<String, Any?>? {
       if let c = coord {
         coordinates = CLLocationCoordinate2D(latitude: c["lat"] as! CLLocationDegrees, longitude: c["lng"] as! CLLocationDegrees)
@@ -509,7 +533,7 @@ public struct W3wLanguage {
 
 public struct W3wLanguages {
   var languages:[W3wLanguage] = []
-  
+
   init(result:[String: Any]?) {
     if let l = result {
       if let list = l["languages"] as? Array<Any?>? {
