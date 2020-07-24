@@ -87,7 +87,7 @@ In the case that you run our Enterprise Suite API Server yourself, you may speci
 W3wGeocoder.setup(with: "<Secret API Key>", apiUrl: "https://api.yourserver.com")
 ```
 
-Additinally, if you run the Enterprise Suite API Server there is another optional `setup()` parameter: `customHeaders`.  Use this if you need to send custom headers to your own server:
+Additionally, if you run the Enterprise Suite API Server there is another optional `setup()` parameter: `customHeaders`.  Use this if you need to send custom headers to your own server:
 
 ```swift
 W3wGeocoder.setup(with: "<Secret API Key>", apiUrl: "https://api.yourserver.com", customHeaders: ["x-header-1":"value-1", "x-header-2":"value-2"])
