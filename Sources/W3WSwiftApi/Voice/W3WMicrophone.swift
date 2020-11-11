@@ -16,6 +16,22 @@ public enum W3VoiceListeningState {
 }
 
 
+
+public enum W3WMicrophoneError : Error, CustomStringConvertible {
+  case noInputAvailable
+  case audioSystemFailedToStart
+  
+  public var description : String {
+    switch self {
+    case .noInputAvailable:         return "No audio inputs available"
+    case .audioSystemFailedToStart: return "The audio system failed to start"
+    }
+  }
+  
+}
+
+
+
 /// Manages the device microphone
 @available(watchOS 4.0, *)
 
@@ -31,7 +47,6 @@ public class W3WMicrophone: W3WAudioStream {
 
   /// callback for when the voice recognition stopped
   public var listeningUpdate: ((W3VoiceListeningState) -> ()) = { _ in }
-  //public var listeningUpdate = W3WMicrophoneEvents()
 
   
   /// CoreAudio interface
@@ -106,25 +121,44 @@ public class W3WMicrophone: W3WAudioStream {
   }
 
   
+  public func isInputAvailable() -> Bool {
+    if mic.inputFormat(forBus: 0).sampleRate != 0 {
+      return true
+    } else {
+      return false
+    }
+  }
+  
   // MARK: start() stop()
   
   /// start the mic recording
   public func start() {
-    
-    let micFormat = mic.inputFormat(forBus: 0)
-    if (audioIsTapped == false) {
-      audioIsTapped = true
-      mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) in
-        self.micReturnedSamples(buffer: buffer, time: time)
-      }
+
+    // make sure this hardware can record and mic is available
+    if !isInputAvailable() || !isMicrophoneAvailable() {
+      update(error: W3WVoiceError.microphoneError(error: W3WMicrophoneError.noInputAvailable))
+      
+    // all good to go, so tap the mic
     } else {
-      print("Warning: microphone was started twice")
+      let micFormat = mic.inputFormat(forBus: 0)
+      
+      if (audioIsTapped == false) {
+        audioIsTapped = true
+        mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) in
+          self.micReturnedSamples(buffer: buffer, time: time)
+        }
+      } else {
+        print("Warning: microphone was started twice")
+      }
+      
+      // start the actual recording
+      do {
+        try audioEngine.start()
+      } catch {
+        update(error: W3WVoiceError.microphoneError(error: W3WMicrophoneError.audioSystemFailedToStart))
+      }
     }
     
-    do {
-      try audioEngine.start()
-    } catch {
-    }
   }
   
   
@@ -182,7 +216,6 @@ public class W3WMicrophone: W3WAudioStream {
     }
 
     listeningUpdate(.stopped)
-    //listeningUpdate.execute(.stopped)
   }
   
   
@@ -219,7 +252,7 @@ public class W3WMicrophone: W3WAudioStream {
   
 
   // override errors so we can stop the mic if nessesary
-  override func update(error: W3WVoiceApiError) {
+  override func update(error: W3WVoiceSocketError) {
     stop()
     super.update(error: error)
   }

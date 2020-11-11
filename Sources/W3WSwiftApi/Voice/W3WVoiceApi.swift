@@ -51,7 +51,7 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
     let filteredOptions = replaceOrAddVoiceLanguageIn(options: options, langauge: language)
     
     if let microphone = audio as? W3WMicrophone {
-      microphone.start()
+      try? microphone.start()
     }
 
     audio.configure(apiKey: self.apiKey, callback: callback) //, completion: completion)

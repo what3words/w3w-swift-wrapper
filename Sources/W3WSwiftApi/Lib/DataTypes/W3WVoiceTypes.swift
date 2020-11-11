@@ -16,12 +16,14 @@ public typealias W3WVoiceSuggestionsResponse     = ((_ result: [W3WVoiceSuggesti
 
 public enum W3WVoiceError : Error, CustomStringConvertible {
   case noLanguageSpecified
-  case voiceApiError(error: W3WVoiceApiError)
+  case voiceSocketError(error: W3WVoiceSocketError)
+  case microphoneError(error: W3WMicrophoneError)
   
   public var description : String {
     switch self {
-      case .noLanguageSpecified:      return "No language was specified"
-      case .voiceApiError(let error): return String(describing: error)
+      case .noLanguageSpecified:        return "No language was specified"
+      case .voiceSocketError(let error):   return String(describing: error)
+      case .microphoneError(let error): return String(describing: error)
     }
   }
   

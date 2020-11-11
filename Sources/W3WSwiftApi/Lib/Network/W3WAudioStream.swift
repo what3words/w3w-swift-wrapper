@@ -67,8 +67,13 @@ public class W3WAudioStream {
   }
 
   
-  func update(error: W3WVoiceApiError) {
-    callback?(nil, W3WVoiceError.voiceApiError(error: error))
+  func update(error: W3WVoiceSocketError) {
+    callback?(nil, W3WVoiceError.voiceSocketError(error: error))
+  }
+
+  
+  func update(error: W3WVoiceError) {
+    callback?(nil, error)
   }
 
 

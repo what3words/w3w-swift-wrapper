@@ -12,7 +12,7 @@ import CoreLocation
 
 
 
-public enum W3WVoiceApiError : Error, CustomStringConvertible {
+public enum W3WVoiceSocketError : Error, CustomStringConvertible {
   case socketAlreadyOpen
   case socketCreationError
   case invalidApiKey
@@ -73,7 +73,7 @@ public class W3WVoiceSocket {
   //public var closed: (W3WCloseCondition) -> () = { _ in }
   
   /// a callback block for when an error happens
-  public var error: (W3WVoiceApiError) -> () = { _ in }
+  public var error: (W3WVoiceSocketError) -> () = { _ in }
   
   
   // MARK: Initialization
@@ -96,7 +96,7 @@ public class W3WVoiceSocket {
   public func open(sampleRate:Int, encoding:W3WEncoding = .pcm_f32le, options: [W3WOption]) {
     // don't allow socket to be opened if it is already in use
     if socket != nil {
-      error(W3WVoiceApiError.socketAlreadyOpen)
+      error(W3WVoiceSocketError.socketAlreadyOpen)
       
       // we are good to go
     } else {
@@ -126,7 +126,7 @@ public class W3WVoiceSocket {
         
         // socket failed
       } else {
-        self.error(W3WVoiceApiError.socketCreationError)
+        self.error(W3WVoiceSocketError.socketCreationError)
       }
     }
   }
@@ -140,22 +140,22 @@ public class W3WVoiceSocket {
           if let reasonCode = jsonData["code"] as? String {
             switch reasonCode {
             case "InvalidKey":
-              self.error(W3WVoiceApiError.invalidApiKey)
+              self.error(W3WVoiceSocketError.invalidApiKey)
             default:
               print("unknown error code")
             }
           }
         } else {
           switch code {
-            case 1003: self.error(W3WVoiceApiError.notFound404)
-            case 1002: self.error(W3WVoiceApiError.socketError(error: .protocolError(error?.localizedDescription ?? "protocol error")))
-            case 1007: self.error(W3WVoiceApiError.socketError(error: .payloadError(error?.localizedDescription ?? "payload error")))
-            case 1006: self.error(W3WVoiceApiError.socketError(error: .network(error?.localizedDescription ?? "abnormal closure")))
+            case 1003: self.error(W3WVoiceSocketError.notFound404)
+            case 1002: self.error(W3WVoiceSocketError.socketError(error: .protocolError(error?.localizedDescription ?? "protocol error")))
+            case 1007: self.error(W3WVoiceSocketError.socketError(error: .payloadError(error?.localizedDescription ?? "payload error")))
+            case 1006: self.error(W3WVoiceSocketError.socketError(error: .network(error?.localizedDescription ?? "abnormal closure")))
             default:
               if let e = error {
-                self.error(W3WVoiceApiError.other(error: e))
+                self.error(W3WVoiceSocketError.other(error: e))
               } else {
-                self.error(W3WVoiceApiError.unknown)
+                self.error(W3WVoiceSocketError.unknown)
               }
           }
         }
@@ -164,7 +164,7 @@ public class W3WVoiceSocket {
   }
   
   func errored(_ error: W3WWebSocketError) {
-    self.error(W3WVoiceApiError.socketError(error: error))
+    self.error(W3WVoiceSocketError.socketError(error: error))
   }
     
   
@@ -188,7 +188,7 @@ public class W3WVoiceSocket {
       
     // if the socket isn't there
     else {
-      self.error(W3WVoiceApiError.attemptToSendOnCLosedSocket)
+      self.error(W3WVoiceSocketError.attemptToSendOnCLosedSocket)
     }
   }
   
@@ -205,10 +205,10 @@ public class W3WVoiceSocket {
       self.recieved(text: message as! String)  // inform the caller that a message came in.
       
     case is Data:
-      error(W3WVoiceApiError.serverReturnedUnexpectedData)
+      error(W3WVoiceSocketError.serverReturnedUnexpectedData)
       
     default:
-      error(W3WVoiceApiError.serverReturnedUnexpectedType)
+      error(W3WVoiceSocketError.serverReturnedUnexpectedType)
     }
   }
   
@@ -249,7 +249,7 @@ public class W3WVoiceSocket {
   public var closed: (String) -> () = { _ in }
   
   /// a callback block for when an error happens
-  public var error: (W3WVoiceApiError) -> () = { _ in }
+  public var error: (W3WVoiceSocketError) -> () = { _ in }
 
   /// init with the API key for the voice service
   public init(apiKey: String) {
@@ -257,7 +257,7 @@ public class W3WVoiceSocket {
   }
   
   public func open(sampleRate:Int, encoding:W3WEncoding = .pcm_f32le, options: [W3WOption]) {
-    error(W3WVoiceApiError.socketCreationError)
+    error(W3WVoiceSocketError.socketCreationError)
   }
   
   /// send a block of 32 bit floating point audio sample data
