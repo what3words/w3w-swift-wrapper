@@ -49,12 +49,16 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
   private func common(audio: W3WAudioStream, language: String, options: [W3WOption], callback: @escaping W3WVoiceSuggestionsResponse) {
  
     let filteredOptions = replaceOrAddVoiceLanguageIn(options: options, langauge: language)
-    
+
+    // connects the callback and intializes the VoiceApi
+    audio.configure(apiKey: self.apiKey, callback: callback) //, completion: completion)
+
+    // if we were given a microphone, then turn it on
     if let microphone = audio as? W3WMicrophone {
-      try? microphone.start()
+      microphone.start()
     }
 
-    audio.configure(apiKey: self.apiKey, callback: callback) //, completion: completion)
+    // open the ocnnection to the server
     audio.open(sampleRate: audio.sampleRate, encoding: audio.encoding, options: filteredOptions)
   }
   
