@@ -276,7 +276,7 @@
 				CODE_SIGN_ENTITLEMENTS = AutoSuggest/AutoSuggest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AutoSuggest/Preview Content\"";
-				DEVELOPMENT_TEAM = YC9564MTQY;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = AutoSuggest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -300,7 +300,7 @@
 				CODE_SIGN_ENTITLEMENTS = AutoSuggest/AutoSuggest.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AutoSuggest/Preview Content\"";
-				DEVELOPMENT_TEAM = YC9564MTQY;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = AutoSuggest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
