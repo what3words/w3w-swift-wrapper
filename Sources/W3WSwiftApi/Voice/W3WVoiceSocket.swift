@@ -147,13 +147,17 @@ public class W3WVoiceSocket {
           }
         } else {
           switch code {
-            case 1003: self.error(W3WVoiceSocketError.notFound404)
-            case 1002: self.error(W3WVoiceSocketError.socketError(error: .protocolError(error?.localizedDescription ?? "protocol error")))
-            case 1007: self.error(W3WVoiceSocketError.socketError(error: .payloadError(error?.localizedDescription ?? "payload error")))
-            case 1006: self.error(W3WVoiceSocketError.socketError(error: .network(error?.localizedDescription ?? "abnormal closure")))
+            case 1001: self.error(W3WVoiceSocketError.socketError(error: .protocolError("Going Away")))
+            case 1002: self.error(W3WVoiceSocketError.socketError(error: .protocolError("Protocol Error")))
+            case 1003: self.error(W3WVoiceSocketError.socketError(error: .protocolError("Protocol Error: Unhandled Type")))
+            case 1005: self.error(W3WVoiceSocketError.socketError(error: .protocolError("No Status received")))
+            case 1006: self.error(W3WVoiceSocketError.socketError(error: .network(error?.localizedDescription ?? "Abnormal Socket Closure")))
+            case 1007: self.error(W3WVoiceSocketError.socketError(error: .payloadError(error?.localizedDescription ?? "Encoding Error")))
+            case 1008: self.error(W3WVoiceSocketError.socketError(error: .protocolError("Policy violation")))
+            case 1009: self.error(W3WVoiceSocketError.socketError(error: .payloadError("Message Too Big")))
             default:
               if let e = error {
-                self.error(W3WVoiceSocketError.other(error: e))
+                self.error(W3WVoiceSocketError.socketError(error: .protocolError(e.localizedDescription)))
               } else {
                 self.error(W3WVoiceSocketError.unknown)
               }
