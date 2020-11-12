@@ -215,6 +215,9 @@ public class W3WMicrophone: W3WAudioStream {
       print("Warning: microphone was stopped twice")
     }
 
+    endSamples()
+    close()
+    
     listeningUpdate(.stopped)
   }
   
