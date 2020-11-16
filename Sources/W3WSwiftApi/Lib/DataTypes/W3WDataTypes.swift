@@ -146,7 +146,7 @@ public protocol W3WRanked {
 
 
 // MARK: Suggestions
-
+ 
 
 // common denominated suggestion structure
 public protocol W3WSuggestion {
@@ -466,6 +466,18 @@ extension W3WProtocolV3 {
 
 // MARK: Initializers
 
+
+extension W3WApiSuggestion {
+
+  public init(words: String? = nil, country : String? = nil, nearestPlace : String? = nil, distanceToFocus : Double? = nil, language : String? = nil) {
+    self.words = words
+    self.country = country
+    self.nearestPlace = nearestPlace
+    self.distanceToFocus = distanceToFocus
+    self.language = language
+  }
+
+}
 
 
 extension W3WVoiceSuggestion: Codable {
