@@ -157,11 +157,11 @@ api.autosuggest(text: "flottons.annulons.garço", options: W3WOption.focus(coord
 
 
 #### Text Example Three
-Focus on (51.4243877,-0.34745) and ask for 6 suggestions.
+Focus on (51.4243877,-0.34745) and ask for suggestions from a French three word fragment:
  
 ```swift
 let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
-let options = W3WOptions().focus(coords).numberOfResults(6)
+let options = W3WOptions().focus(coords).clipToCountry("GB")
 api.autosuggest(text: "flottons.annulons.garço", options: options) { (suggestions, error) in
   print(suggestions ?? "")
 }
