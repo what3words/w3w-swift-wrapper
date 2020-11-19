@@ -45,7 +45,7 @@ let api = What3WordsV3(apiKey: "YourApiKey")
 // make a microphone
 let microphone = W3WMicrophone()
 
-// call autoSuggest
+// call autosuggest
 api.autosuggest(audio: microphone, language: "en") { suggestions, error in
   for suggestion in suggestions ?? [] {
     print(suggestion.words ?? "no suggestions")
@@ -62,16 +62,16 @@ The same options are available as in the core API calls which are laid out in th
 
 ##### Example
 
-Ask for maximum 6 results focused around particular coordinates:
+Ask for results focused around particular coordinates:
 
 ```swift
 // coords
 let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
 
 // make options
-let options = W3WOptions().numberOfResults(6).focus(coords)
+let options = W3WOptions().focus(coords)
 
-// call autoSuggest
+// call autosuggest
 api.autosuggest(audio: microphone, language: "en", options: options) { suggestions, error in
   for suggestion in suggestions ?? [] {
     print(suggestion.words ?? "no suggestions", suggestion.nearestPlace ?? "")
@@ -122,7 +122,7 @@ let api = What3WordsV3(apiKey: "YourApiKey")
 // make the audio stream
 let audio = W3WAudioStream(sampleRate: 44100, encoding: .pcm_f32le)
 
-// call autoSuggest
+// call autosuggest
 api.autosuggest(audio: audio, language: "en") { suggestions, error in
   yourSoundObject.stop()
   for suggestion in suggestions ?? [] {

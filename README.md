@@ -112,11 +112,11 @@ This method provides corrections for the following types of input error:
 * misremembered words (e.g. singular vs. plural)
 * words in the wrong order
 
-The `autoSuggest` method determines possible corrections to the supplied 3 word address string based on the probability of the input errors listed above and returns a ranked list of suggestions. This method can also take into consideration the geographic proximity of possible corrections to a given location to further improve the suggestions returned.
+The `autosuggest` method determines possible corrections to the supplied 3 word address string based on the probability of the input errors listed above and returns a ranked list of suggestions. This method can also take into consideration the geographic proximity of possible corrections to a given location to further improve the suggestions returned.
 
 * voice
 
-If you have a voiceAPI enabled account, you may also call `autoSuggest` with audio data for voice recognition.  There is a minimal example of this below, but detailed information can be found [here](README.voiceAPI.md)
+If you have a voiceAPI enabled account, you may also call `autosuggest` with audio data for voice recognition.  There is a minimal example of this below, but detailed information can be found [here](README.voiceAPI.md)
 
 ### Input 3 word address
 
@@ -128,7 +128,7 @@ We have prepared a regex, and example code to help you filter results before cal
 
 We provide various `clip` policies to allow you to specify a geographic area that is used to exclude results that are not likely to be relevant to your users. We recommend that you use the clipping to give a more targeted, shorter set of results to your user. If you know your user’s current location, we also strongly recommend that you use the `focus` to return results which are likely to be more relevant.
 
-In summary, the clip policy is used to optionally restrict the list of candidate AutoSuggest results, after which, if focus has been supplied, this will be used to rank the results in order of relevancy to the focus.
+In summary, the clip policy is used to optionally restrict the list of candidate `autosuggest` results, after which, if focus has been supplied, this will be used to rank the results in order of relevancy to the focus.
 
 The returned payload from the `autosuggest` method is described in the [what3words REST API documentation](https://developer.what3words.com/public-api/docs#autosuggest).
 
@@ -175,7 +175,7 @@ This example instantiates a `W3WMicrophone` which provides an audio stream to `a
 // make a microphone
 let microphone = W3WMicrophone()
 
-// call autoSuggest
+// call autosuggest
 api.autosuggest(audio: microphone, language: "en") { suggestions, error in
   for suggestion in suggestions ?? [] {
     print(suggestion.words ?? "no suggestions")
@@ -233,4 +233,4 @@ api.convertTo3wa(coordinates: CLLocationCoordinate2D(latitude: 51.4243877, longi
 }
 ```
 
-Api call errors are of type `W3WError` enum and the voice autosuggest call returns a `W3WVoiceError` enum.
+Api call errors are of type `W3WError` enum and the voice `autosuggest` call returns a `W3WVoiceError` enum.
