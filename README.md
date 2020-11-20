@@ -15,7 +15,7 @@ The what3words Swift API wrapper gives you programmatic access to
 
 # Authentication
 
-To use this library you’ll need a what3words API key, which can be signed up for [here](https://what3words.com/select-plan).  If you wish to use the Voice API calls then you must add a Voice API plan in your [account](https://accounts.what3words.com/billing).
+To use this library you’ll need a what3words API key, which can be signed up for [here](https://what3words.com/select-plan).  If you wish to use the Voice API calls then you must add a Voice API plan to your [account](https://accounts.what3words.com/billing).
 
 # Examples
 
@@ -66,15 +66,17 @@ Additionally, if you run the Enterprise Suite API Server there is another option
 let api = What3WordsV3(apiKey: "YourApiKey", apiUrl: "https://api.yourserver.com", customHeaders: ["x-header-1":"value-1", "x-header-2":"value-2"])
 ```
 
-Each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used.  The return values are helper objects containing the relevant values.  If there was a problem with any call, it will be indicated by the error object.  See examples below.
+## Functions
+
+Each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used.  The closure's parameters contain the results.  If there was a problem with any call, it will be indicated by the [error object](#errors).
 
 ### Convert To 3 Word Address
 
 Convert coordinates, expressed as latitude and longitude to a 3 word address.
 
-This function takes the latitude and longitude as a CLLocationCoordinate2D object
+This function takes the latitude and longitude as a [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/cllocationcoordinate2d) object 
 
-The returned payload from the `convertTo3wa` method is described in the [API documentation](https://docs.what3words.com/api/v3/#convert-to-3wa).
+The values returned from the `convertTo3wa` method are described in the [API documentation](https://docs.what3words.com/api/v3/#convert-to-3wa).
 
 ##### Code Example:
 
@@ -92,7 +94,7 @@ Convert a 3 word address to a position, expressed as coordinates of latitude and
 
 This function takes the words parameter as a string of 3 words `'table.book.chair'`
 
-The returned payload from the `convertToCoordinates` method is described in the [API documentation](https://docs.what3words.com/api/v3/#convert-to-coords).
+The values returned from the `convertToCoordinates` method are described in the [API documentation](https://docs.what3words.com/api/v3/#convert-to-coords).
 
 ##### Code Example:
 ```swift
@@ -116,7 +118,8 @@ The `autosuggest` method determines possible corrections to the supplied 3 word 
 
 * voice
 
-If you have a voiceAPI enabled account, you may also call `autosuggest` with audio data for voice recognition.  There is a minimal example of this below, but detailed information can be found [here](README.voiceAPI.md)
+If you have a VoiceAPI enabled account, you may also call `autosuggest` with audio data for voice recognition.  In order for this to work, you must add a Voice API plan to [your account](https://accounts.what3words.com/billing).
+  There is a minimal [example of this below](#voice-example), but detailed information can be found [here](README.voiceAPI.md)
 
 ### Input 3 word address
 
@@ -130,7 +133,7 @@ We provide various `clip` policies to allow you to specify a geographic area tha
 
 In summary, the clip policy is used to optionally restrict the list of candidate `autosuggest` results, after which, if focus has been supplied, this will be used to rank the results in order of relevancy to the focus.
 
-The returned payload from the `autosuggest` method is described in the [what3words REST API documentation](https://developer.what3words.com/public-api/docs#autosuggest).
+The values returned from the `autosuggest` method are described in the [what3words REST API documentation](https://developer.what3words.com/public-api/docs#autosuggest).
 
 ### Usage
 
@@ -168,7 +171,13 @@ api.autosuggest(text: "flottons.annulons.garço", options: options) { (suggestio
 ```
 
 
+<a name="voice-example"></a>
 #### VoiceAPI Example
+
+The what3words Voice API allows a user to say three words into any application or service, with it returning a configurable list of what3words address suggestions, all through a single API call.
+
+In order for this to work, you must add a Voice API plan to [your account](https://accounts.what3words.com/billing).
+
 This example instantiates a `W3WMicrophone` which provides an audio stream to `autosuggest(audio:)` which begins recording when `autosuggest` is called.  For information on `W3WMicrophone` and customizing your own `W3WAudioStream` for `autosuggest(audio:)` see the [VoiceAPI README](README.voiceAPI.md). 
 
 ```swift
@@ -189,7 +198,7 @@ Also, `W3WMicrophone` has a callback closure `W3WMicrophone.volumeUpdate: (Doubl
 
 This function returns the currently supported languages for text based `autosuggest(text:)` calls.  It will return the two letter code ([ISO 639](https://en.wikipedia.org/wiki/ISO_639)), and the name of the language both in that language and in English.
 
-The returned payload from the `convertTo3wa` method is described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#available-languages)
+The values returned from the `convertTo3wa` method are described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#available-languages)
 
 #### Code Example
 ```swift
@@ -206,7 +215,7 @@ For the available Voice API langauges call `api.availableVoiceLanguages(completi
 
 Returns a section of the 3m x 3m what3words grid for a given area. The requested box must not exceed 4km from corner to corner, or a BadBoundingBoxTooBig error will be returned. Latitudes must be >= -90 and <= 90, but longitudes are allowed to wrap around 180. To specify a bounding-box that crosses the anti-meridian, use longitude greater than 180. Example value: 50.0, 179.995, 50.01, 180.0005. 
 
-The returned payload from the `gridSection` function  is described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#grid-section)
+The values returned from the `gridSection` function are described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#grid-section)
 
 #### Code Example
 ```swift
@@ -218,6 +227,7 @@ api.gridSection(southWest: southWest, northEast: northEast) { (lines, error) in
 }
 ```
 
+<a name="errors"></a>
 ## Handling Errors
 
 All functions call the completion block with `error` as the second parameter.  All Swift what3words `error` types are of `enum` type and conform to [`CustomStringConvertible`](https://developer.apple.com/documentation/swift/customstringconvertible), so they can be used with `String(describing: error)`:

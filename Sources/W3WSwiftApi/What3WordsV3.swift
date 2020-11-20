@@ -41,7 +41,7 @@ public class What3WordsV3: W3WApiCall, W3WProtocolV3 {
   ///     - apiKey: Your api key.  Register for one at: https://accounts.what3words.com/create-api-key
   ///     - apiUrl: Url for custom server - for enterprise customers
   ///     - customHeaders: additional HTTP headers to send on requests - for enterprise customers
-  public init(with apiKey: String, apiUrl: String, customHeaders: [String: String]) {
+  public init(apiKey: String, apiUrl: String, customHeaders: [String: String]) {
     super.init(apiUrl: apiUrl, apiKey: apiKey, customHeaders: customHeaders)
   }
 
