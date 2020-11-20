@@ -408,7 +408,6 @@ public protocol W3WProtocolV3 {
    Returns a list of 3 word addresses based on user input and other parameters.
    - parameter input: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
    - options are provided by instantiating W3Option objects in the varidic length parameter list.  Eg:
-   -  autosuggest(input: "filled.count.soap", options: FallbackLanguage("en"), BoundingCircle(51.4243877, -0.3474524, 4.0), NumberResults(5), completion_handler)
    */
   func autosuggest(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsResponse)
   

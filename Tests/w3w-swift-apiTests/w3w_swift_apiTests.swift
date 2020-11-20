@@ -27,7 +27,7 @@ final class w3w_swift_apiTests: XCTestCase {
   override func setUp() {
     super.setUp()
     
-    api = What3WordsV3(with: "XXXXXXXX", apiUrl: W3WSettings.apiUrl, customHeaders: headers)
+    api = What3WordsV3(apiKey: "XXXXXXXX", apiUrl: W3WSettings.apiUrl, customHeaders: headers)
   }
   
   

@@ -37,7 +37,7 @@ public class W3wGeocoder {
   private static var instance: W3wGeocoder?
   private var apiKey: String!
   
-  let api_version    = "3.6.0"
+  let api_version    = "3.5.0"
   private var version_header = "what3words-Swift/x.x.x (Swift x.x.x; iOS x.x.x)"
   private var bundle_header  = ""
   private var customHeaders  = [String:String]()
