@@ -45,6 +45,7 @@ In any swift file you use the what3words API, use the following :
 
 ```swift
 import W3WSwiftApi
+import CoreLocation
 ```
 
 ### Initialise
