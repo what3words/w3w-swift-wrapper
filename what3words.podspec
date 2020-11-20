@@ -10,6 +10,6 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = "10.10"
   s.ios.deployment_target = "8.0"
   s.source   = { :git => "https://github.com/what3words/w3w-swift-wrapper.git", :branch => "v4" }
-  s.source_files = "Sources/W3WSwiftApi/*.swift"
+  s.source_files = "Sources/W3WSwiftApi/*.swift", "Sources/W3WSwiftApi/Lib/DataTypes/*.swift", "Sources/W3WSwiftApi/Lib/Network/*.swift", "Sources/W3WSwiftApi/Voice/*.swift"
   s.swift_version = '5.0'
 end
