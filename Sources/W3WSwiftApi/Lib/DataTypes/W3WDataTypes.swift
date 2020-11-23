@@ -44,6 +44,7 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
 
   // Communication Errors
   case unknownErrorCodeFromServer
+  case notFound404
   case badConnection
   case badJson
   case invalidResponse
@@ -63,7 +64,8 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
       case .missingInput:        return "More input required"
       case .missingBoundingBox:  return "Bounding Box required"
       case .missingKey:          return "The API key was missing"
-      case .invalidKey:           return "The API key is invalid"
+      case .invalidKey:          return "The API key is invalid"
+      case .notFound404:          return "URL not found, 404 error"
       case .duplicateParameter:    return "A parameter was provided twice"
       case .invalidResponse:          return "Invalid Response"
       case .unknownErrorCodeFromServer: return "Error code fromo API server is not recognized, upgrade this API?"

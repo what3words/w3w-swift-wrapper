@@ -157,10 +157,44 @@ public class W3WApiCall {
   }
 
   
+  
+  // MARK: Error code to Error enum
+  
+  
   func makeError(code: String) -> W3WError {
-    return W3WError.unknownErrorCodeFromServer
+    switch code {
+    case "BadWords":
+      return W3WError.badWords
+    case "BadCoordinates":
+      return W3WError.badCoordinates
+    case "BadLanguage":
+      return W3WError.badLanguage
+    case "BadFormat":
+      return W3WError.badFormat
+    case "BadClipToPolygon":
+      return W3WError.badClipToPolygon
+    case "BadBoundingBoxTooBig":
+      return W3WError.badBoundingBoxTooBig
+    case "MissingWords":
+      return W3WError.missingWords
+    case "MissingInput":
+      return W3WError.missingInput
+    case "MissingBoundingBox":
+      return W3WError.missingBoundingBox
+    case "DuplicateParameter":
+      return W3WError.duplicateParameter
+    case "MissingKey":
+      return W3WError.missingKey
+    case "InvalidKey":
+      return W3WError.invalidKey
+    case "NotFound":
+      return W3WError.notFound404
+    default:
+      return W3WError.unknownErrorCodeFromServer
+    }
   }
   
+
   
   // MARK: Json parsing
   
