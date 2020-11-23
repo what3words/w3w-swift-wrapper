@@ -10,9 +10,6 @@ import Foundation
 import CoreLocation
 
 
-/// closure definition for internal HTTP requests
-typealias W3WDataResponse             = ((_ result: [String: Any]?, _ error: W3WError?) -> Void)
-
 
 public class What3WordsV3: W3WApiCall, W3WProtocolV3 {
       

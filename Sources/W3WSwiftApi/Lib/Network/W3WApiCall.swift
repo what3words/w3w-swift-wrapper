@@ -16,6 +16,10 @@ import WatchKit
 #endif
 
 
+/// closure definition for internal HTTP requests
+public typealias W3WDataResponse             = ((_ result: [String: Any]?, _ error: W3WError?) -> Void)
+
+
 /// A base class for making API calls to a service
 public class W3WApiCall {
   
@@ -84,7 +88,7 @@ public class W3WApiCall {
    - parameter params: disctionary of parameters to send on querystring
    - parameter completion: The completion handler
    */
-  func performRequest(path: String, params: [String: String], completion: @escaping W3WDataResponse) {
+  public func performRequest(path: String, params: [String: String], completion: @escaping W3WDataResponse) {
     
     // prepare url components
     var urlComponents = URLComponents(string: apiUrl + path)!
