@@ -131,6 +131,11 @@ public class W3WApiCall {
         return
       }
       
+      if data.count == 0 {
+        completion(nil, nil)
+        return
+      }
+      
       var jsonData:[String: Any]?
       
       do {
