@@ -83,7 +83,7 @@ public class W3WApiCall {
    indicates if W3W servers are being employed or this is set to a custom server
    */
   public func customServersSet() -> Bool {
-    return apiUrl == W3WSettings.apiUrl
+    return apiUrl != W3WSettings.apiUrl
   }
   
   
