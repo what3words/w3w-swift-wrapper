@@ -37,6 +37,19 @@ You can install this with [Swift Package Manager](https://swift.org/package-mana
 https://github.com/what3words/w3w-swift-wrapper.git
 ```
 
+#### CocoaPods (iOS 9+, OS X 10.10+)
+
+You can use CocoaPods to install w3w-swift-wrapperby adding it to your Podfile:
+
+```
+platform :ios, '9.0'
+use_frameworks!
+
+target 'MyApp' do
+    pod 'what3words', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+end
+```
+
 ## Usage
 
 ### Import

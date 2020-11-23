@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
   s.osx.deployment_target = "10.10"
-  s.ios.deployment_target = "11.0"
+  s.ios.deployment_target = "9.0"
   s.source   = { :git => "https://github.com/what3words/w3w-swift-wrapper.git", :branch => "v4" }
   s.source_files = "Sources/**/*.swift"
   s.swift_version = '5.0'
