@@ -21,11 +21,14 @@ To use this library you’ll need a what3words API key, which can be signed up f
 
 There are three examples in this package:
 
-An iOS SwiftUI example using `autosuggest` is in this package at [./Examples/AutoSuggest/AutoSuggest.xcodeproj](./Examples/AutoSuggest/AutoSuggest.xcodeproj)
+#### iOS SwiftUI:
+An iOS SwiftUI example using `autosuggest` is in this package at [Examples/AutoSuggest/AutoSuggest.xcodeproj](./Examples/AutoSuggest/AutoSuggest.xcodeproj)
 
-A macOS terminal example demonstrating `convertToCoordinates` is at: [./Examples/ConvertToCoords/ConvertToCoords.xcodeproj](./Examples/ConvertToCoords/ConvertToCoords.xcodeproj)
+#### macOS terminal:
+A macOS terminal example demonstrating `convertToCoordinates` is at: [Examples/ConvertToCoords/ConvertToCoords.xcodeproj](./Examples/ConvertToCoords/ConvertToCoords.xcodeproj)
 
-An iOS UIKit example using the VoiceAPI is at: [./Examples/VoiceAPI/VoiceAPI.xcodeproj](./Examples/VoiceAPI/VoiceAPI.xcodeproj)
+#### iOS UIKit:
+An iOS UIKit example using the VoiceAPI is at: [Examples/VoiceAPI/VoiceAPI.xcodeproj](./Examples/VoiceAPI/VoiceAPI.xcodeproj)
 
 # Installation
 
@@ -45,11 +48,22 @@ You can use CocoaPods to install w3w-swift-wrapper by adding it to the target in
 pod 'what3words', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
 ```
 
+#### Note:
+
+Don't forget, if you are running on device you need to set the `App Transport Security Settings` in your `Info.plist` as you would any app communicating with a server:
+
+<img src="Documentation/plist.png" width="50%">
+
+Also, if you are using the Voice API on device, you should include Microphone permissions:
+
+<img src="Documentation/plist2.png" width="75%">
+
+
 ## Usage
 
 ### Import
 
-In any swift file you use the what3words API, use the following :
+In any swift file you use the what3words API, import the following:
 
 ```swift
 import W3WSwiftApi
@@ -128,7 +142,7 @@ The `autosuggest` method determines possible corrections to the supplied 3 word 
 * voice
 
 If you have a VoiceAPI enabled account, you may also call `autosuggest` with audio data for voice recognition.  In order for this to work, you must add a Voice API plan to [your account](https://accounts.what3words.com/billing).
-  There is a minimal [example of this below](#voice-example), but detailed information can be found [here](README.voiceAPI.md)
+  There is a minimal [example of this below](#voice-example), but detailed information can be found [here](Documentation/README.voiceAPI.md)
 
 ### Input 3 word address
 
@@ -187,7 +201,7 @@ The what3words Voice API allows a user to say three words into any application o
 
 In order for this to work, you must add a Voice API plan to [your account](https://accounts.what3words.com/billing).
 
-This example instantiates a `W3WMicrophone` which provides an audio stream to `autosuggest(audio:)` which begins recording when `autosuggest` is called.  For information on `W3WMicrophone` and customizing your own `W3WAudioStream` for `autosuggest(audio:)` see the [VoiceAPI README](README.voiceAPI.md). 
+This example instantiates a `W3WMicrophone` which provides an audio stream to `autosuggest(audio:)` which begins recording when `autosuggest` is called.  For information on `W3WMicrophone` and customizing your own `W3WAudioStream` for `autosuggest(audio:)` see the [VoiceAPI README](Documentation/README.voiceAPI.md). 
 
 ```swift
 // make a microphone
@@ -201,7 +215,7 @@ api.autosuggest(audio: microphone, language: "en") { suggestions, error in
 }
 ```
 
-Also, `W3WMicrophone` has a callback closure `W3WMicrophone.volumeUpdate: (Double) -> ()` that provides amplitude information useful for animating user feedback.  See the the [Voice API example](./Examples/VoiceAPI/VoiceAPI.xcodeproj), and more information is avialable in the [VoiceAPI README](README.voiceAPI.md).
+Also, `W3WMicrophone` has a callback closure `W3WMicrophone.volumeUpdate: (Double) -> ()` that provides amplitude information useful for animating user feedback.  See the the [Voice API example](./Examples/VoiceAPI/VoiceAPI.xcodeproj), and more information is avialable in the [VoiceAPI README](Documentation/README.voiceAPI.md).
 
 ## Available Languages
 

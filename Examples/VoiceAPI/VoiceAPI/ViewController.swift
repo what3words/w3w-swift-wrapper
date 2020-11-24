@@ -52,7 +52,7 @@ class ViewController: UIViewController {
     // for rudimentary user feedback while they talk
     microphone.volumeUpdate = { volume in
       DispatchQueue.main.async {
-        self.microphoneButton.alpha = CGFloat(volume)
+        self.microphoneButton.alpha = 1.0 - CGFloat(volume)
       }
     }
     
