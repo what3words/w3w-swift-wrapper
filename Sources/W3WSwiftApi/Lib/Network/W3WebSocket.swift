@@ -460,7 +460,7 @@ private class W3Inflater {
           break
         }
         strm.avail_in = CUnsignedInt(inflateEnd.count)
-        strm.next_in = UnsafePointer<UInt8>(inflateEnd)
+        strm.next_in = UnsafePointer<UInt8>(inflateEnd)  // sorry for the warning here, can't see a way around it, let us know if you think of a better way...
       }
       while true {
         strm.avail_out = CUnsignedInt(bufsiz)
@@ -1070,7 +1070,7 @@ private class W3InnerWebSocket: Hashable {
     for i in 0 ..< 4 {
       keyb[i] = arc4random()
     }
-    let rkey = Data(bytes: UnsafePointer(keyb), count: 16).base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+    let rkey = Data(bytes: UnsafePointer(keyb), count: 16).base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))  // sorry for the warning here, can't see a way around it, let us know if you think of a better way...
     reqs += "Sec-WebSocket-Key: \(rkey)\r\n"
     reqs += "\r\n"
     var header = [UInt8]()
