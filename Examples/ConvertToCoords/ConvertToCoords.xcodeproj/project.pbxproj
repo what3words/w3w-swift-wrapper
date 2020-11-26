@@ -299,7 +299,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = ../../;
 			requirement = {
-				branch = v4;
+				branch = master;
 				kind = branch;
 			};
 		};
