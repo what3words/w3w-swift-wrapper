@@ -14,5 +14,6 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 xcuserdata/
-
+swiftpm/
+Package.resolved
 what3words/Config.plist
