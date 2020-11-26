@@ -34,7 +34,7 @@ An iOS UIKit example using the VoiceAPI is at: [Examples/VoiceAPI/VoiceAPI.xcode
 
 #### Swift Package Manager
 
-You can install this with [Swift Package Manager](https://swift.org/package-manager) by adding the URL below under **Swift Packages** under your project settings:
+You can install this with [Swift Package Manager](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app) by adding the URL below to Swift Packages under your project settings:
 
 ```
 https://github.com/what3words/w3w-swift-wrapper.git
