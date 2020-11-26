@@ -15,5 +15,6 @@ DerivedData/
 !default.perspectivev3
 xcuserdata/
 swiftpm/
+.swiftpm/xcode/package.xcworkspace
 Package.resolved
 what3words/Config.plist
