@@ -10,11 +10,10 @@ import Foundation
 import AVFoundation
 
 
-public enum W3VoiceListeningState {
+public enum W3WVoiceListeningState {
   case started
   case stopped
 }
-
 
 
 public enum W3WMicrophoneError : Error, CustomStringConvertible {
@@ -46,7 +45,7 @@ public class W3WMicrophone: W3WAudioStream {
   public var volumeUpdate: (Double) -> () = { _ in }
 
   /// callback for when the voice recognition stopped
-  public var listeningUpdate: ((W3VoiceListeningState) -> ()) = { _ in }
+  public var listeningUpdate: ((W3WVoiceListeningState) -> ()) = { _ in }
 
   
   /// CoreAudio interface
@@ -144,11 +143,14 @@ public class W3WMicrophone: W3WAudioStream {
       
       if (audioIsTapped == false) {
         audioIsTapped = true
+        
+        listeningUpdate(.started)
+
         mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) in
           self.micReturnedSamples(buffer: buffer, time: time)
         }
       } else {
-        print("Warning: microphone was started twice")
+        //print("Warning: microphone was started twice")
       }
       
       // start the actual recording
@@ -173,7 +175,6 @@ public class W3WMicrophone: W3WAudioStream {
       audioIsTapped = true
       
       listeningUpdate(.started)
-      //listeningUpdate.execute(.started)
       
       mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer, time) in
         
@@ -192,7 +193,7 @@ public class W3WMicrophone: W3WAudioStream {
       }
       
     } else {
-      print("Warning: microphone was started twice")
+      //print("Warning: microphone was started twice")
     }
     
     do {
@@ -212,7 +213,7 @@ public class W3WMicrophone: W3WAudioStream {
       audioIsTapped = false
       mic.removeTap(onBus: 0)
     } else {
-      print("Warning: microphone was stopped twice")
+      //print("Warning: microphone was stopped twice")
     }
 
     endSamples()
