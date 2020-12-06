@@ -96,7 +96,6 @@ public struct W3WApiSquare: W3WSquare {
   
   // W3Square
   public var coordinates: CLLocationCoordinate2D?
-  //public var bounds: W3WBoundingBox?
   public var southWestBounds: CLLocationCoordinate2D?
   public var northEastBounds: CLLocationCoordinate2D?
   public var map: String?
@@ -131,4 +130,38 @@ public struct W3WApiSquare: W3WSquare {
     }
   }
 
+}
+
+
+// MARK: Initializers
+
+
+extension W3WApiSuggestion {
+  
+  public init(words: String? = nil, country : String? = nil, nearestPlace : String? = nil, distanceToFocus : Double? = nil, language : String? = nil) {
+    self.words = words
+    self.country = country
+    self.nearestPlace = nearestPlace
+    self.distanceToFocus = distanceToFocus
+    self.language = language
+  }
+  
+}
+
+
+
+extension W3WApiSquare {
+  
+  public init(words: String? = nil, coordinates: CLLocationCoordinate2D? = nil, country : String? = nil, nearestPlace : String? = nil, distanceToFocus : Double? = nil, language : String? = nil, southWestBounds: CLLocationCoordinate2D? = nil, northEastBounds: CLLocationCoordinate2D? = nil, map: String? = nil) {
+    self.words = words
+    self.coordinates = coordinates
+    self.country = country
+    self.nearestPlace = nearestPlace
+    self.distanceToFocus = distanceToFocus
+    self.language = language
+    self.southWestBounds = southWestBounds
+    self.northEastBounds = northEastBounds
+    self.map = map
+  }
+  
 }

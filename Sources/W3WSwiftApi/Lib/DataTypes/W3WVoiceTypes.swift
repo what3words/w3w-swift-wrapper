@@ -58,22 +58,3 @@ public struct W3WVoiceSuggestions : Codable {
   
 }
 
-
-///// helper object for decoding JSON using Codable
-//struct W3WVoiceSuggestions : Codable {
-//  let message : String?
-//  let suggestions : [W3WVoiceSuggestion]?
-//
-//  enum CodingKeys: String, CodingKey {
-//
-//    case message = "message"
-//    case suggestions = "suggestions"
-//  }
-//
-//  init(from decoder: Decoder) throws {
-//    let values = try decoder.container(keyedBy: CodingKeys.self)
-//    message = try values.decodeIfPresent(String.self, forKey: .message)
-//    suggestions = try values.decodeIfPresent([W3WVoiceSuggestion].self, forKey: .suggestions)
-//  }
-//
-//}
