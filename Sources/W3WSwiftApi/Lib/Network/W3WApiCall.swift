@@ -156,6 +156,11 @@ public class W3WApiCall {
         return
       }
       
+      if let code = json["code"] as? String {
+        completion(nil, self.makeError(code: code))
+        return
+      }
+      
       completion(json, nil)
     }
     task.resume()
@@ -208,16 +213,21 @@ public class W3WApiCall {
    - parameter from: Dictionary of values, usually from a JSON decode
    */
   func languages(from: [String: Any]?) -> [W3WApiLanguage]? {
-    var languages = [W3WApiLanguage]()
+    var languages: [W3WApiLanguage]? = nil
+    
     if let l = from {
       if let list = l["languages"] as? Array<Any?>? {
-        for ll in list! {
+        for ll in list ?? [] {
           if let lang = ll as? Dictionary<String, Any?> {
             let language = W3WApiLanguage(
               name: lang["name"] as? String ?? "",
               nativeName: lang["nativeName"] as? String ?? "",
-              code: lang["code"] as? String ?? "")
-            languages.append(language)
+              code: lang["code"] as? String ?? ""
+            )
+            if languages == nil {
+              languages = [W3WApiLanguage]()
+            }
+            languages?.append(language)
           }
         }
       }

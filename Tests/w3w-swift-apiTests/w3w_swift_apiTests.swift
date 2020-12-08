@@ -121,6 +121,24 @@ final class w3w_swift_apiTests: XCTestCase {
   }
   
   
+  func testVoiceLanguages() {
+    let expectation = self.expectation(description: "Languages")
+    api.availableVoiceLanguages() { (languages, error) in
+      
+      XCTAssertNotNil(languages)
+      if let l = languages {
+        XCTAssertGreaterThan(l.count, 0, "No languages returned")
+      }
+      XCTAssertNotNil(languages?.first?.code)
+      XCTAssertNotNil(languages?.first?.name)
+      XCTAssertNotNil(languages?.first?.nativeName)
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
   func testAutosuggest() {
     let expectation = self.expectation(description: "Autosuggest")
     api.autosuggest(text: "geschaft.planter.carciofi") { (suggestions, error) in
