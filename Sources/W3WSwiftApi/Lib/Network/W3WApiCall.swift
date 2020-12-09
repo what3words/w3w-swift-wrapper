@@ -161,6 +161,11 @@ public class W3WApiCall {
         return
       }
       
+      if let error = json["error"] as? String {
+        completion(nil, self.makeError(code: error))
+        return
+      }
+      
       completion(json, nil)
     }
     task.resume()
@@ -198,6 +203,8 @@ public class W3WApiCall {
     case "InvalidKey":
       return W3WError.invalidKey
     case "NotFound":
+      return W3WError.notFound404
+    case "Not Found":
       return W3WError.notFound404
     default:
       return W3WError.unknownErrorCodeFromServer

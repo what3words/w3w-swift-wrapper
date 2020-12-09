@@ -149,6 +149,10 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
       return W3WError.missingKey
     case "InvalidKey":
       return W3WError.invalidKey
+    case "NotFound":
+      return W3WError.notFound404
+    case "Not Found":
+      return W3WError.notFound404
     default:
       return W3WError.unknownErrorCodeFromServer
     }
