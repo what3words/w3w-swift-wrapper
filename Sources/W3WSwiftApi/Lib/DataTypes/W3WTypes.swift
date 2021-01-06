@@ -32,6 +32,7 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
   case badWords
   case badCoordinates
   case badLanguage
+  case missingLanguage
   case badFormat
   case badClipToPolygon
   case badBoundingBoxTooBig
@@ -55,6 +56,7 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
       case .badWords:            return "Words not found in what3words"
       case .badCoordinates:      return "Coordinates don't exist"
       case .badLanguage:         return "Language not available"
+      case .missingLanguage:     return "Language option required for this call"
       case .badFormat:           return "Query was in the wrong format"
       case .badClipToPolygon:    return "Polygon for clipping is not correct"
       case .badBoundingBoxTooBig:return "The requested box exceeded 4km from corner to corner"

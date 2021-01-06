@@ -184,6 +184,8 @@ public class W3WApiCall {
       return W3WError.badCoordinates
     case "BadLanguage":
       return W3WError.badLanguage
+    case "MissingLanguage":
+      return W3WError.missingLanguage
     case "BadFormat":
       return W3WError.badFormat
     case "BadClipToPolygon":
