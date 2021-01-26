@@ -20,8 +20,7 @@ public class W3WAudioStream {
   
   var voiceApi: W3WVoiceSocket?
   var callback: W3WVoiceSuggestionsResponse?
-  //var completion: W3WClosedResponse?
-  
+
   
   public init(sampleRate: Int, encoding:W3WEncoding) {
     self.sampleRate = sampleRate
@@ -48,10 +47,8 @@ public class W3WAudioStream {
   func configure(apiKey: String, callback: @escaping W3WVoiceSuggestionsResponse) {
     self.voiceApi   = W3WVoiceSocket(apiKey: apiKey)
     self.callback   = callback
-    //self.completion = completion
     
     voiceApi?.suggestions = { suggestions in self.update(suggestions: suggestions) }
-    //voiceApi?.closed      = { reason in self.update(closed: reason) }
     voiceApi?.error       = { error in self.update(error: error) }
   }
   
@@ -65,12 +62,6 @@ public class W3WAudioStream {
   func update(suggestions: [W3WVoiceSuggestion]) {
     callback?(suggestions, nil)
   }
-
-  
-  func update(error: W3WVoiceSocketError) {
-    callback?(nil, W3WVoiceError.voiceSocketError(error: error))
-  }
-
   
   func update(error: W3WVoiceError) {
     callback?(nil, error)

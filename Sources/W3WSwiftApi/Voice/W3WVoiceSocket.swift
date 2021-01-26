@@ -15,7 +15,6 @@ import CoreLocation
 public enum W3WVoiceSocketError : Error, CustomStringConvertible {
   case socketAlreadyOpen
   case socketCreationError
-  case invalidApiKey
   case attemptToSendOnCLosedSocket
   case serverReturnedUnexpectedData
   case serverReturnedUnexpectedType
@@ -28,7 +27,6 @@ public enum W3WVoiceSocketError : Error, CustomStringConvertible {
     switch self {
       case .socketAlreadyOpen:             return "Socket was already open when open() was called"
       case .socketCreationError:           return "Error opening the socket to the server"
-      case .invalidApiKey:                 return "Invalid API key provided"
       case .attemptToSendOnCLosedSocket:   return "send() was called, but the socket has already been closed"
       case .serverReturnedUnexpectedData:  return "The server returned an unrecognized result"
       case .serverReturnedUnexpectedType:  return "The server returned unrecognized data types"
@@ -64,16 +62,21 @@ public class W3WVoiceSocket {
   /// we need to count the number of data packages sent for the endSamples() function
   var sequenceNumber = 0
   
+  var id: String?
+  var quality: String?
+  
+  
   // MARK: Callbacks
   
   /// a callback block for when recognition is complete
   public var suggestions: ([W3WVoiceSuggestion]) -> () = { _ in }
+  //public var received: (String) -> () = { _ in }
   
   /// a callback block for when an error happens
-  //public var closed: (W3WCloseCondition) -> () = { _ in }
+  //public var closed: (String?, String?) -> () = { _,_ in }
   
   /// a callback block for when an error happens
-  public var error: (W3WVoiceSocketError) -> () = { _ in }
+  public var error: (W3WVoiceError) -> () = { _ in }
   
   
   // MARK: Initialization
@@ -96,7 +99,7 @@ public class W3WVoiceSocket {
   public func open(sampleRate:Int, encoding:W3WEncoding = .pcm_f32le, options: [W3WOption]) {
     // don't allow socket to be opened if it is already in use
     if socket != nil {
-      error(W3WVoiceSocketError.socketAlreadyOpen)
+      error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketAlreadyOpen))
       
       // we are good to go
     } else {
@@ -126,7 +129,7 @@ public class W3WVoiceSocket {
         
         // socket failed
       } else {
-        self.error(W3WVoiceSocketError.socketCreationError)
+        self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketCreationError))
       }
     }
   }
@@ -137,29 +140,24 @@ public class W3WVoiceSocket {
     if code != 1000 {
       if let data = reason.data(using: .utf8) {
         if let jsonData = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-          if let reasonCode = jsonData["code"] as? String {
-            switch reasonCode {
-            case "InvalidKey":
-              self.error(W3WVoiceSocketError.invalidApiKey)
-            default:
-              print("unknown error code")
-            }
+          if let reasonCode = jsonData["code"] as? String, let message = jsonData["message"] as? String {
+            update(close: reasonCode, message: message)
           }
         } else {
           switch code {
-            case 1001: self.error(W3WVoiceSocketError.socketError(error: .protocolError("Going Away")))
-            case 1002: self.error(W3WVoiceSocketError.socketError(error: .protocolError("Protocol Error")))
-            case 1003: self.error(W3WVoiceSocketError.socketError(error: .protocolError("Protocol Error: Unhandled Type")))
-            case 1005: self.error(W3WVoiceSocketError.socketError(error: .protocolError("No Status received")))
-            case 1006: self.error(W3WVoiceSocketError.socketError(error: .network(error?.localizedDescription ?? "Abnormal Socket Closure")))
-            case 1007: self.error(W3WVoiceSocketError.socketError(error: .payloadError(error?.localizedDescription ?? "Encoding Error")))
-            case 1008: self.error(W3WVoiceSocketError.socketError(error: .protocolError("Policy violation")))
-            case 1009: self.error(W3WVoiceSocketError.socketError(error: .payloadError("Message Too Big")))
+            case 1001: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Going Away"))))
+            case 1002: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Protocol Error"))))
+            case 1003: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Protocol Error: Unhandled Type"))))
+            case 1005: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("No Status received"))))
+            case 1006: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .network(error?.localizedDescription ?? "Abnormal Socket Closure"))))
+            case 1007: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .payloadError(error?.localizedDescription ?? "Encoding Error"))))
+            case 1008: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Policy violation"))))
+            case 1009: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .payloadError("Message Too Big"))))
             default:
               if let e = error {
-                self.error(W3WVoiceSocketError.socketError(error: .protocolError(e.localizedDescription)))
+                self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError(e.localizedDescription))))
               } else {
-                self.error(W3WVoiceSocketError.unknown)
+                self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.unknown))
               }
           }
         }
@@ -167,8 +165,30 @@ public class W3WVoiceSocket {
     }
   }
   
+  
+  
+  func update(close code: String?, message: String?) {
+    if let c = code {
+      switch c {
+      case "InvalidKey":
+        self.error(W3WVoiceError.invalidApiKey)
+      case "MissingKey":
+        self.error(W3WVoiceError.missingKey)
+      case "SuspendedKey":
+        self.error(W3WVoiceError.suspendedKey)
+      case "BadInput":
+        self.error(W3WVoiceError.badInput)
+      case "NotFound":
+        self.error(W3WVoiceError.notFound)
+      default:
+        self.error(W3WVoiceError.invalidApiKey)
+      }
+    }
+  }
+  
+  
   func errored(_ error: W3WWebSocketError) {
-    self.error(W3WVoiceSocketError.socketError(error: error))
+    self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: error)))
   }
     
   
@@ -192,7 +212,7 @@ public class W3WVoiceSocket {
       
     // if the socket isn't there
     else {
-      self.error(W3WVoiceSocketError.attemptToSendOnCLosedSocket)
+      self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.attemptToSendOnCLosedSocket))
     }
   }
   
@@ -209,10 +229,10 @@ public class W3WVoiceSocket {
       self.recieved(text: message as! String)  // inform the caller that a message came in.
       
     case is Data:
-      error(W3WVoiceSocketError.serverReturnedUnexpectedData)
+      error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.serverReturnedUnexpectedData))
       
     default:
-      error(W3WVoiceSocketError.serverReturnedUnexpectedType)
+      error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.serverReturnedUnexpectedType))
     }
   }
   
@@ -224,14 +244,68 @@ public class W3WVoiceSocket {
   
   
   /// parse with incoming json, and send suggestions to whomever is interested
-  private func recieved(text:String) {
+  private func recieved(text: String) {
     let jsonDecoder = JSONDecoder()
-    if let suggestionsJSON = try? jsonDecoder.decode(W3WVoiceSuggestions.self, from: text.data(using: .utf8)!) {
-      if let suggestions = suggestionsJSON.suggestions {
-        self.suggestions(suggestions)
+    
+    // try and get suggestions out of this
+    if let responseJson = try? jsonDecoder.decode(W3WVoiceResponse.self, from: text.data(using: .utf8)!) {
+      
+      switch responseJson.message {
+      
+      case "Suggestions":
+        if let suggestions = responseJson.suggestions {
+          self.suggestions(suggestions)
+        }
+        
+      case "RecognitionStarted":
+        if let id = responseJson.id {
+          self.id = id
+        }
+        
+      case "AudioAdded":
+        if let sequenceNumber = responseJson.seq_no {
+          self.sequenceNumber = sequenceNumber
+        }
+        
+      case "Info":
+        if let type = responseJson.type, let quality = responseJson.quality {  // , let _ = responseJson.reason
+          if type == "recognition_quality" {
+            self.quality = quality
+          }
+        }
+        
+      case "Error":
+        if let type = responseJson.type {  // , let _ = responseJson.code, let _ = responseJson.reason
+          switch type {
+            case "invalid_message":
+              error(W3WVoiceError.invalidMessage)
+            case "invalid_audio_type":
+              error(W3WVoiceError.invalidAudioType)
+            case "job_error":
+              error(W3WVoiceError.jobError)
+            case "data_error":
+              error(W3WVoiceError.dataError)
+            case "buffer_error":
+              error(W3WVoiceError.bufferError)
+            case "protocol_error":
+              error(W3WVoiceError.protocolError)
+            default:
+              error(W3WVoiceError.unknown)
+          }
+        }
+        
+      case "W3WError":
+        if let code = responseJson.error?.code { // , let _ = responseJson.error?.message
+          error(W3WVoiceError.apiError(error: W3WError.from(code: code)))
+        }
+          
+          
+          //error(W3WVoiceError.apiError(error: W3WError.unknownErrorCodeFromServer))
+        
+      default:
+        print("Unknonw message from server, update API code")
       }
-    }
-  }
+    }  }
   
 }
 

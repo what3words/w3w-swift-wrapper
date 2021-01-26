@@ -23,26 +23,40 @@ public typealias W3WLanguagesResponse            = ((_ result: [W3WLanguage]?, _
 
 /// Main error enum for the w3w API
 public enum W3WError : Error, CustomStringConvertible, Equatable {
+  
   public static func == (lhs: W3WError, rhs: W3WError) -> Bool {
     return lhs.description == rhs.description
   }
   
-
   // API Errors
   case badWords
   case badCoordinates
   case badLanguage
-  case missingLanguage
   case badFormat
   case badClipToPolygon
   case badBoundingBoxTooBig
+  case badClipToCountry
+  case badInput
+  case badNResults
+  case badNFocusResults
+  case badFocus
+  case badClipToCircle
+  case badClipToBoundingBox
+  case badInputType
+  case badBoundingBox
+  case missingLanguage
   case missingWords
   case missingInput
   case missingBoundingBox
   case duplicateParameter
   case missingKey
   case invalidKey
-
+  case suspendedKey
+  case invalidApiVersion
+  case invalidReferrer
+  case invalidIpAddress
+  case invalidAppCredentials
+  
   // Communication Errors
   case unknownErrorCodeFromServer
   case notFound404
@@ -53,28 +67,105 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
   
   public var description : String {
     switch self {
-      case .badWords:            return "Words not found in what3words"
-      case .badCoordinates:      return "Coordinates don't exist"
-      case .badLanguage:         return "Language not available"
-      case .missingLanguage:     return "Language option required for this call"
-      case .badFormat:           return "Query was in the wrong format"
-      case .badClipToPolygon:    return "Polygon for clipping is not correct"
-      case .badBoundingBoxTooBig:return "The requested box exceeded 4km from corner to corner"
-      case .badConnection:       return "Couldn't connect to server"
-      case .badJson:             return "Malformed JSON returned"
-      case .missingWords:        return "Words are missing from the address"
-      case .missingInput:        return "More input required"
-      case .missingBoundingBox:  return "Bounding Box required"
-      case .missingKey:          return "The API key was missing"
-      case .invalidKey:          return "The API key is invalid"
-      case .notFound404:          return "URL not found, 404 error"
-      case .duplicateParameter:    return "A parameter was provided twice"
-      case .invalidResponse:          return "Invalid Response"
-      case .unknownErrorCodeFromServer: return "Error code fromo API server is not recognized, upgrade this API?"
-      case .socketError(let error):       return String(describing: error)
+      case .badWords:               return "Words not found in what3words"
+      case .badCoordinates:         return "Latitude must be >=-90 and <= 90"
+      case .badLanguage:            return "Language must be an ISO 639-1 2 letter code, such as 'en' or 'fr'"
+      case .missingLanguage:        return "Language parameter must be specified for this call"
+      case .badFormat:              return "Query was in the wrong format"
+      case .badClipToPolygon:       return "Polygon for clipping is not correct"
+      case .badBoundingBoxTooBig:   return "The requested box exceeded 4km from corner to corner"
+      case .badConnection:          return "Couldn't connect to server"
+      case .badJson:                return "Malformed JSON returned"
+      case .suspendedKey:           return "The API key has been suspecned"
+      case .invalidApiVersion:      return "The API version is invalid"
+      case .invalidReferrer:        return "Invalide referrer"
+      case .invalidIpAddress:       return "Invalid IP address"
+      case .invalidAppCredentials:  return "Invalid ppp credendials"
+      case .badClipToCountry:       return "BadClipToCoutnry:  Countries are specified by uppercase ISO 3166-1 alpha-2 country codes, such as US,CA"
+      case .badInput:               return "Input is bad"
+      case .badNResults:            return "N-results parameter bad"
+      case .badNFocusResults:       return "N-forcus=result parameter is bad"
+      case .badFocus:               return "Focus parameter is bad"
+      case .badClipToCircle:        return "Circle clip parameter is bad"
+      case .badClipToBoundingBox:   return "Bounding Box clip parameter is bad"
+      case .badInputType:           return "Input type parameter is bad"
+      case .badBoundingBox:         return "Bounding box parameter is bad"
+      case .missingWords:         	return "Words are missing from the address"
+      case .missingInput:           return "More input required"
+      case .missingBoundingBox:     return "Bounding Box required"
+      case .missingKey:             return "The API key was missing"
+      case .invalidKey:             return "The API key is invalid"
+      case .notFound404:             return "URL not found, 404 error"
+      case .duplicateParameter:       return "A parameter was provided twice"
+      case .invalidResponse:           return "Invalid Response"
+      case .unknownErrorCodeFromServer: return "Error code from API server is not recognized, upgrade this API?"
+      case .socketError(let error):      return String(describing: error)
     }
   }
 
+  
+  static func from(code: String) -> W3WError {
+    switch code {
+    case "BadWords":
+      return W3WError.badWords
+    case "BadCoordinates":
+      return W3WError.badCoordinates
+    case "BadLanguage":
+      return W3WError.badLanguage
+    case "MissingLanguage":
+      return W3WError.missingLanguage
+    case "BadFormat":
+      return W3WError.badFormat
+    case "BadClipToPolygon":
+      return W3WError.badClipToPolygon
+    case "BadBoundingBoxTooBig":
+      return W3WError.badBoundingBoxTooBig
+    case "BadClipToCountry":
+      return W3WError.badClipToCountry
+    case "BadInput":
+      return W3WError.badInput
+    case "BadNResults":
+      return W3WError.badNResults
+    case "BadNFocusResults":
+      return W3WError.badNFocusResults
+    case "BadFocus":
+      return W3WError.badFocus
+    case "BadClipToCircle":
+      return W3WError.badClipToCircle
+    case "BadClipToBoundingBox":
+      return W3WError.badClipToBoundingBox
+    case "BadInputType":
+      return W3WError.badInputType
+    case "BadBoundingBox":
+      return W3WError.badBoundingBox
+    case "MissingWords":
+      return W3WError.missingWords
+    case "MissingInput":
+      return W3WError.missingInput
+    case "MissingBoundingBox":
+      return W3WError.missingBoundingBox
+    case "DuplicateParameter":
+      return W3WError.duplicateParameter
+    case "MissingKey":
+      return W3WError.missingKey
+    case "InvalidKey":
+      return W3WError.invalidKey
+    case "SuspendedKey":
+      return W3WError.suspendedKey
+    case "InvalidApiVersion":
+      return W3WError.invalidApiVersion
+    case "InvalidReferrer":
+      return W3WError.invalidReferrer
+    case "InvalidIpAddress":
+      return W3WError.invalidIpAddress
+    case "InvalidAppCredentials":
+      return W3WError.invalidAppCredentials
+    default:
+      return W3WError.unknownErrorCodeFromServer
+    }
+    
+  }
+  
 }
 
 

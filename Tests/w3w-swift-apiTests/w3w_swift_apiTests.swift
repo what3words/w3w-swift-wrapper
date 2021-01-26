@@ -408,7 +408,90 @@ final class w3w_swift_apiTests: XCTestCase {
   }
   
   
-// Broken, will fix soon
+  func testBadCoordinates() {
+    let expectation = self.expectation(description: "BadCoordinates")
+    api.convertTo3wa(coordinates: CLLocationCoordinate2D(latitude: -1000.0, longitude: 400.0), language: "en") { (place, error) in
+      
+      XCTAssertEqual(error, W3WError.badCoordinates)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  
+  func testBadLanguage() {
+    let expectation = self.expectation(description: "BadLanguage")
+    api.convertTo3wa(coordinates: CLLocationCoordinate2D(latitude: 50.0, longitude: -0.1), language: "27") { (place, error) in
+      
+      XCTAssertEqual(error, W3WError.badLanguage)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  func testBadClipToPolygon() {
+    let expectation = self.expectation(description: "BadClipToPolygon")
+    
+    let polygon = [
+      CLLocationCoordinate2D(latitude: -1000.0, longitude: 400.0),
+      CLLocationCoordinate2D(latitude: -1.0, longitude: 10000000.0),
+      CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0),
+      CLLocationCoordinate2D(latitude: .pi, longitude: 42.0),
+    ]
+    
+    api.autosuggest(text: "filled.count.so", options: W3WOption.clipToPolygon(polygon)) { (suggestions, error) in
+      XCTAssertEqual(error, W3WError.badClipToPolygon)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  func testBadClipToBoundingBox() {
+    let expectation = self.expectation(description: "BadClipToBoundingBox")
+    
+    let sw = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
+    let ne = CLLocationCoordinate2D(latitude: -45.0, longitude: 85.0)
+    
+    api.autosuggest(text: "filled.count.so", options: W3WOption.clipToBox(southWest: sw, northEast: ne)) { (suggestions, error) in
+      XCTAssertEqual(error, W3WError.badClipToBoundingBox)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  
+  func testBadClipToCountry() {
+    let expectation = self.expectation(description: "BadClipToCountry")
+    
+    api.autosuggest(text: "filled.count.so", options: W3WOption.clipToCountry("42")) { (suggestions, error) in
+      XCTAssertEqual(error, W3WError.badClipToCountry)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+
+
+  
+  /// test for a timeout error
+  func testVoiceApiTimoutError() {
+    let expectation = self.expectation(description: "Voice API")
+    
+    let stream = W3WAudioStream(sampleRate: 44100, encoding: .pcm_f32le)
+    
+    api.autosuggest(audio: stream, language: "en") { suggestions, error in
+      XCTAssertNotNil(error)
+      expectation.fulfill()
+    }
+    
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+    
+  
 //  func testVoiceApi() {
 //    let expectation = self.expectation(description: "Voice API")
 //
@@ -430,20 +513,18 @@ final class w3w_swift_apiTests: XCTestCase {
 //
 //            api.autosuggest(audio: stream, language: "en") { suggestions, error in
 //              XCTAssertEqual(suggestions?.first?.words, "filled.count.soap")
-//              //print(String(describing: error))
-//              //print(suggestions)
+//
+//              if error != nil {
+//                print(String(describing: error))
+//              }
+//
 //              expectation.fulfill()
 //            }
 //
-//
 //            stream.add(samples: data)
-//            //stream.endSamples()
-//            //stream.close()
+//            stream.endSamples()
 //
-//            //let floatArray = Array(UnsafeBufferPointer(start: buf.floatChannelData?[0], count:Int(buf.frameLength)))
-//
-//
-//            waitForExpectations(timeout: 5.0, handler: nil)
+//            waitForExpectations(timeout: 30.0, handler: nil)
 //          }
 //        }
 //      }

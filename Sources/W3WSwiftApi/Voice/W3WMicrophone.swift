@@ -256,7 +256,7 @@ public class W3WMicrophone: W3WAudioStream {
   
 
   // override errors so we can stop the mic if nessesary
-  override func update(error: W3WVoiceSocketError) {
+  override func update(error: W3WVoiceError) {
     stop()
     super.update(error: error)
   }

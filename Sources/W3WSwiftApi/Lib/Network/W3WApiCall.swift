@@ -152,17 +152,17 @@ public class W3WApiCall {
       }
       
       if let error = json["error"] as? [String: Any], let code = error["code"] as? String {
-        completion(nil, self.makeError(code: code))
+        completion(nil, W3WError.from(code: code))
         return
       }
       
       if let code = json["code"] as? String {
-        completion(nil, self.makeError(code: code))
+        completion(nil, W3WError.from(code: code))
         return
       }
       
       if let error = json["error"] as? String {
-        completion(nil, self.makeError(code: error))
+        completion(nil, W3WError.from(code: error))
         return
       }
       
@@ -171,47 +171,6 @@ public class W3WApiCall {
     task.resume()
   }
 
-  
-  
-  // MARK: Error code to Error enum
-  
-  
-  func makeError(code: String) -> W3WError {
-    switch code {
-    case "BadWords":
-      return W3WError.badWords
-    case "BadCoordinates":
-      return W3WError.badCoordinates
-    case "BadLanguage":
-      return W3WError.badLanguage
-    case "MissingLanguage":
-      return W3WError.missingLanguage
-    case "BadFormat":
-      return W3WError.badFormat
-    case "BadClipToPolygon":
-      return W3WError.badClipToPolygon
-    case "BadBoundingBoxTooBig":
-      return W3WError.badBoundingBoxTooBig
-    case "MissingWords":
-      return W3WError.missingWords
-    case "MissingInput":
-      return W3WError.missingInput
-    case "MissingBoundingBox":
-      return W3WError.missingBoundingBox
-    case "DuplicateParameter":
-      return W3WError.duplicateParameter
-    case "MissingKey":
-      return W3WError.missingKey
-    case "InvalidKey":
-      return W3WError.invalidKey
-    case "NotFound":
-      return W3WError.notFound404
-    case "Not Found":
-      return W3WError.notFound404
-    default:
-      return W3WError.unknownErrorCodeFromServer
-    }
-  }
   
 
   
