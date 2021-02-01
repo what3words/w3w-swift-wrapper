@@ -373,7 +373,7 @@ public class W3WVoiceSocket {
   public var closed: (String) -> () = { _ in }
   
   /// a callback block for when an error happens
-  public var error: (W3WVoiceSocketError) -> () = { _ in }
+  public var error: (W3WVoiceError) -> () = { _ in }
 
   /// init with the API key for the voice service
   public init(apiKey: String) {
@@ -381,16 +381,16 @@ public class W3WVoiceSocket {
   }
   
   public func open(sampleRate:Int, encoding:W3WEncoding = .pcm_f32le, options: [W3WOption]) {
-    error(W3WVoiceSocketError.socketCreationError)
+    error(W3WVoiceError.platformNotSupported)
   }
   
   /// send a block of 32 bit floating point audio sample data
   public func send(samples: Data) {
-    assertionFailure("watchOS not yet supported")
+    error(W3WVoiceError.platformNotSupported)
   }
   
   public func endSamples() {
-    assertionFailure("watchOS not yet supported")
+    error(W3WVoiceError.platformNotSupported)
   }
 
   public func close() {

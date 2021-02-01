@@ -123,4 +123,4 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
     
 }
 
-#endif // if os(watchOS) // from top of file
+#endif // if !os(watchOS) - from top of file

@@ -7,8 +7,6 @@
 //
 
 
-//#if !os(watchOS)
-
 import Foundation
 import CoreLocation
 
@@ -75,5 +73,3 @@ public class W3WAudioStream {
   
 }
 
-
-//#endif // if os(watchOS) // from top of file

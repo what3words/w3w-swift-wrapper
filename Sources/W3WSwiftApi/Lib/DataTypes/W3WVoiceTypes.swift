@@ -28,8 +28,9 @@ public enum W3WVoiceError : Error, CustomStringConvertible {
   case dataError
   case bufferError
   case protocolError
-  
   case unknown
+  
+  case platformNotSupported
   case apiError(error: W3WError)
   case voiceSocketError(error: W3WVoiceSocketError)
   case microphoneError(error: W3WMicrophoneError)
@@ -51,6 +52,8 @@ public enum W3WVoiceError : Error, CustomStringConvertible {
       case .bufferError:          return "Unable to fit the data in a corresponding buffer. This can happen for clients sending the input data faster then realtime."
       case .protocolError:        return "Message received was syntactically correct, but could not be accepted due to protocol limitations. This is usually caused by messages sent in the wrong order."
         
+      case .platformNotSupported: return "This API wrapper is not supported for this type of device yet"
+    
       case .apiError(error: let error):  return String(describing: error)
       case .voiceSocketError(let error): return String(describing: error)
       case .microphoneError(let error):  return String(describing: error)
