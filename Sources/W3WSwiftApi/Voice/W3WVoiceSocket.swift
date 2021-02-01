@@ -9,7 +9,9 @@
 
 import Foundation
 import CoreLocation
-
+#if !os(macOS)
+import UIKit
+#endif
 
 
 public enum W3WVoiceSocketError : Error, CustomStringConvertible {
@@ -65,7 +67,9 @@ public class W3WVoiceSocket {
   var id: String?
   var quality: String?
   
-  
+  private var version_header = W3WSettings.voiceHeaderKey + "/x.x.x (Swift x.x.x; iOS x.x.x)"
+  private var bundle_header  = ""
+
   // MARK: Callbacks
   
   /// a callback block for when recognition is complete
@@ -85,6 +89,7 @@ public class W3WVoiceSocket {
   /// init with the API key for the voice service
   public init(apiKey: String) {
     key = apiKey
+    figureOutVersions()
   }
   
   
@@ -111,7 +116,12 @@ public class W3WVoiceSocket {
         urlString += "&" + option.key() + "=" + option.asString()
       }
       
-      socket = W3WebSocket(urlString)
+      let headers = [
+        "X-Ios-Bundle-Identifier": bundle_header,
+        "X-W3W-Wrapper": version_header,
+      ]
+      
+      socket = W3WebSocket(urlString, headers: headers)
       
       // configure callback events and send the handshake
       if let s = socket {
@@ -305,7 +315,43 @@ public class W3WVoiceSocket {
       default:
         print("Unknonw message from server, update API code")
       }
-    }  }
+    }
+  }
+  
+  
+  // Establish the various version numbers in order to set an HTTP header for the URL session
+  // ugly, but haven't found a better, way, if anyone knows a better way to get the swift version at runtime, let us know...
+  private func figureOutVersions() {
+    #if os(macOS)
+    let os_name        = "Mac"
+    #elseif os(watchOS)
+    let os_name        = WKInterfaceDevice.current().systemName
+    #else
+    let os_name        = UIDevice.current.systemName
+    #endif
+    let os_version     = ProcessInfo().operatingSystemVersion
+    var swift_version  = "x.x"
+    //var api_version    = "x.x.x"
+    
+    #if swift(>=7)
+    swift_version = "7.x"
+    #elseif swift(>=6)
+    swift_version = "6.x"
+    #elseif swift(>=5)
+    swift_version = "5.x"
+    #elseif swift(>=4)
+    swift_version = "4.x"
+    #elseif swift(>=3)
+    swift_version = "3.x"
+    #elseif swift(>=2)
+    swift_version = "2.x"
+    #else
+    swift_version = "1.x"
+    #endif
+    
+    version_header  = W3WSettings.voiceHeaderKey + "/" + W3WSettings.voiceApiVersion + " (Swift " + swift_version + "; " + os_name + " "  + String(os_version.majorVersion) + "."  + String(os_version.minorVersion) + "."  + String(os_version.patchVersion) + ")"
+    bundle_header   = Bundle.main.bundleIdentifier ?? ""
+  }
   
 }
 

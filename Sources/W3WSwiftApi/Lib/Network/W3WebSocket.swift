@@ -563,6 +563,7 @@ private class W3InnerWebSocket: Hashable {
   var _binaryType = WebSocketBinaryType.uInt8Array
   var _readyState = WebSocketReadyState.connecting
   var _networkTimeout = TimeInterval(-1)
+  var headers = [String : String]()
   
   
   var url : String {
@@ -612,7 +613,7 @@ private class W3InnerWebSocket: Hashable {
   }
   
   func copyOpen(_ request: URLRequest, subProtocols : [String] = []) -> W3InnerWebSocket{
-    let ws = W3InnerWebSocket(request: request, subProtocols: subProtocols, stub: false)
+    let ws = W3InnerWebSocket(request: request, subProtocols: subProtocols, stub: false, headers: headers)
     ws.eclose = eclose
     ws.compression = compression
     ws.allowSelfSignedSSL = allowSelfSignedSSL
@@ -629,7 +630,7 @@ private class W3InnerWebSocket: Hashable {
     hasher.combine(id)
   }
   
-  init(request: URLRequest, subProtocols : [String] = [], stub : Bool = false){
+  init(request: URLRequest, subProtocols : [String] = [], stub : Bool = false, headers : [String : String] = [:]){
     pthread_mutex_init(&mutex, nil)
     self.id = manager.nextId()
     self.request = request
@@ -648,6 +649,7 @@ private class W3InnerWebSocket: Hashable {
         manager.add(self)
       }
     }
+    self.headers = headers
   }
   deinit{
     if outputBytes != nil {
@@ -1010,6 +1012,11 @@ private class W3InnerWebSocket: Hashable {
       req.setValue("SwiftWebSocket", forHTTPHeaderField: "User-Agent")
     }
     req.setValue("13", forHTTPHeaderField: "Sec-WebSocket-Version")
+    
+    // add custom headers if any
+    for (name, value) in headers {
+      req.setValue(value, forHTTPHeaderField: name)
+    }
     
     if req.url == nil || req.url!.host == nil{
       throw W3WWebSocketError.invalidAddress
@@ -1692,6 +1699,10 @@ open class W3WebSocket: NSObject {
     self.init(request: URLRequest(url: URL(string: url)!), subProtocols: [])
   }
   /// Create a WebSocket connection to a URL; this should be the URL to which the WebSocket server will respond.
+  public convenience init(_ url: String, headers: [String : String]){
+    self.init(request: URLRequest(url: URL(string: url)!), subProtocols: [], headers: headers)
+  }
+  /// Create a WebSocket connection to a URL; this should be the URL to which the WebSocket server will respond.
   public convenience init(url: URL){
     self.init(request: URLRequest(url: url), subProtocols: [])
   }
@@ -1704,10 +1715,10 @@ open class W3WebSocket: NSObject {
     self.init(request: URLRequest(url: URL(string: url)!), subProtocols: [subProtocol])
   }
   /// Create a WebSocket connection from an NSURLRequest; Also include a list of protocols.
-  public init(request: URLRequest, subProtocols : [String] = []){
+  public init(request: URLRequest, subProtocols : [String] = [], headers : [String : String] = [:]){
     let hasURL = request.url != nil
     opened = hasURL
-    ws = W3InnerWebSocket(request: request, subProtocols: subProtocols, stub: !hasURL)
+    ws = W3InnerWebSocket(request: request, subProtocols: subProtocols, stub: !hasURL, headers: headers)
     super.init()
     // weak/strong pattern from:
     // http://stackoverflow.com/a/17105368/424124

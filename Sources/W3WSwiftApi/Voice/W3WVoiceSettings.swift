@@ -14,6 +14,7 @@ extension W3WSettings {
   /// the VoiceAPI endpoint
   static let voiceApiUrl      = "wss://voiceapi.what3words.com/v1"
   static let voiceSocketPath  = "/autosuggest"
-  static let voiceApiVersion  = "1.0.0"
+  static let voiceApiVersion  = "1.0.1"
+  static let voiceHeaderKey   = "what3words-Swift"
   
 }
