@@ -67,6 +67,7 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
   
   // External Errors
   case sdkError(error: Error & CustomStringConvertible)
+  case unknown
   
   public var description : String {
     switch self {
@@ -102,8 +103,9 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
       case .duplicateParameter:       return "A parameter was provided twice"
       case .invalidResponse:           return "Invalid Response"
       case .unknownErrorCodeFromServer: return "Error code from API server is not recognized, upgrade this API?"
-      case .socketError(let error):       return String(describing: error)
-      case .sdkError(let error):            return String(describing: error)
+      case .socketError(let error):     return String(describing: error)
+      case .sdkError(let error):       return String(describing: error)
+      case .unknown:                 return "Unknonw Error"
     }
   }
 
