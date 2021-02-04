@@ -10,6 +10,6 @@
 public struct W3WSettings {
   
   static let apiUrl      = "https://api.what3words.com/v3"
-  static let apiVersion  = "3.6.3"
+  static let apiVersion  = "3.6.4"
   
 }

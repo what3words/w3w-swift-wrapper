@@ -20,7 +20,7 @@ class Model: ObservableObject {
   @Published var error: String?
 
   init() {
-    // get 24 results from the partial three word address (generally we reccomend leaving the result count to the default 3, but we set this to 24 for example sake
+    // get results from the partial three word address (generally we reccomend leaving the result count to the default 3, but we set this to 24 for example sake
     api.autosuggest(text: "filled.count.soa", options: W3WOptions().clipToCountry("GB")) { suggestions, error in
       DispatchQueue.main.async { // ensure this runs on the main thread as it updates the UI
         if let e = error {
