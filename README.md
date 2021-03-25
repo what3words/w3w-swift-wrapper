@@ -19,7 +19,7 @@ To use this library you’ll need a what3words API key, which can be signed up f
 
 # Examples
 
-There are three examples in this package:
+There are four examples in this package:
 
 #### iOS SwiftUI:
 An iOS SwiftUI example using `autosuggest` is in this package at [Examples/AutoSuggest/AutoSuggest.xcodeproj](./Examples/AutoSuggest/AutoSuggest.xcodeproj)
@@ -27,8 +27,11 @@ An iOS SwiftUI example using `autosuggest` is in this package at [Examples/AutoS
 #### macOS terminal:
 A macOS terminal example demonstrating `convertToCoordinates` is at: [Examples/ConvertToCoords/ConvertToCoords.xcodeproj](./Examples/ConvertToCoords/ConvertToCoords.xcodeproj)
 
-#### iOS UIKit:
+#### iOS UIKit Voice API:
 An iOS UIKit example using the VoiceAPI is at: [Examples/VoiceAPI/VoiceAPI.xcodeproj](./Examples/VoiceAPI/VoiceAPI.xcodeproj)
+
+#### iOS UIKit GridLine:
+An iOS example using MapKit to show what3words gridlines on a map: [Examples/GridLines/GridLines.xcodeproj](./Examples/GridLines/GridLines.xcodeproj)
 
 # Installation
 
