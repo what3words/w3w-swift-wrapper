@@ -48,7 +48,7 @@ extension What3WordsV3: W3WVoice {
    Autosuggest accepting W3WOptions for the options
    Returns a list of 3 word addresses based on user input and other parameters.
    - parameter audio: An W3WAudioStream object or derivitive, typically W3WMicrophone providing audio data
-   - parameter options: An W3WOptions() containing various options, these are constructed using the factory pattern, see example code
+   - parameter options: An W3WOptions() containing various options, these are constructed using the chaining pattern, see example code
    - parameter callback: A completion block providing the suggestions and any error - ([W3WVoiceSuggestion]?, W3WVoiceError?) -> Void
    */
   public func autosuggest(audio: W3WAudioStream, language: String, options: W3WOptions, callback: @escaping W3WVoiceSuggestionsResponse) {

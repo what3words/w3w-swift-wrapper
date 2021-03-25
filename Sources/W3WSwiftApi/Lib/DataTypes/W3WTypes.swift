@@ -296,7 +296,7 @@ public protocol W3WSquare: W3WSuggestion {
 
 
 // Autosuggest options for Swift are designed to be specified using the
-// factory pattern or individually.  Typically W3WOption.language("en") or
+// chaining pattern or individually.  Typically W3WOption.language("en") or
 // W3WOptions().langauge("en").clipToCountry("GB").  Autosuggest accepts
 // Individual W3WOption, an array of [W3WOption] or W3WOptions for
 // its options parameter(s)
