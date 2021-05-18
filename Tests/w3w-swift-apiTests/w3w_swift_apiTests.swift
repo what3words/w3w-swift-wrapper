@@ -12,14 +12,6 @@ final class w3w_swift_apiTests: XCTestCase {
   
   // run all tests twice, once with no custom headers and one with
   override func invokeTest() {
-    
-    // run without headers
-    super.invokeTest()
-    
-    headers["x-test-1"] = "test-one"
-    headers["x-test-2"] = "test-two"
-    
-    // run with headers
     super.invokeTest()
   }
   
@@ -120,7 +112,7 @@ final class w3w_swift_apiTests: XCTestCase {
     waitForExpectations(timeout: 3.0, handler: nil)
   }
   
-  
+  #if !os(watchOS)
   func testVoiceLanguages() {
     let expectation = self.expectation(description: "Languages")
     api.availableVoiceLanguages() { (languages, error) in
@@ -137,7 +129,7 @@ final class w3w_swift_apiTests: XCTestCase {
     }
     waitForExpectations(timeout: 3.0, handler: nil)
   }
-  
+  #endif
   
   func testAutosuggest() {
     let expectation = self.expectation(description: "Autosuggest")
@@ -378,6 +370,32 @@ final class w3w_swift_apiTests: XCTestCase {
   }
   
   
+  func testAutosuggestSelection() {
+    let expectation = self.expectation(description: "Autosuggest Selection")
+    
+    api.autosuggestSelection(selection: "text.text.text", rank: 1, rawInput: "text.text.tex", sourceApi: .text)
+    
+    // function doesn't return anything, so there is nothing to test, this is included just for syntax checking
+    XCTAssertNil(nil)
+    expectation.fulfill()
+    
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  func testAutosuggestSelection2() {
+    let expectation = self.expectation(description: "Autosuggest Selection")
+    
+    api.autosuggestSelection(selection: "voice.voice.voice", rank: 2, rawInput: "voice.voice.voic", sourceApi: .voice)
+    
+    // function doesn't return anything, so there is nothing to test, this is included just for syntax checking
+    XCTAssertNil(nil)
+    expectation.fulfill()
+    
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
   func testBadWords() {
     let expectation = self.expectation(description: "Bad Words")
     
@@ -475,8 +493,7 @@ final class w3w_swift_apiTests: XCTestCase {
   }
   
 
-
-  
+#if !os(watchOS)
   /// test for a timeout error
   func testVoiceApiTimoutError() {
     let expectation = self.expectation(description: "Voice API")
@@ -490,69 +507,59 @@ final class w3w_swift_apiTests: XCTestCase {
     
     waitForExpectations(timeout: 30.0, handler: nil)
   }
+
+
+  func testVoiceApi() {
+    let expectation = self.expectation(description: "Voice API")
     
-  
-//  func testVoiceApi() {
-//    let expectation = self.expectation(description: "Voice API")
-//
-//    if let resource = try? Resource(name: "filled.count.soap.float.32", type: "wav") {
-//      print(resource.url.path)
-//      if let file = try? AVAudioFile(forReading: resource.url) {
-//        print(file.fileFormat.commonFormat)
-//        print(file.fileFormat.sampleRate)
-//        print(file.length)
-//        if let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: file.fileFormat.sampleRate, channels: 1, interleaved: false) {
-//          let buf = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 100000)!
-//          try? file.read(into: buf)
-//
-//          //let data = Data(buffer: ( UnsafeBufferPointer(start: buf.floatChannelData?[0], count:Int(buf.frameLength))))
-//          if let pointer = buf.floatChannelData {
-//            let data = Data(bytes: pointer, count:Int(buf.frameLength))
-//
-//            let stream = W3WAudioStream(sampleRate: Int(file.fileFormat.sampleRate), encoding: .pcm_f32le)
-//
-//            api.autosuggest(audio: stream, language: "en") { suggestions, error in
-//              XCTAssertEqual(suggestions?.first?.words, "filled.count.soap")
-//
-//              if error != nil {
-//                print(String(describing: error))
-//              }
-//
-//              expectation.fulfill()
-//            }
-//
-//            stream.add(samples: data)
-//            stream.endSamples()
-//
-//            waitForExpectations(timeout: 30.0, handler: nil)
-//          }
-//        }
-//      }
-//    }
-//  }
-  
-  
+    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+    
+    if let resource = try? Resource(name: "test", type: "dat") {
+
+      // load a file of raw audio data containing a mono stream of 32 bit float data samples
+      if let data = try? Data(contentsOf: resource.url) {
+      
+        // set the stream to accept PCM 32 bit float audio data at 44.1kHz sample rate
+        let audio = W3WAudioStream(sampleRate: 44100, encoding: .pcm_f32le)
+        
+        // assign the audio stream to an autosuggest call
+        api.autosuggest(audio: audio, language: "en", options: W3WOption.focus(somewhereInLondon)) { suggestions, error in
+
+          XCTAssertNil(error)
+
+          if suggestions?.first?.words == "filled.count.soap" {
+            expectation.fulfill()
+          }
+        }
+        
+        // finally, send the audio data.  This can be called repeatedly as new data become available if you want to live stream
+        audio.add(samples: data)
+        
+        // tell the server no more data will come (optional, you can instead let end of speach detection terminate the process)
+        audio.endSamples()
+        
+        waitForExpectations(timeout: 30.0, handler: nil)
+      }
+    }
+    
+  }
+#endif
+
 }
 
 
-//struct Resource {
-//  let name: String
-//  let type: String
-//  let url: URL
-//
-//  init(name: String, type: String, sourceFile: StaticString = #file) throws {
-//    self.name = name
-//    self.type = type
-//
-//    // The following assumes that your test source files are all in the same directory, and the resources are one directory down and over
-//    // <Some folder>
-//    //  - Resources
-//    //      - <resource files>
-//    //  - <Some test source folder>
-//    //      - <test case files>
-//    let testCaseURL = URL(fileURLWithPath: "\(sourceFile)", isDirectory: false)
-//    let testsFolderURL = testCaseURL.deletingLastPathComponent()
-//    let resourcesFolderURL = testsFolderURL.deletingLastPathComponent().appendingPathComponent("Resources", isDirectory: true)
-//    self.url = resourcesFolderURL.appendingPathComponent("\(name).\(type)", isDirectory: false)
-//  }
-//}
+struct Resource {
+  let name: String
+  let type: String
+  let url: URL
+
+  init(name: String, type: String, sourceFile: StaticString = #file) throws {
+    self.name = name
+    self.type = type
+
+    let testCaseURL = URL(fileURLWithPath: "\(sourceFile)", isDirectory: false)
+    let testsFolderURL = testCaseURL.deletingLastPathComponent()
+    let resourcesFolderURL = testsFolderURL.deletingLastPathComponent().appendingPathComponent("Resources", isDirectory: true)
+    self.url = resourcesFolderURL.appendingPathComponent("\(name).\(type)", isDirectory: false)
+  }
+}

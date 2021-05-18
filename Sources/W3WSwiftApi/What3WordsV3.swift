@@ -154,6 +154,46 @@ public class What3WordsV3: W3WApiCall, W3WProtocolV3 {
   }
   
   
+  /**
+   Inform the server that the user has made a selection in the autosuggest results
+   - parameter selection: The three word address that the user selected
+   - parameter input: The text input used to call autosuggest in the first place
+   - parameter source: Indicated if the autosuggest was called using text, or voice input
+   */
+  public func autosuggestSelection(selection: String, rank: Int, rawInput: String, sourceApi: W3WSelectionType = .text) {
+    if isCurrentServerW3W() {
+      var params: [String: String] = ["raw-input": rawInput, "selection": selection, "rank": ""]
+
+      params["source-api"] = sourceApi.rawValue
+      params["rank"] = String(rank)
+            
+      self.performRequest(path: "/autosuggest-selection", params: params) { results, error in
+        // nothing is returned, and we ignore any error too
+      }
+    }
+  }
+
+  
+  // MARK: Other API calls
+  
+
+  /**
+  Determines if the currently set URL points to a what3words server or not
+  This is useful because some functions like autosuggestSelection only work
+  with w3w servers, and not the enterprise server product
+  */
+  func isCurrentServerW3W() -> Bool {
+    var w3w = false
+    
+    for domain in W3WSettings.domains {
+      if apiUrl.lowercased().contains(domain) {
+        w3w = true
+      }
+    }
+    
+    return w3w
+  }
+
   
 }
 

@@ -126,8 +126,9 @@ public class W3WApiCall {
     
     // make the call
     let task = URLSession.shared.dataTask(with: request) { (data, _, error) in
+      
       guard let data = data else {
-        completion(nil, W3WError.badConnection) //W3WError(code: "BadConnection", message: error?.localizedDescription ?? "Unknown Cause"))
+        completion(nil, W3WError.badConnection)
         return
       }
       

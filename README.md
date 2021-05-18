@@ -13,6 +13,8 @@ The what3words Swift API wrapper gives you programmatic access to
 * determine the currently support 3 word address languages.
 * autosuggest functionality to convert a spoken 3 word address (via voiceAPI) to a list of valid 3 word addresses
 
+TLDR: You can find a short tutorial [here](Documentation/tutorial.md) that will show you how to get minimally set up and running.
+
 # Authentication
 
 To use this library you’ll need a what3words API key, which can be signed up for [here](https://what3words.com/select-plan).  If you wish to use the Voice API calls then you must add a Voice API plan to your [account](https://accounts.what3words.com/billing).

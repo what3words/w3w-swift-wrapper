@@ -27,7 +27,7 @@ let package = Package(
           name: "w3w-swift-apiTests",
           dependencies: ["W3WSwiftApi"],
           resources: [
-            .copy("Resources/filled.count.soap.float.32.wav")
+            .copy("Resources/test.dat")
           ]),
   ]
 )

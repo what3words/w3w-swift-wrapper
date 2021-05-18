@@ -85,6 +85,21 @@ public struct W3WApiSuggestion: W3WSuggestion, W3WRanked {
 }
 
 
+/// Helper object representing a W3W suggestion from a voice system
+/// Note: perhaps it's best to move the init's to voice-api as an extension
+public struct W3WVoiceSuggestion: W3WSuggestion, W3WRanked {
+  // W3WSuggestion
+  public var words : String?             // the three word address
+  public var country : String?           // ISO 3166-1 alpha-2 country code
+  public var nearestPlace : String?      // text description of a nearby place
+  public var distanceToFocus : Double?   // number of kilometers to the nearest place
+  public var language : String?          // two letter language code
+  
+  // W3VoiceSuggestion
+  public var rank : Int?                 // indicates this suggestion's place in list from most probable to least probable match
+}
+
+
 /// Helper object representing a W3W place in  API calls
 public struct W3WApiSquare: W3WSquare {
   // W3WSuggestion
@@ -133,6 +148,14 @@ public struct W3WApiSquare: W3WSquare {
 }
 
 
+// MARK: Enums
+
+public enum W3WSelectionType: String {
+  case text  = "text"
+  case voice = "voice"
+}
+
+
 // MARK: Initializers
 
 
@@ -162,6 +185,40 @@ extension W3WApiSquare {
     self.southWestBounds = southWestBounds
     self.northEastBounds = northEastBounds
     self.map = map
+  }
+  
+}
+
+
+
+extension W3WVoiceSuggestion: Codable {
+  
+  enum CodingKeys: String, CodingKey {
+    case country = "country"
+    case nearestPlace = "nearestPlace"
+    case words = "words"
+    case distanceToFocus = "distanceToFocusKm"
+    case rank = "rank"
+    case language = "language"
+  }
+  
+  public init(from decoder: Decoder) throws {
+    let values      = try decoder.container(keyedBy: CodingKeys.self)
+    country         = try values.decodeIfPresent(String.self, forKey: .country)
+    nearestPlace    = try values.decodeIfPresent(String.self, forKey: .nearestPlace)
+    words           = try values.decodeIfPresent(String.self, forKey: .words)
+    distanceToFocus = try values.decodeIfPresent(Double.self, forKey: .distanceToFocus)
+    rank            = try values.decodeIfPresent(Int.self,    forKey: .rank)
+    language        = try values.decodeIfPresent(String.self, forKey: .language)
+  }
+  
+  
+  public init(words: String? = nil, country : String? = nil, nearestPlace : String? = nil, distanceToFocus : Double? = nil, language : String? = nil) {
+    self.words = words
+    self.country = country
+    self.nearestPlace = nearestPlace
+    self.distanceToFocus = distanceToFocus
+    self.language = language
   }
   
 }
