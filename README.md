@@ -15,6 +15,16 @@ The what3words Swift API wrapper gives you programmatic access to
 
 TLDR: You can find a short tutorial [here](Documentation/tutorial.md) that will show you how to get minimally set up and running.
 
+# OS Requirements
+
+This package works with:
+ 
+ * macOS version 10.13 or higher
+ * iOS version 9 or higher
+ * tvOS version 11 or higher
+ * watchOS version 2 or higher
+
+
 # Authentication
 
 To use this library you’ll need a what3words API key, which can be signed up for [here](https://what3words.com/select-plan).  If you wish to use the Voice API calls then you must add a Voice API plan to your [account](https://accounts.what3words.com/billing).
@@ -153,7 +163,17 @@ If you have a VoiceAPI enabled account, you may also call `autosuggest` with aud
 
 You will only receive results back if the partial 3 word address string you submit contains the first two words and at least the first character of the third word; otherwise an error message will be returned.
 
-We have prepared a regex, and example code to help you filter results before calling autosuggest.  Please see our [regex documentation](https://developer.what3words.com/tutorial/detecting-if-text-is-in-the-format-of-a-3-word-address)
+We have prepared a regex, and example code to help you filter results before calling autosuggest.  Please see our [regex documentation](https://developer.what3words.com/tutorial/detecting-if-text-is-in-the-format-of-a-3-word-address).
+
+Alternatively, we also provide a simple function that employs the regex to help you recognise the three word addresses.  It is called `isPossible3wa`, but please note that it only indicates if the input is three strings separated by two w3w separators.  It WILL NOT tell you if it is a real three word address in world.  The following `if` evaluates to `true`.
+
+```
+if api.isPossible3wa(text: "xxx.xxx.xxx") {
+  print("Input is in the form of a three word address")
+} else {
+  print("Input is NOT in the form of a three word address")
+}
+```
 
 ### Clipping and Focus
 
