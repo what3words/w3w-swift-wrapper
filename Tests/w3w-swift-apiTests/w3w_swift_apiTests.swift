@@ -19,7 +19,12 @@ final class w3w_swift_apiTests: XCTestCase {
   override func setUp() {
     super.setUp()
     
-    api = What3WordsV3(apiKey: "XXXXXXXX", apiUrl: W3WSettings.apiUrl, customHeaders: headers)
+    if let apikey = ProcessInfo.processInfo.environment["APIKEY"] {
+      api = What3WordsV3(apiKey: apikey, apiUrl: W3WSettings.apiUrl, customHeaders: headers)
+    } else {
+      print("Environment variable APIKEY must be set")
+      abort()
+    }
   }
   
   
