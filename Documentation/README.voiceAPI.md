@@ -3,7 +3,7 @@
 
 # Overview
 
-The what3words Swift API wrapper gives you programmatic access to autosuggest functionality to convert a spoken 3 word address (via voiceAPI) to 
+The what3words Swift API wrapper converts a spoken 3 word address in audio to a list of three word address suggestions.
 
 # Authentication
 
@@ -80,7 +80,7 @@ api.autosuggest(audio: microphone, language: "en", options: options) { suggestio
 ```
 
 
-#### Langauges
+#### Languages
 
 You can call `availableVoiceLanguages(completion:)` to get a list of currently supported languages:
 

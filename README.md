@@ -50,16 +50,14 @@ https://github.com/what3words/w3w-swift-wrapper.git
 You can use CocoaPods to install w3w-swift-wrapper by adding it to the target in your Podfile:
 
 ```
-pod 'W3WSwiftApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+pod 'what3words', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
 ```
+
+If you are using CocoaPods use `import what3words` instead of `import W3WSwiftApi` in your Swift files.
 
 #### Note:
 
-Don't forget, if you are running on device you need to set the `App Transport Security Settings` in your `Info.plist` as you would any app communicating with a server:
-
-<img src="Documentation/plist.png" width="50%">
-
-Also, if you are using the Voice API on device, you should include Microphone permissions:
+If you are using the Voice API on device, you should include Microphone permissions:
 
 <img src="Documentation/plist2.png" width="75%">
 
@@ -74,6 +72,8 @@ In any swift file you use the what3words API, import the following:
 import W3WSwiftApi
 import CoreLocation
 ```
+
+If you are using CocoaPods use `import what3words` instead.
 
 ### Initialise
 
@@ -237,7 +237,7 @@ api.availableLanguages() { (languages, error) in
 }
 ```
 
-For the available Voice API langauges call `api.availableVoiceLanguages(completion:)` which works exactly the same way.
+For the available Voice API languages call `api.availableVoiceLanguages(completion:)` which works exactly the same way.
 
 ## Grid Section
 

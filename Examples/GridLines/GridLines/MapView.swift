@@ -103,8 +103,8 @@ open class MapView: MKMapView, MKMapViewDelegate, UIGestureRecognizerDelegate {
   /// calls api.gridSection() and gets the lines for the grid, then calls presentNewGrid() to present the map on the view
   func getGridSection() {
     // ask for a grid twice the size of the currently showing map area
-    let sw = CLLocationCoordinate2D(latitude: region.center.latitude - region.span.latitudeDelta * 2.0, longitude: region.center.longitude - region.span.longitudeDelta * 2.0)
-    let ne = CLLocationCoordinate2D(latitude: region.center.latitude + region.span.latitudeDelta * 2.0, longitude: region.center.longitude + region.span.longitudeDelta * 2.0)
+    let sw = CLLocationCoordinate2D(latitude: region.center.latitude - region.span.latitudeDelta * 1.5, longitude: region.center.longitude - region.span.longitudeDelta * 1.5)
+    let ne = CLLocationCoordinate2D(latitude: region.center.latitude + region.span.latitudeDelta * 1.5, longitude: region.center.longitude + region.span.longitudeDelta * 1.5)
     
     // call w3w api for lines
     self.api?.gridSection(southWest:sw, northEast:ne) { lines, error in

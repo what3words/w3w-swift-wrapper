@@ -234,6 +234,26 @@ public class W3WApiCall {
   
   
   /**
+   Make an array ot W3APISuggestionWithCoordinates from a data dictionary
+   - parameter from: Dictionary of values, usually from a JSON decode
+   */
+  func suggestionsWithCoordinates(from: [String: Any]?) -> [W3WApiSuggestionWithCoordinates]? {
+    var suggestions = [W3WApiSuggestionWithCoordinates]()
+    if let s = from {
+      if let list = s["suggestions"] as? Array<Any?>? {
+        for ss in list! {
+          if let sugg = ss as? Dictionary<String, Any?> {
+            let suggestion = W3WApiSuggestionWithCoordinates(with: sugg)
+            suggestions.append(suggestion)
+          }
+        }
+      }
+    }
+    return suggestions
+  }
+  
+  
+  /**
    Make an array ot W3Line from a data dictionary
    - parameter from: Dictionary of values, usually from a JSON decode
    */

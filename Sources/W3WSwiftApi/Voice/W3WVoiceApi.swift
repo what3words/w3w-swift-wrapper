@@ -48,7 +48,7 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
   //private func common(audio: W3WAudioStream, options: [W3WOption], callback: @escaping W3WVoiceSuggestionsResponse, completion: @escaping W3WClosedResponse) {
   private func common(audio: W3WAudioStream, language: String, options: [W3WOption], callback: @escaping W3WVoiceSuggestionsResponse) {
  
-    let filteredOptions = replaceOrAddVoiceLanguageIn(options: options, langauge: language)
+    let filteredOptions = replaceOrAddVoiceLanguageIn(options: options, language: language)
 
     // connects the callback and intializes the VoiceApi
     audio.configure(apiKey: self.apiKey, callback: callback) //, completion: completion)
@@ -89,9 +89,9 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
   
 
   /// removes voiceLanguage option if present, and adds the language specified in the language parameter
-  /// this is a remedy for teh case a redundancy is caused by the parameter and optioins both specifying a langauge
+  /// this is a remedy for teh case a redundancy is caused by the parameter and optioins both specifying a language
   /// perference is given to the parameter
-  func replaceOrAddVoiceLanguageIn(options: [W3WOption], langauge: String) -> [W3WOption] {
+  func replaceOrAddVoiceLanguageIn(options: [W3WOption], language: String) -> [W3WOption] {
     var newOptions = [W3WOption]()
     
     for option in options {
@@ -100,14 +100,14 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
       }
     }
     
-    newOptions.append(W3WOption.voiceLanguage(langauge))
+    newOptions.append(W3WOption.voiceLanguage(language))
     
     return newOptions
   }
   
   
 
-  /// utility to check that langauge was passed in as it is non-optional for voice
+  /// utility to check that language was passed in as it is non-optional for voice
   func checkForLanguageOption(options: [W3WOption]) -> Bool {
     var languagePresent = false
     

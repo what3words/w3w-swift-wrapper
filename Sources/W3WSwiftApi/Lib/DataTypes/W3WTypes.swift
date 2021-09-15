@@ -12,10 +12,11 @@ import CoreLocation
 
 // MARK: callback block definitions
 
-public typealias W3WSquareResponse               = ((_ result: W3WSquare?, _ error: W3WError?) -> Void)
-public typealias W3WSuggestionsResponse          = ((_ result: [W3WSuggestion]?, _ error: W3WError?) -> Void)
-public typealias W3WGridResponse                 = ((_ result: [W3WLine]?, _ error: W3WError?) -> Void)
-public typealias W3WLanguagesResponse            = ((_ result: [W3WLanguage]?, _ error: W3WError?) -> Void)
+public typealias W3WSquareResponse                      = ((_ result: W3WSquare?, _ error: W3WError?) -> Void)
+public typealias W3WSuggestionsResponse                 = ((_ result: [W3WSuggestion]?, _ error: W3WError?) -> Void)
+public typealias W3WSuggestionsWithCoordinatesResponse  = ((_ result: [W3WSuggestionWithCoordinates]?, _ error: W3WError?) -> Void)
+public typealias W3WGridResponse                        = ((_ result: [W3WLine]?, _ error: W3WError?) -> Void)
+public typealias W3WLanguagesResponse                   = ((_ result: [W3WLanguage]?, _ error: W3WError?) -> Void)
 
 
 
@@ -229,11 +230,11 @@ public protocol W3WLine {
 // MARK: Data protocols
 
 
-/// Stores info about a language used with getLangauges() API call
+/// Stores info about a language used with getLanguages() API call
 public protocol W3WLanguage { //}: Hashable {
   /// name of the language
   var name:String { get set }
-  /// name of the language in that langauge
+  /// name of the language in that language
   var nativeName:String { get set }
   /// ISO 639-1 2 letter code
   var code:String { get set }
@@ -243,6 +244,13 @@ public protocol W3WLanguage { //}: Hashable {
 
 public protocol W3WRanked {
   var rank: Int? { get set }
+}
+
+
+public protocol W3WWithCoordinates {
+  var coordinates: CLLocationCoordinate2D? { get set }
+  var southWestBounds: CLLocationCoordinate2D? { get set }
+  var northEastBounds: CLLocationCoordinate2D? { get set }
 }
 
 
@@ -260,7 +268,7 @@ public protocol W3WSuggestion {
 
 
 /// Helper object representing a W3W square
-public protocol W3WSquare: W3WSuggestion {
+public protocol W3WSquare: W3WSuggestion, W3WWithCoordinates {
   // W3WSuggestion
   var words: String? { get set }
   var country: String? { get set }
@@ -268,13 +276,18 @@ public protocol W3WSquare: W3WSuggestion {
   var distanceToFocus: Double? { get set }
   var language: String? { get set }
   
-  // W3Square
+  // W3WWithCoordinates
   var coordinates: CLLocationCoordinate2D? { get set }
   var southWestBounds: CLLocationCoordinate2D? { get set }
   var northEastBounds: CLLocationCoordinate2D? { get set }
+  
   var map: String? { get set }
 }
 
+
+public protocol W3WSuggestionWithCoordinates: W3WSuggestion, W3WWithCoordinates {
+  
+}
 
 
 // MARK: Autosuggest Options
@@ -282,7 +295,7 @@ public protocol W3WSquare: W3WSuggestion {
 
 // Autosuggest options for Swift are designed to be specified using the
 // chaining pattern or individually.  Typically W3WOption.language("en") or
-// W3WOptions().langauge("en").clipToCountry("GB").  Autosuggest accepts
+// W3WOptions().language("en").clipToCountry("GB").  Autosuggest accepts
 // Individual W3WOption, an array of [W3WOption] or W3WOptions for
 // its options parameter(s)
 
@@ -292,6 +305,7 @@ public protocol W3WOptionProtocol {
   func key()     -> String
   func asString()   -> String
   func asBoolean()    -> Bool
+  func asStringArray() -> [String]
   func asCoordinates()  -> CLLocationCoordinate2D
   func asBoundingBox()   -> (CLLocationCoordinate2D, CLLocationCoordinate2D)
   func asBoundingCircle() -> (CLLocationCoordinate2D, Double)
@@ -308,6 +322,7 @@ public struct W3WOptionKey {
   public static let numberFocusResults = "n-focus-results"
   public static let inputType = "input-type"
   public static let clipToCountry = "clip-to-country"
+  public static let clipToCountries = "clip-to-countries"
   public static let preferLand = "prefer-land"
   public static let clipToCircle = "clip-to-circle"
   public static let clipToBox = "clip-to-bounding-box"
@@ -346,7 +361,7 @@ public enum W3WOption: W3WOptionProtocol {
     case .clipToCountry:
       return W3WOptionKey.clipToCountry
     case .clipToCountries:
-      return W3WOptionKey.clipToCountry
+      return W3WOptionKey.clipToCountries
     case .preferLand:
       return W3WOptionKey.preferLand
     case .clipToCircle:
@@ -388,6 +403,16 @@ public enum W3WOption: W3WOptionProtocol {
         polyCoords.append("\(coord.latitude),\(coord.longitude)")
       }
       return polyCoords.joined(separator: ",")
+    }
+  }
+
+  
+  public func asStringArray() -> [String] {
+    switch self {
+    case .clipToCountries(let countries):
+      return countries
+    default:
+      return [asString()]
     }
   }
   
@@ -452,7 +477,7 @@ public class W3WOptions {
   public init() {}
   
   public func language(_ language:String)            -> W3WOptions { options.append(W3WOption.language(language)); return self }
-  public func voiceLanguage(_ voiceLangauge:String)  -> W3WOptions { options.append(W3WOption.voiceLanguage(voiceLangauge)); return self }
+  public func voiceLanguage(_ voiceLanguage:String)  -> W3WOptions { options.append(W3WOption.voiceLanguage(voiceLanguage)); return self }
   public func numberOfResults(_ numberOfResults:Int) -> W3WOptions { options.append(W3WOption.numberOfResults(numberOfResults)); return self }
   public func inputType(_ inputType:W3WInputType)     -> W3WOptions { options.append(W3WOption.inputType(inputType)); return self }
   public func clipToCountry(_ clipToCountry:String)     -> W3WOptions { options.append(W3WOption.clipToCountry(clipToCountry)); return self }
@@ -506,6 +531,21 @@ public protocol W3WProtocolV3 {
   
   
   /**
+   Returns a list of 3 word addresses based on user input and other parameters, including coordinates of each suggestion
+   - parameter input: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
+   - options are provided by instantiating W3Option objects in the varidic length parameter list.  Eg:
+   */
+  func autosuggestWithCoordinates(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsWithCoordinatesResponse)
+  
+  
+  /**
+   Convenience functions to allow different uses of options
+   */
+  func autosuggestWithCoordinates(text: String, options: W3WOptionProtocol..., completion: @escaping W3WSuggestionsWithCoordinatesResponse)
+  func autosuggestWithCoordinates(text: String, completion: @escaping W3WSuggestionsWithCoordinatesResponse)
+  
+  
+  /**
    Returns a section of the 3m x 3m what3words grid for a given area.
    - parameter bounding-box: Bounding box, as a lat,lng,lat,lng, for which the grid should be returned. The requested box must not exceed 4km from corner to corner, or a BadBoundingBoxTooBig error will be returned. Latitudes must be >= -90 and <= 90, but longitudes are allowed to wrap around 180. To specify a bounding-box that crosses the anti-meridian, use longitude greater than 180. Example value: "50.0,179.995,50.01,180.0005" .
    - parameter format: Return data format type; can be one of json (the default) or geojson Example value:format=Format.json
@@ -544,7 +584,32 @@ extension W3WProtocolV3 {
   public func autosuggest(text: String, options: W3WOptions, completion: @escaping W3WSuggestionsResponse) {
     autosuggest(text: text, options: options.options, completion: completion)
   }
-
+  
+  public func autosuggestWithCoordinates(text: String, options: W3WOptionProtocol..., completion: @escaping W3WSuggestionsWithCoordinatesResponse) {
+    autosuggestWithCoordinates(text: text, options: options, completion: completion)
+  }
+  
+  public func autosuggestWithCoordinates(text: String, completion: @escaping W3WSuggestionsWithCoordinatesResponse) {
+    autosuggestWithCoordinates(text: text, options: [], completion: completion)
+  }
+  
+  public func autosuggestWithCoordinates(text: String, options: W3WOptions, completion: @escaping W3WSuggestionsWithCoordinatesResponse) {
+    autosuggestWithCoordinates(text: text, options: options.options, completion: completion)
+  }
+  
+  
+  /// Uses the regex to determine if a String fits the three word address form of three words in any language separated by two separator characters
+  public func isPossible3wa(text: String) -> Bool {
+    let regex = try! NSRegularExpression(pattern:W3WSettings.regex_match, options: [])
+    let count = regex.numberOfMatches(in: text, options: [], range: NSRange(text.startIndex..<text.endIndex, in:text))
+    if (count > 0) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+  
 }
 
 

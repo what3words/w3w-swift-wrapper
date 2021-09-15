@@ -107,7 +107,30 @@ public class What3WordsV3: W3WApiCall, W3WProtocolV3 {
     }
   }
   
-  
+
+  /**
+   Returns a list of 3 word addresses based on user input and other parameters.
+   - parameter text: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
+   - parameter options: are provided as an array of W3Option objects. They can also be passed as a  varidic length parameter list, or in a W3WOptopns() object thanks to the W3WProtocolV3 protocol conformity
+   - parameter callback: A completion block providing the suggestions and any error - ([W3WVoiceSuggestion]?, W3WVoiceError?) -> Void
+   -  autosuggest(input: "filled.count.soap", options: FallbackLanguage("en"), BoundingCircle(51.4243877, -0.3474524, 4.0), NumberResults(5), completion_handler)
+   */
+  public func autosuggestWithCoordinates(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsWithCoordinatesResponse) {
+    var params: [String: String] = ["input": text]
+    
+    for option in options {
+      params[option.key()] = option.asString()
+    }
+    
+    self.performRequest(path: "/autosuggest-with-coordinates", params: params) { (result, error) in
+      if let suggestions = result {
+        completion(self.suggestionsWithCoordinates(from: suggestions), error)
+      } else {
+        completion(nil, error)
+      }
+    }
+  }
+
   // MARK: Other API calls
   
   /**
