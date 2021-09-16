@@ -1,4 +1,6 @@
-# <img valign='top' src="https://what3words.com/assets/images/w3w_square_red.png" width="64" height="64" alt="what3words">&nbsp;w3w-swift-wrapper
+![what3words](https://circleci.com/gh/what3words/w3w-swift-wrapper.svg?style=shield&branch=dd-ascoords)
+
+# <img valign='top' src="https://what3words.com/assets/images/w3w_square_red.png" width="64" height="64" alt="what3words">&nbsp;w3w-swift-wrapper 
 
 A swift library to use the what3words [REST API](https://docs.what3words.com/api/v3/), and the what3words [VoiceAPI](https://developer.what3words.com/voice-api).
 
