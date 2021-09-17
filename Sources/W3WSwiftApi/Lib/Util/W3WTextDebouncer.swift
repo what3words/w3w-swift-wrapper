@@ -33,7 +33,7 @@ public class W3WTextDebouncer {
   
   /// to indicate a call should be made
   public func call(text: String) {
-    if #available(iOS 10.0, watchOS 3.0, *) {
+    if #available(iOS 10.0, watchOS 3.0, macOS 10.12, *) {
     timer?.invalidate()
     timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { [weak self] _ in  self?.handler(text)})
     } else {
