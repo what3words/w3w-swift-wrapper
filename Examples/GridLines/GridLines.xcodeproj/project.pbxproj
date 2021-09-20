@@ -13,7 +13,6 @@
 		01036AD0260CFF4E00FCC2C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01036ACE260CFF4E00FCC2C8 /* Main.storyboard */; };
 		01036AD2260CFF4E00FCC2C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01036AD1260CFF4E00FCC2C8 /* Assets.xcassets */; };
 		01036AD5260CFF4E00FCC2C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01036AD3260CFF4E00FCC2C8 /* LaunchScreen.storyboard */; };
-		01036ADE260CFF6E00FCC2C8 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01036ADD260CFF6E00FCC2C8 /* MapView.swift */; };
 		01036AE2260CFF9C00FCC2C8 /* W3WSwiftApi in Frameworks */ = {isa = PBXBuildFile; productRef = 01036AE1260CFF9C00FCC2C8 /* W3WSwiftApi */; };
 /* End PBXBuildFile section */
 
@@ -26,7 +25,6 @@
 		01036AD1260CFF4E00FCC2C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01036AD4260CFF4E00FCC2C8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01036AD6260CFF4E00FCC2C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		01036ADD260CFF6E00FCC2C8 /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +61,6 @@
 				01036AC8260CFF4E00FCC2C8 /* AppDelegate.swift */,
 				01036ACA260CFF4E00FCC2C8 /* SceneDelegate.swift */,
 				01036ACC260CFF4E00FCC2C8 /* ViewController.swift */,
-				01036ADD260CFF6E00FCC2C8 /* MapView.swift */,
 				01036ACE260CFF4E00FCC2C8 /* Main.storyboard */,
 				01036AD1260CFF4E00FCC2C8 /* Assets.xcassets */,
 				01036AD3260CFF4E00FCC2C8 /* LaunchScreen.storyboard */,
@@ -149,7 +146,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				01036ACD260CFF4E00FCC2C8 /* ViewController.swift in Sources */,
-				01036ADE260CFF6E00FCC2C8 /* MapView.swift in Sources */,
 				01036AC9260CFF4E00FCC2C8 /* AppDelegate.swift in Sources */,
 				01036ACB260CFF4E00FCC2C8 /* SceneDelegate.swift in Sources */,
 			);

@@ -1,4 +1,6 @@
-# <img valign='top' src="https://what3words.com/assets/images/w3w_square_red.png" width="64" height="64" alt="what3words">&nbsp;w3w-swift-wrapper
+![what3words](https://circleci.com/gh/what3words/w3w-swift-wrapper.svg?style=shield&branch=dd-ascoords)
+
+# <img valign='top' src="https://what3words.com/assets/images/w3w_square_red.png" width="64" height="64" alt="what3words">&nbsp;w3w-swift-wrapper 
 
 A swift library to use the what3words [REST API](https://docs.what3words.com/api/v3/), and the what3words [VoiceAPI](https://developer.what3words.com/voice-api).
 
@@ -14,6 +16,16 @@ The what3words Swift API wrapper gives you programmatic access to
 * autosuggest functionality to convert a spoken 3 word address (via voiceAPI) to a list of valid 3 word addresses
 
 TLDR: You can find a short tutorial [here](Documentation/tutorial.md) that will show you how to get minimally set up and running.
+
+# OS Requirements
+
+This package works with:
+ 
+ * macOS version 10.13 or higher
+ * iOS version 9 or higher
+ * tvOS version 11 or higher
+ * watchOS version 2 or higher
+
 
 # Authentication
 
@@ -50,16 +62,14 @@ https://github.com/what3words/w3w-swift-wrapper.git
 You can use CocoaPods to install w3w-swift-wrapper by adding it to the target in your Podfile:
 
 ```
-pod 'W3WSwiftApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+pod 'what3words', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
 ```
+
+If you are using CocoaPods use `import what3words` instead of `import W3WSwiftApi` in your Swift files.
 
 #### Note:
 
-Don't forget, if you are running on device you need to set the `App Transport Security Settings` in your `Info.plist` as you would any app communicating with a server:
-
-<img src="Documentation/plist.png" width="50%">
-
-Also, if you are using the Voice API on device, you should include Microphone permissions:
+If you are using the Voice API on device, you should include Microphone permissions:
 
 <img src="Documentation/plist2.png" width="75%">
 
@@ -74,6 +84,8 @@ In any swift file you use the what3words API, import the following:
 import W3WSwiftApi
 import CoreLocation
 ```
+
+If you are using CocoaPods use `import what3words` instead.
 
 ### Initialise
 
@@ -153,7 +165,17 @@ If you have a VoiceAPI enabled account, you may also call `autosuggest` with aud
 
 You will only receive results back if the partial 3 word address string you submit contains the first two words and at least the first character of the third word; otherwise an error message will be returned.
 
-We have prepared a regex, and example code to help you filter results before calling autosuggest.  Please see our [regex documentation](https://developer.what3words.com/tutorial/detecting-if-text-is-in-the-format-of-a-3-word-address)
+We have prepared a regex, and example code to help you filter results before calling autosuggest.  Please see our [regex documentation](https://developer.what3words.com/tutorial/detecting-if-text-is-in-the-format-of-a-3-word-address).
+
+Alternatively, we also provide a simple function that employs the regex to help you recognise the three word addresses.  It is called `isPossible3wa`, but please note that it only indicates if the input is three strings separated by two w3w separators.  It WILL NOT tell you if it is a real three word address in world.  The following `if` evaluates to `true`.
+
+```
+if api.isPossible3wa(text: "xxx.xxx.xxx") {
+  print("Input is in the form of a three word address")
+} else {
+  print("Input is NOT in the form of a three word address")
+}
+```
 
 ### Clipping and Focus
 
@@ -237,7 +259,7 @@ api.availableLanguages() { (languages, error) in
 }
 ```
 
-For the available Voice API langauges call `api.availableVoiceLanguages(completion:)` which works exactly the same way.
+For the available Voice API languages call `api.availableVoiceLanguages(completion:)` which works exactly the same way.
 
 ## Grid Section
 

@@ -43,11 +43,11 @@ public struct W3WApiLine: W3WLine {
 }
 
 
-/// Stores info about a language used with getLangauges() API call
+/// Stores info about a language used with getLanguages() API call
 public struct W3WApiLanguage: W3WLanguage {
   /// name of the language
   public var name:String
-  /// name of the language in that langauge
+  /// name of the language in that language
   public var nativeName:String
   /// ISO 639-1 2 letter code
   public var code:String
@@ -80,7 +80,7 @@ public struct W3WApiSuggestion: W3WSuggestion, W3WRanked {
   public var distanceToFocus: Double?
   public var language: String?
   
-  // W3ApiSuggestion
+  // W3WRanked
   public var rank: Int?
 }
 
@@ -95,13 +95,13 @@ public struct W3WVoiceSuggestion: W3WSuggestion, W3WRanked {
   public var distanceToFocus : Double?   // number of kilometers to the nearest place
   public var language : String?          // two letter language code
   
-  // W3VoiceSuggestion
+  // W3WRanked
   public var rank : Int?                 // indicates this suggestion's place in list from most probable to least probable match
 }
 
 
 /// Helper object representing a W3W place in  API calls
-public struct W3WApiSquare: W3WSquare {
+public struct W3WApiSquare: W3WSquare, W3WWithCoordinates {
   // W3WSuggestion
   public var words: String?
   public var country: String?
@@ -125,6 +125,58 @@ public struct W3WApiSquare: W3WSquare {
     words        = result?["words"] as? String ?? ""
     language     = result?["language"] as? String ?? ""
     map          = result?["map"] as? String ?? ""
+    
+    // if bounds are provided, assign them
+    if let bounds = result?["square"] as? Dictionary<String, Any?>? {
+      if let ne = bounds?["northeast"] as? Dictionary<String, Any?>? {
+        northEastBounds = CLLocationCoordinate2D(latitude: ne!["lat"] as! CLLocationDegrees, longitude: ne!["lng"] as! CLLocationDegrees)
+      }
+      
+      if let sw = bounds?["southwest"] as? Dictionary<String, Any?>? {
+        southWestBounds = CLLocationCoordinate2D(latitude: sw!["lat"] as! CLLocationDegrees, longitude: sw!["lng"] as! CLLocationDegrees)
+      }
+    }
+    
+    // if there are coordinates, assign them
+    if let coord = result?["coordinates"] as? Dictionary<String, Any?>? {
+      if let c = coord {
+        coordinates = CLLocationCoordinate2D(latitude: c["lat"] as! CLLocationDegrees, longitude: c["lng"] as! CLLocationDegrees)
+      }
+    }
+  }
+
+}
+
+
+public struct W3WApiSuggestionWithCoordinates: W3WSuggestionWithCoordinates, W3WSquare, W3WWithCoordinates, W3WSuggestion, W3WRanked {
+  
+  // W3WSuggestion
+  public var words: String?
+  public var country: String?
+  public var nearestPlace: String?
+  public var distanceToFocus: Double?
+  public var language: String?
+  
+  // W3Square
+  public var coordinates: CLLocationCoordinate2D?
+  public var southWestBounds: CLLocationCoordinate2D?
+  public var northEastBounds: CLLocationCoordinate2D?
+  public var map: String?
+
+  // W3WRanked
+  public var rank: Int?
+
+  /**
+   Make a W3Square from a data dictionary
+   - parameter from: Dictionary of values, usually from a JSON decode
+   */
+  public init(with result:[String: Any?]?) {
+    country      = result?["country"] as? String ?? ""
+    nearestPlace = result?["nearestPlace"] as? String ?? ""
+    words        = result?["words"] as? String ?? ""
+    language     = result?["language"] as? String ?? ""
+    map          = result?["map"] as? String ?? ""
+    rank         = result?["rank"] as? Int
     
     // if bounds are provided, assign them
     if let bounds = result?["square"] as? Dictionary<String, Any?>? {

@@ -30,6 +30,7 @@ public typealias W3wResponseGrid            = ((_ result: [W3wLine]?, _ error: W
 public typealias W3wResponseLanguages       = ((_ result: [W3wLanguage]?, _ error: W3wError?) -> Void)
 
 
+@available(swift, deprecated: 0.0.1, message: "use What3WordsV3 instead")
 public class W3wGeocoder {
   
   private static var kApiUrl = "https://api.what3words.com/v3"

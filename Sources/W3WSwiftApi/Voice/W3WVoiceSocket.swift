@@ -56,7 +56,7 @@ public class W3WVoiceSocket {
   var key = "<Your API Key>"
   
   /// default language
-  var language           = "en"
+  var language = W3WSettings.defaultLanguage
   
   /// Socket session
   var socket: W3WebSocket?

@@ -19,7 +19,12 @@ final class w3w_swift_apiTests: XCTestCase {
   override func setUp() {
     super.setUp()
     
-    api = What3WordsV3(apiKey: "XXXXXXXX", apiUrl: W3WSettings.apiUrl, customHeaders: headers)
+    if let apikey = ProcessInfo.processInfo.environment["APIKEY"] {
+      api = What3WordsV3(apiKey: apikey, apiUrl: W3WSettings.apiUrl, customHeaders: headers)
+    } else {
+      print("Environment variable APIKEY must be set")
+      abort()
+    }
   }
   
   
@@ -333,6 +338,96 @@ final class w3w_swift_apiTests: XCTestCase {
   }
   
   
+  func testAutosuggestWithCoordinates() {
+    let expectation = self.expectation(description: "Autosuggest")
+    api.autosuggestWithCoordinates(text: "filled.count.soap") { (suggestions, error) in
+      
+      XCTAssertEqual(suggestions?.count, 3)
+      XCTAssertEqual(suggestions?.first?.words, "filled.count.soap")
+      XCTAssertEqual(suggestions?.first?.coordinates?.longitude, -0.195521)
+      XCTAssertNil(error)
+      
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  func testAutosuggestWithCoordinatesFocus() {
+    let expectation = self.expectation(description: "Autosuggest")
+    api.autosuggestWithCoordinates(text: "geschaft.planter.carciofi", options: W3WOptions().focus(CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)).numberOfResults(3)) { (suggestions, error) in
+      
+      XCTAssertEqual(suggestions?.count, 3)
+      XCTAssertEqual(suggestions?.first?.words, "restate.piante.carciofo")
+      XCTAssertNil(error)
+      
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  func testAutosuggestWithCoordinatesLanguage() {
+    let expectation = self.expectation(description: "Autosuggest")
+    api.autosuggestWithCoordinates(text: "aaa.aaa.aaa", options: W3WOption.language("de")) { (suggestions, error) in
+      
+      XCTAssertEqual(suggestions?.count, 3)
+      XCTAssertEqual(suggestions?.first?.words, "saal.saal.saal")
+      XCTAssertEqual(suggestions?.first?.southWestBounds?.latitude, 53.16478)
+      XCTAssertNil(error)
+      
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  func testAutosuggestWithCoordinatesFocusAndPreferedLand() {
+    let expectation = self.expectation(description: "Autosuggest")
+    api.autosuggestWithCoordinates(
+      text: "bisect.nourishment.genuineness",
+      options: [W3WOption.preferLand(false), W3WOption.focus(CLLocationCoordinate2D(latitude: 50.842404, longitude: 4.361177))]) { (suggestions, error) in
+      
+      XCTAssertEqual(suggestions?.count, 3)
+      if ((suggestions?.count ?? 0) > 2) {
+        XCTAssertEqual(suggestions?[2].country, "ZZ")
+      }
+      XCTAssertNil(error)
+      
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+
+  
+
+  
+  // GET https://api.what3words.com/v3/autosuggest?input=%7B%22_isInGrammar%22%3A%22yes%22%2C%22_isSpeech%22%3A%22yes%22%2C%22_hypotheses%22%3A%5B%7B%22_score%22%3A342516%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6546%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34225%2C%22_orthography%22%3A%22tend%22%2C%22_conf%22%3A6964%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A43800%2C%22_orthography%22%3A%22poached%22%2C%22_conf%22%3A6181%2C%22_endTimeMs%22%3A4060%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342631%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6498%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34340%2C%22_orthography%22%3A%22tent%22%2C%22_conf%22%3A6772%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A43800%2C%22_orthography%22%3A%22poached%22%2C%22_conf%22%3A6181%2C%22_endTimeMs%22%3A4060%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342668%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6474%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34225%2C%22_orthography%22%3A%22tend%22%2C%22_conf%22%3A6964%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A41696%2C%22_orthography%22%3A%22perch%22%2C%22_conf%22%3A5950%2C%22_endTimeMs%22%3A4020%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342670%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6474%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34379%2C%22_orthography%22%3A%22tinge%22%2C%22_conf%22%3A6705%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A43800%2C%22_orthography%22%3A%22poached%22%2C%22_conf%22%3A6181%2C%22_endTimeMs%22%3A4060%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342783%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6426%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34340%2C%22_orthography%22%3A%22tent%22%2C%22_conf%22%3A6772%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A41696%2C%22_orthography%22%3A%22perch%22%2C%22_conf%22%3A5950%2C%22_endTimeMs%22%3A4020%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342822%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6402%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34379%2C%22_orthography%22%3A%22tinge%22%2C%22_conf%22%3A6705%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A41696%2C%22_orthography%22%3A%22perch%22%2C%22_conf%22%3A5950%2C%22_endTimeMs%22%3A4020%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%5D%2C%22_resultType%22%3A%22NBest%22%7D&language=en&focus=51.4243877,-0.3474524&input-type=vocon-hybrid&key=
+  func testVoiceAutosuggestWithCoordinatesVoice() {
+    let expectation = self.expectation(description: "AutosuggestWithCoordinatesVoice")
+    
+    let json = "%7B%22_isInGrammar%22%3A%22yes%22%2C%22_isSpeech%22%3A%22yes%22%2C%22_hypotheses%22%3A%5B%7B%22_score%22%3A342516%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6546%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34225%2C%22_orthography%22%3A%22tend%22%2C%22_conf%22%3A6964%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A43800%2C%22_orthography%22%3A%22poached%22%2C%22_conf%22%3A6181%2C%22_endTimeMs%22%3A4060%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342631%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6498%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34340%2C%22_orthography%22%3A%22tent%22%2C%22_conf%22%3A6772%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A43800%2C%22_orthography%22%3A%22poached%22%2C%22_conf%22%3A6181%2C%22_endTimeMs%22%3A4060%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342668%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6474%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34225%2C%22_orthography%22%3A%22tend%22%2C%22_conf%22%3A6964%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A41696%2C%22_orthography%22%3A%22perch%22%2C%22_conf%22%3A5950%2C%22_endTimeMs%22%3A4020%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342670%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6474%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34379%2C%22_orthography%22%3A%22tinge%22%2C%22_conf%22%3A6705%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A43800%2C%22_orthography%22%3A%22poached%22%2C%22_conf%22%3A6181%2C%22_endTimeMs%22%3A4060%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342783%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6426%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34340%2C%22_orthography%22%3A%22tent%22%2C%22_conf%22%3A6772%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A41696%2C%22_orthography%22%3A%22perch%22%2C%22_conf%22%3A5950%2C%22_endTimeMs%22%3A4020%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342822%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6402%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34379%2C%22_orthography%22%3A%22tinge%22%2C%22_conf%22%3A6705%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A41696%2C%22_orthography%22%3A%22perch%22%2C%22_conf%22%3A5950%2C%22_endTimeMs%22%3A4020%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%5D%2C%22_resultType%22%3A%22NBest%22%7D"
+    
+    api.autosuggestWithCoordinates(text: json.removingPercentEncoding ?? "",
+                    options: [
+                      W3WOption.inputType(.voconHybrid),
+                      W3WOption.language("en"),
+                      W3WOption.numberOfResults(3),
+                      W3WOption.focus(CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.3474524))
+                    ]) { (suggestions, error) in
+      
+      XCTAssertEqual(suggestions?.count, 3)
+      XCTAssertEqual(suggestions?.first?.words, "tend.artichokes.perch")
+      XCTAssertEqual(Int(suggestions?.first?.coordinates?.latitude ?? 0.0), 47)
+      XCTAssertNil(error)
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  
   // GET https://api.what3words.com/v3/autosuggest?input=%7B%22_isInGrammar%22%3A%22yes%22%2C%22_isSpeech%22%3A%22yes%22%2C%22_hypotheses%22%3A%5B%7B%22_score%22%3A342516%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6546%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34225%2C%22_orthography%22%3A%22tend%22%2C%22_conf%22%3A6964%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A43800%2C%22_orthography%22%3A%22poached%22%2C%22_conf%22%3A6181%2C%22_endTimeMs%22%3A4060%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342631%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6498%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34340%2C%22_orthography%22%3A%22tent%22%2C%22_conf%22%3A6772%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A43800%2C%22_orthography%22%3A%22poached%22%2C%22_conf%22%3A6181%2C%22_endTimeMs%22%3A4060%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342668%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6474%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34225%2C%22_orthography%22%3A%22tend%22%2C%22_conf%22%3A6964%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A41696%2C%22_orthography%22%3A%22perch%22%2C%22_conf%22%3A5950%2C%22_endTimeMs%22%3A4020%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342670%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6474%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34379%2C%22_orthography%22%3A%22tinge%22%2C%22_conf%22%3A6705%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A43800%2C%22_orthography%22%3A%22poached%22%2C%22_conf%22%3A6181%2C%22_endTimeMs%22%3A4060%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342783%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6426%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34340%2C%22_orthography%22%3A%22tent%22%2C%22_conf%22%3A6772%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A41696%2C%22_orthography%22%3A%22perch%22%2C%22_conf%22%3A5950%2C%22_endTimeMs%22%3A4020%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%2C%7B%22_score%22%3A342822%2C%22_startRule%22%3A%22whatthreewordsgrammar%23_main_%22%2C%22_conf%22%3A6402%2C%22_endTimeMs%22%3A6360%2C%22_beginTimeMs%22%3A1570%2C%22_lmScore%22%3A300%2C%22_items%22%3A%5B%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A34379%2C%22_orthography%22%3A%22tinge%22%2C%22_conf%22%3A6705%2C%22_endTimeMs%22%3A2250%2C%22_beginTimeMs%22%3A1580%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A47670%2C%22_orthography%22%3A%22artichokes%22%2C%22_conf%22%3A7176%2C%22_endTimeMs%22%3A3180%2C%22_beginTimeMs%22%3A2260%7D%2C%7B%22_type%22%3A%22terminal%22%2C%22_score%22%3A41696%2C%22_orthography%22%3A%22perch%22%2C%22_conf%22%3A5950%2C%22_endTimeMs%22%3A4020%2C%22_beginTimeMs%22%3A3220%7D%5D%7D%5D%2C%22_resultType%22%3A%22NBest%22%7D&language=en&focus=51.4243877,-0.3474524&input-type=vocon-hybrid&key=
   func testVoiceAutosuggest() {
     let expectation = self.expectation(description: "Autosuggest")
@@ -491,7 +586,102 @@ final class w3w_swift_apiTests: XCTestCase {
     }
     waitForExpectations(timeout: 3.0, handler: nil)
   }
+
   
+//  // MARK: - Autosuggest Helper Tests
+//
+//
+//  func testAutosuggestHelper() {
+//    let expectation = self.expectation(description: "Voice API")
+//
+//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+//
+//    let helper = W3WAutosuggestHelper(api)
+//    helper.update(text: "filled.count.so", options: W3WOption.focus(somewhereInLondon)) { error in
+//      XCTAssertEqual(3, helper.getSuggestionCount())
+//      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
+//      expectation.fulfill()
+//    }
+//
+//    waitForExpectations(timeout: 30.0, handler: nil)
+//  }
+//
+//
+//  func testAutosuggestHelperOptions() {
+//    let expectation = self.expectation(description: "Voice API")
+//
+//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+//
+//    let helper = W3WAutosuggestHelper(api)
+//    helper.update(text: "filled.count.so", options: W3WOptions().focus(somewhereInLondon)) { error in
+//      XCTAssertEqual(3, helper.getSuggestionCount())
+//      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
+//      expectation.fulfill()
+//    }
+//
+//    waitForExpectations(timeout: 30.0, handler: nil)
+//  }
+//
+//
+//  func testAutosuggestHelperOptionArray() {
+//    let expectation = self.expectation(description: "Voice API")
+//
+//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+//
+//    let helper = W3WAutosuggestHelper(api)
+//    helper.update(text: "filled.count.so", options: [W3WOption.focus(somewhereInLondon)]) { error in
+//      XCTAssertEqual(3, helper.getSuggestionCount())
+//      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
+//      expectation.fulfill()
+//    }
+//
+//    waitForExpectations(timeout: 30.0, handler: nil)
+//  }
+//
+//
+//
+//  func testAutosuggestSelected() {
+//    let expectation = self.expectation(description: "Voice API")
+//
+//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+//
+//    let helper = W3WAutosuggestHelper(api)
+//    helper.update(text: "filled.count.soa", options: W3WOptions().focus(somewhereInLondon)) { error in
+//      helper.selected(row: 0) { square, error in
+//        XCTAssertEqual("filled.count.soap", square?.words)
+//        XCTAssertEqual(51.520847000000003, square?.coordinates?.latitude)
+//        expectation.fulfill()
+//      }
+//    }
+//
+//    waitForExpectations(timeout: 30.0, handler: nil)
+//  }
+//
+//
+//
+//  func testAutosuggestHelperDebouncer() {
+//    let expectation = self.expectation(description: "Voice API")
+//
+//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+//
+//    let helper = W3WAutosuggestHelper(api)
+//
+//    // "daring.lion.race" is used, but because 3 more are immediately sent in, only the last one, "filled.count.soap", should return
+//    helper.update(text: "daring.lion.race", options: W3WOption.focus(somewhereInLondon)) { error in
+//      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
+//      expectation.fulfill()
+//    }
+//
+//    helper.update(text: "index.home.raft", options: W3WOption.focus(somewhereInLondon)) { error in XCTAssertTrue(false) }
+//    helper.update(text: "deed.tulip.judge", options: W3WOption.focus(somewhereInLondon)) { error in XCTAssertTrue(false) }
+//    helper.update(text: "filled.count.soap", options: W3WOption.focus(somewhereInLondon)) { error in XCTAssertTrue(false) }
+//
+//    waitForExpectations(timeout: 30.0, handler: nil)
+//  }
+  
+
+  
+  // MARK: - Voice API tests
 
 #if !os(watchOS)
   /// test for a timeout error
@@ -538,11 +728,61 @@ final class w3w_swift_apiTests: XCTestCase {
         // tell the server no more data will come (optional, you can instead let end of speach detection terminate the process)
         audio.endSamples()
         
-        waitForExpectations(timeout: 30.0, handler: nil)
+        waitForExpectations(timeout: 60.0, handler: nil)
       }
     }
     
   }
+
+
+//  func callVoiceAutosuggest(data: Data, completion: @escaping () -> ()) {
+//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+//
+//    // set the stream to accept PCM 32 bit float audio data at 44.1kHz sample rate
+//    let audio = W3WAudioStream(sampleRate: 44100, encoding: .pcm_f32le)
+//
+//    // assign the audio stream to an autosuggest call
+//    api.autosuggest(audio: audio, language: "en", options: W3WOption.focus(somewhereInLondon)) { suggestions, error in
+//
+//      if error != nil {
+//        print(error!)
+//      }
+//
+//      XCTAssertNil(error)
+//      XCTAssertEqual(suggestions?.first?.words, "filled.count.soap")
+//
+//      completion()
+//    }
+//
+//    // finally, send the audio data.  This can be called repeatedly as new data become available if you want to live stream
+//    audio.add(samples: data)
+//
+//    // tell the server no more data will come (optional, you can instead let end of speach detection terminate the process)
+//    audio.endSamples()
+//  }
+
+
+//func testVoiceMultipleTimes() {
+//  let expectation = self.expectation(description: "Voice API Multiple")
+//
+//  if let resource = try? Resource(name: "test", type: "dat") {
+//
+//    // load a file of raw audio data containing a mono stream of 32 bit float data samples
+//    if let data = try? Data(contentsOf: resource.url) {
+//      self.callVoiceAutosuggest(data: data) {
+//        self.callVoiceAutosuggest(data: data) {
+//          self.callVoiceAutosuggest(data: data) {
+//            expectation.fulfill()
+//          }
+//        }
+//      }
+//
+//      waitForExpectations(timeout: 30.0, handler: nil)
+//    }
+//  }
+//
+//}
+
 #endif
 
 }

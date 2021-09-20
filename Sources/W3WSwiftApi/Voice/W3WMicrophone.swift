@@ -165,6 +165,7 @@ public class W3WMicrophone: W3WAudioStream {
   
   
   /// start the mic recording, but return the data converted to a custom sampleRate
+  @available(macOS 10.11, *)
   public func start(convertingToSampleRate: Int) {
     
     let micFormat    = mic.inputFormat(forBus: 0)
