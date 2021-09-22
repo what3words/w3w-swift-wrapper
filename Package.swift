@@ -29,5 +29,9 @@ let package = Package(
           resources: [
             .copy("Resources/test.dat")
           ]),
+      .testTarget(
+        name: "w3w-objc-apiTests",
+        dependencies: ["W3WSwiftApi"]
+        ),
   ]
 )

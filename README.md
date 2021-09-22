@@ -2,7 +2,7 @@
 
 # <img valign='top' src="https://what3words.com/assets/images/w3w_square_red.png" width="64" height="64" alt="what3words">&nbsp;w3w-swift-wrapper 
 
-A swift library to use the what3words [REST API](https://docs.what3words.com/api/v3/), and the what3words [VoiceAPI](https://developer.what3words.com/voice-api).
+A swift library to use the what3words [REST API](https://docs.what3words.com/api/v3/), and the what3words [VoiceAPI](https://developer.what3words.com/voice-api).  
 
 # Overview
 
@@ -15,13 +15,19 @@ The what3words Swift API wrapper gives you programmatic access to
 * determine the currently support 3 word address languages.
 * autosuggest functionality to convert a spoken 3 word address (via voiceAPI) to a list of valid 3 word addresses
 
-TLDR: You can find a short tutorial [here](Documentation/tutorial.md) that will show you how to get minimally set up and running.
+#### TLDR: 
+
+You can find a short tutorial [here](Documentation/tutorial.md) that will show you how to get minimally set up and running.
+
+#### Objective-C
+
+This package also contains an Objective-C compatible version, `What3WordsObjC` - see the `ObjectiveC` project in [Examples/ObjectiveC/ObjectiveC.xcodeproj](./Examples/ObjectiveC/ObjectiveC.xcodeproj)
 
 # OS Requirements
 
 This package works with:
  
- * macOS version 10.13 or higher
+ * macOS version 10.10 or higher
  * iOS version 9 or higher
  * tvOS version 11 or higher
  * watchOS version 2 or higher
@@ -47,6 +53,9 @@ An iOS UIKit example using the VoiceAPI is at: [Examples/VoiceAPI/VoiceAPI.xcode
 #### iOS UIKit GridLine:
 An iOS example using MapKit to show what3words gridlines on a map: [Examples/GridLines/GridLines.xcodeproj](./Examples/GridLines/GridLines.xcodeproj)
 
+#### Objective-C
+An example using Objective-C. [Examples/ObjectiveC/ObjectiveC.xcodeproj](./Examples/ObjectiveC/ObjectiveC.xcodeproj)
+
 # Installation
 
 #### Swift Package Manager
@@ -69,7 +78,7 @@ If you are using CocoaPods use `import what3words` instead of `import W3WSwiftAp
 
 #### Note:
 
-If you are using the Voice API on device, you should include Microphone permissions:
+If you are using this package's Voice API features on device, you should include Microphone permissions:
 
 <img src="Documentation/plist2.png" width="75%">
 
@@ -89,12 +98,12 @@ If you are using CocoaPods use `import what3words` instead.
 
 ### Initialise
 
-Use the following code with your API key to initialize the API:
+Use the following code with your API key to initialise the API:
 
 ```swift
 let api = What3WordsV3(apiKey: "YourApiKey")
 ```
-In the case that you run our Enterprise Suite API Server yourself, you may specifty the URL to your own server like so:
+In the case that you run our Enterprise Suite API Server yourself, you may specify the URL to your own server like so:
 
 ```swift
 let api = What3WordsV3(apiKey: "YourApiKey", apiUrl: "https://api.yourserver.com")
@@ -112,11 +121,7 @@ Each call takes a completion block as the last parameter. This allows Swift's tr
 
 ### Convert To 3 Word Address
 
-Convert coordinates, expressed as latitude and longitude to a 3 word address.
-
-This function takes the latitude and longitude as a [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/cllocationcoordinate2d) object 
-
-The values returned from the `convertTo3wa` method are described in the [API documentation](https://docs.what3words.com/api/v3/#convert-to-3wa).
+Convert coordinates, expressed as latitude and longitude to a 3 word address. This function takes the latitude and longitude as a [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/cllocationcoordinate2d) object. The values returned from the `convertTo3wa` method are described in the [API documentation](https://docs.what3words.com/api/v3/#convert-to-3wa).
 
 ##### Code Example:
 
@@ -130,11 +135,7 @@ api.convertTo3wa(coordinates: coords, language: "en") { square, error in
 
 ### Convert To Coordinates
 
-Convert a 3 word address to a position, expressed as coordinates of latitude and longitude.
-
-This function takes the words parameter as a string of 3 words `'table.book.chair'`
-
-The values returned from the `convertToCoordinates` method are described in the [API documentation](https://docs.what3words.com/api/v3/#convert-to-coords).
+Convert a 3 word address to a position, expressed as coordinates of latitude and longitude. This function takes the words parameter as a string of 3 words `'table.book.chair'`. The values returned from the `convertToCoordinates` method are described in the [API documentation](https://docs.what3words.com/api/v3/#convert-to-coords).
 
 ##### Code Example:
 ```swift
@@ -165,23 +166,27 @@ If you have a VoiceAPI enabled account, you may also call `autosuggest` with aud
 
 You will only receive results back if the partial 3 word address string you submit contains the first two words and at least the first character of the third word; otherwise an error message will be returned.
 
-We have prepared a regex, and example code to help you filter results before calling autosuggest.  Please see our [regex documentation](https://developer.what3words.com/tutorial/detecting-if-text-is-in-the-format-of-a-3-word-address).
-
-Alternatively, we also provide a simple function that employs the regex to help you recognise the three word addresses.  It is called `isPossible3wa`, but please note that it only indicates if the input is three strings separated by two w3w separators.  It WILL NOT tell you if it is a real three word address in world.  The following `if` evaluates to `true`.
+To check if your address string meets this criteria, we provide a simple function that employs our regex to help you recognise the three word addresses.  It is called `isPossible3wa`, but please note that it only indicates if the input is three potential words separated by two w3w separators.  It WILL NOT tell you if it is a real three word address in world.  The following `if` evaluates to `true`.
 
 ```
-if api.isPossible3wa(text: "xxx.xxx.xxx") {
+if api.isPossible3wa(text: "xxx.xxx.x") {
   print("Input is in the form of a three word address")
 } else {
   print("Input is NOT in the form of a three word address")
 }
 ```
 
-### Clipping and Focus
+Or if you prefer, you can simply use our regex. Example code can be found in our [regex documentation](https://developer.what3words.com/tutorial/detecting-if-text-is-in-the-format-of-a-3-word-address).
 
-We provide various `clip` policies to allow you to specify a geographic area that is used to exclude results that are not likely to be relevant to your users. We recommend that you use the clipping to give a more targeted, shorter set of results to your user. If you know your user’s current location, we also strongly recommend that you use the `focus` to return results which are likely to be more relevant.
 
-In summary, the clip policy is used to optionally restrict the list of candidate `autosuggest` results, after which, if focus has been supplied, this will be used to rank the results in order of relevancy to the focus.
+### Clipping
+
+We provide various `clip` policies to allow you to filter by a geographic area. We recommend that you use the clipping to give a more targeted set of results to your user. You can clip by country, or by geographical box, circle or polygon.  Do this via the `W3WOptions` and pass it into the autosuggest call (see example below).
+
+### Focus
+
+If you know your user’s current location, we also ***strongly*** recommend that you use focus to return results which are likely more relevant.  Do this via the `W3WOptions` and pass it into the autosuggest call (see example below)
+
 
 The values returned from the `autosuggest` method are described in the [what3words REST API documentation](https://developer.what3words.com/public-api/docs#autosuggest).
 
@@ -189,7 +194,7 @@ The values returned from the `autosuggest` method are described in the [what3wor
 
 The first parameter is the partial three words, or voice data.  The second optional parameter is the options for the autosuggest function.  The last parameter is the completion block.
 
-#### Text Example One
+#### Example One
 ```swift
 api.autosuggest(text: "filled.count.soa") { (suggestions, error) in
   for suggestion in suggestions ?? [] {
@@ -198,8 +203,8 @@ api.autosuggest(text: "filled.count.soa") { (suggestions, error) in
 }
 ```
 
-#### Text Example Two
-Focus on one particular place
+#### Example Two
+Focus on one particular place using a single option:
 
 ```swift
 let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
@@ -209,8 +214,8 @@ api.autosuggest(text: "flottons.annulons.garço", options: W3WOption.focus(coord
 ```
 
 
-#### Text Example Three
-Focus on (51.4243877,-0.34745) and ask for suggestions from a French three word fragment:
+#### Example Three
+Focus on (51.4243877,-0.34745), and clip to the UK using the multiple options object:
  
 ```swift
 let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
