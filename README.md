@@ -15,7 +15,7 @@ The what3words Swift API wrapper gives you programmatic access to
 * determine the currently support 3 word address languages.
 * autosuggest functionality to convert a spoken 3 word address (via voiceAPI) to a list of valid 3 word addresses
 
-The main API swift wrapper object is `What3WordsV3` and provides the above functionality.  There is also a higher level `W3WAutosuggestHelper` that does a lot of the work of calling the API for text field autocomplete functionality.  Documentation can be found [here](Documentation/tutorial-as-helper.md).
+The main API swift wrapper object is `What3WordsV3` and provides the above functionality.  There is also a higher level `W3WAutosuggestHelper` that does a lot of the work of calling the API for text field autocomplete functionality.  This is particularly helpful if you want to add what3words to your existing autocomplete code. A tutorial can be found [here](Documentation/tutorial-as-helper.md).
 
 Even higher level UI functionality can be found in our UI components library, [w3w-swift-components](https://github.com/what3words/w3w-swift-components), found on GitHub.  Notably our `W3WAutosuggestTextField` inherits `UITextField` and adds three word address autocomplete functionality.
 
