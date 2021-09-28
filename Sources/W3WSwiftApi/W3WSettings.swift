@@ -16,7 +16,14 @@ public struct W3WSettings {
   
   public static var defaultLanguage = "en"
   
-  // regex
+  
+  // MARK: Defaults
+  
+  static var defaultDebounceDelay = 0.3
+  
+  
+  // MARK: Regex
+  
   public static let regex_3wa_characters         = "^/*([^0-9`~!@#$%^&*()+\\-_=\\]\\[{\\}\\\\|'<,.>?/\";:£§º©®\\s]|[.｡。･・︒។։။۔።।]){0,}$"
   public static let regex_3wa_separator          = "[.｡。･・︒។։။۔።।]"
   public static let regex_3wa_mistaken_separator = "[.｡。･・︒។։။۔።। ,\\-_/+'&\\:;|]{1,2}"

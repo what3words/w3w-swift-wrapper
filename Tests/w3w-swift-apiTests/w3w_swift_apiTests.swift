@@ -588,96 +588,96 @@ final class w3w_swift_apiTests: XCTestCase {
   }
 
   
-//  // MARK: - Autosuggest Helper Tests
-//
-//
-//  func testAutosuggestHelper() {
-//    let expectation = self.expectation(description: "Voice API")
-//
-//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
-//
-//    let helper = W3WAutosuggestHelper(api)
-//    helper.update(text: "filled.count.so", options: W3WOption.focus(somewhereInLondon)) { error in
-//      XCTAssertEqual(3, helper.getSuggestionCount())
-//      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
-//      expectation.fulfill()
-//    }
-//
-//    waitForExpectations(timeout: 30.0, handler: nil)
-//  }
-//
-//
-//  func testAutosuggestHelperOptions() {
-//    let expectation = self.expectation(description: "Voice API")
-//
-//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
-//
-//    let helper = W3WAutosuggestHelper(api)
-//    helper.update(text: "filled.count.so", options: W3WOptions().focus(somewhereInLondon)) { error in
-//      XCTAssertEqual(3, helper.getSuggestionCount())
-//      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
-//      expectation.fulfill()
-//    }
-//
-//    waitForExpectations(timeout: 30.0, handler: nil)
-//  }
-//
-//
-//  func testAutosuggestHelperOptionArray() {
-//    let expectation = self.expectation(description: "Voice API")
-//
-//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
-//
-//    let helper = W3WAutosuggestHelper(api)
-//    helper.update(text: "filled.count.so", options: [W3WOption.focus(somewhereInLondon)]) { error in
-//      XCTAssertEqual(3, helper.getSuggestionCount())
-//      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
-//      expectation.fulfill()
-//    }
-//
-//    waitForExpectations(timeout: 30.0, handler: nil)
-//  }
-//
-//
-//
-//  func testAutosuggestSelected() {
-//    let expectation = self.expectation(description: "Voice API")
-//
-//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
-//
-//    let helper = W3WAutosuggestHelper(api)
-//    helper.update(text: "filled.count.soa", options: W3WOptions().focus(somewhereInLondon)) { error in
-//      helper.selected(row: 0) { square, error in
-//        XCTAssertEqual("filled.count.soap", square?.words)
-//        XCTAssertEqual(51.520847000000003, square?.coordinates?.latitude)
-//        expectation.fulfill()
-//      }
-//    }
-//
-//    waitForExpectations(timeout: 30.0, handler: nil)
-//  }
-//
-//
-//
-//  func testAutosuggestHelperDebouncer() {
-//    let expectation = self.expectation(description: "Voice API")
-//
-//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
-//
-//    let helper = W3WAutosuggestHelper(api)
-//
-//    // "daring.lion.race" is used, but because 3 more are immediately sent in, only the last one, "filled.count.soap", should return
-//    helper.update(text: "daring.lion.race", options: W3WOption.focus(somewhereInLondon)) { error in
-//      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
-//      expectation.fulfill()
-//    }
-//
-//    helper.update(text: "index.home.raft", options: W3WOption.focus(somewhereInLondon)) { error in XCTAssertTrue(false) }
-//    helper.update(text: "deed.tulip.judge", options: W3WOption.focus(somewhereInLondon)) { error in XCTAssertTrue(false) }
-//    helper.update(text: "filled.count.soap", options: W3WOption.focus(somewhereInLondon)) { error in XCTAssertTrue(false) }
-//
-//    waitForExpectations(timeout: 30.0, handler: nil)
-//  }
+  // MARK: - Autosuggest Helper Tests
+
+
+  func testAutosuggestHelper() {
+    let expectation = self.expectation(description: "Voice API")
+
+    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+
+    let helper = W3WAutosuggestHelper(api)
+    helper.update(text: "filled.count.so", options: W3WOption.focus(somewhereInLondon)) { error in
+      XCTAssertEqual(3, helper.getSuggestionCount())
+      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
+      expectation.fulfill()
+    }
+
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+
+
+  func testAutosuggestHelperOptions() {
+    let expectation = self.expectation(description: "Voice API")
+
+    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+
+    let helper = W3WAutosuggestHelper(api)
+    helper.update(text: "filled.count.so", options: W3WOptions().focus(somewhereInLondon)) { error in
+      XCTAssertEqual(3, helper.getSuggestionCount())
+      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
+      expectation.fulfill()
+    }
+
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+
+
+  func testAutosuggestHelperOptionArray() {
+    let expectation = self.expectation(description: "Voice API")
+
+    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+
+    let helper = W3WAutosuggestHelper(api)
+    helper.update(text: "filled.count.so", options: [W3WOption.focus(somewhereInLondon)]) { error in
+      XCTAssertEqual(3, helper.getSuggestionCount())
+      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
+      expectation.fulfill()
+    }
+
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+
+
+
+  func testAutosuggestSelected() {
+    let expectation = self.expectation(description: "Voice API")
+
+    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+
+    let helper = W3WAutosuggestHelper(api)
+    helper.update(text: "filled.count.soa", options: W3WOptions().focus(somewhereInLondon)) { error in
+      helper.selected(row: 0) { square, error in
+        XCTAssertEqual("filled.count.soap", square?.words)
+        XCTAssertEqual(51.520847000000003, square?.coordinates?.latitude)
+        expectation.fulfill()
+      }
+    }
+
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+
+
+
+  func testAutosuggestHelperDebouncer() {
+    let expectation = self.expectation(description: "Voice API")
+
+    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
+
+    let helper = W3WAutosuggestHelper(api)
+
+    // "daring.lion.race" is used, but because 3 more are immediately sent in, only the last one, "filled.count.soap", should return
+    helper.update(text: "daring.lion.race", options: W3WOption.focus(somewhereInLondon)) { error in
+      XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
+      expectation.fulfill()
+    }
+
+    helper.update(text: "index.home.raft", options: W3WOption.focus(somewhereInLondon)) { error in XCTAssertTrue(false) }
+    helper.update(text: "deed.tulip.judge", options: W3WOption.focus(somewhereInLondon)) { error in XCTAssertTrue(false) }
+    helper.update(text: "filled.count.soap", options: W3WOption.focus(somewhereInLondon)) { error in XCTAssertTrue(false) }
+
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
   
 
   
