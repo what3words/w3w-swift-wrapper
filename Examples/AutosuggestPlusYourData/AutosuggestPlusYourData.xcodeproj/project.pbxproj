@@ -124,7 +124,7 @@
 			);
 			mainGroup = 01B1689626EBABC500AAD30A;
 			packageReferences = (
-				018521B1270334CB00249039 /* XCRemoteSwiftPackageReference "w3w-swift-wrapper" */,
+				018521B1270334CB00249039 /* XCRemoteSwiftPackageReference "." */,
 			);
 			productRefGroup = 01B168A026EBABC500AAD30A /* Products */;
 			projectDirPath = "";
@@ -302,15 +302,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YC9564MTQY;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = AutosuggestPlusYourData/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.what3words.AutosuggestPlusYourData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -321,15 +323,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = YC9564MTQY;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = AutosuggestPlusYourData/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.what3words.AutosuggestPlusYourData;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -359,9 +363,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		018521B1270334CB00249039 /* XCRemoteSwiftPackageReference "w3w-swift-wrapper" */ = {
+		018521B1270334CB00249039 /* XCRemoteSwiftPackageReference "." */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "../../";
+			repositoryURL = ../../;
 			requirement = {
 				branch = master;
 				kind = branch;
@@ -372,7 +376,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		018521B2270334CB00249039 /* W3WSwiftApi */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 018521B1270334CB00249039 /* XCRemoteSwiftPackageReference "w3w-swift-wrapper" */;
+			package = 018521B1270334CB00249039 /* XCRemoteSwiftPackageReference "." */;
 			productName = W3WSwiftApi;
 		};
 /* End XCSwiftPackageProductDependency section */
