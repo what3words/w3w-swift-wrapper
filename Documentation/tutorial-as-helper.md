@@ -4,7 +4,7 @@
 Overview
 --------
 
-This is a tutorial for using W3WAutosuggestHelper to incorporate what3words into your existing autocomplete interface.
+This is a tutorial for using `W3WAutosuggestHelper` to incorporate what3words into your existing autocomplete interface.
 
 ![Mixed Autocomplete](./mixedresults.png)
 
