@@ -234,6 +234,22 @@ final class w3w_swift_apiTests: XCTestCase {
   }
   
   
+  func testAutosuggestWithCountries() {
+    let expectation = self.expectation(description: "Autosuggest")
+    
+    api.autosuggest(text: "fill.coun.soa", options: W3WOption.clipToCountries(["DE", "CA"])) { (suggestions, error) in
+      
+      XCTAssertEqual(suggestions?.count, 3)
+      XCTAssertEqual(suggestions?[0].country, "DE")
+      XCTAssertEqual(suggestions?[1].country, "CA")
+      XCTAssertNil(error)
+      
+      expectation.fulfill()
+    }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
   func testAutosuggestWithCircle1() {
     let expectation = self.expectation(description: "Autosuggest")
     
@@ -461,6 +477,22 @@ final class w3w_swift_apiTests: XCTestCase {
       XCTAssertNil(error)
       expectation.fulfill()
     }
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  func testAutosuggestNmdp() {
+    let expectation = self.expectation(description: "Autosuggest")
+    
+    let input = "anticipated.comradely.helpful:1.46; anticipated.comradeship.helpful:1.46; anticipated.comrades.yoga:3.04; anticipated.comrades.owns:3.04; anticipated.comrades.cons:3.04; anticipated.comrades.toga:3.04; anticipated.comparisons.helpful:3.38; anticipated.comrades.only:3.84; "
+
+    api.autosuggest(text: input, options: W3WOption.inputType(.nmdpAsr), W3WOption.language("en")) { (suggestions, error) in
+      
+      XCTAssertEqual(suggestions?.count, 3)
+      XCTAssertEqual(suggestions?.first?.words, "anticipated.anticipated.anticipation")
+      expectation.fulfill()
+    }
+
     waitForExpectations(timeout: 3.0, handler: nil)
   }
   
