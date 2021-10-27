@@ -15,7 +15,8 @@ jobs: # a basic unit of work in a run
     docker:
       - image: cimg/base:2020.01
     steps:
-     - sonarcloud/scan
+      - checkout  # pull down code from
+      - sonarcloud/scan
      
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.1
