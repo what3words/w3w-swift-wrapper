@@ -713,8 +713,84 @@ final class w3w_swift_apiTests: XCTestCase {
   
 
   
-  // MARK: - Voice API tests
+  // MARK: - Regex tests
+  
+  
+  func testRegexMatch() {
+    let expectation = self.expectation(description: "Regex Match")
+    
+    let x = api.isPossible3wa(text: "x.x.x")
+    XCTAssertTrue(x)
+    expectation.fulfill()
+    
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+  
+  
+  func testRegexMatch2() {
+    let expectation = self.expectation(description: "Regex Match")
+    
+    let x = api.isPossible3wa(text: "hamburger.🍔.hamburger")
+    XCTAssertFalse(x)
+    expectation.fulfill()
+    
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+  
+  
+  func testRegexMatch3() {
+    let expectation = self.expectation(description: "Regex Match")
+    
+    let x = api.isPossible3wa(text: "filled,count,soap")
+    XCTAssertFalse(x)
+    expectation.fulfill()
+    
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+  
+  
+  func testRegexSearch() {
+    let expectation = self.expectation(description: "Regex Match")
+    
+    let twas = api.findPossible3wa(text: "happy.happy.happy. This is a filled.count.soap sentance with index.home.raft fun in it. hamburger.🍔.hamburger is no grilled.cheese.sandwhich")
+    XCTAssertEqual(twas[0], "happy.happy.happy")
+    XCTAssertEqual(twas[1], "filled.count.soap")
+    XCTAssertEqual(twas[2], "index.home.raft")
+    XCTAssertEqual(twas[3], "grilled.cheese.sandwhich")
+    expectation.fulfill()
+    
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+  
+  
+  func testDidYouMean() {
+    let expectation = self.expectation(description: "Regex Match")
+    
+    let t = api.didYouMean(text: "filled'count'soap")
+    let u = api.didYouMean(text: "filled&count/soap")
+    let v = api.didYouMean(text: "filled|count+soap")
+    let w = api.didYouMean(text: "filled:count;soap")
+    let x = api.didYouMean(text: "filled count soap")
+    let y = api.didYouMean(text: "filled-count_soap")
+    let z = api.didYouMean(text: "filled+count,soap")
+    
+    XCTAssertTrue(t)
+    XCTAssertTrue(u)
+    XCTAssertTrue(v)
+    XCTAssertTrue(w)
+    XCTAssertTrue(x)
+    XCTAssertTrue(y)
+    XCTAssertTrue(z)
 
+    expectation.fulfill()
+    
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+
+  
+
+  // MARK: - Voice API tests
+  
 #if !os(watchOS)
   /// test for a timeout error
   func testVoiceApiTimoutError() {

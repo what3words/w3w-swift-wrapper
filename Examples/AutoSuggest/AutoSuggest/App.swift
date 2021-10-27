@@ -9,7 +9,7 @@ import SwiftUI
 import W3WSwiftApi
 
 
-//========================================
+//___________________________________________
 // MARK: Model
 
 class Model: ObservableObject {
@@ -34,7 +34,7 @@ class Model: ObservableObject {
 }
 
 
-//========================================
+//___________________________________________
 // MARK: View
 
 struct ContentView: View {
@@ -47,7 +47,7 @@ struct ContentView: View {
     if model.error == nil {
       List(model.suggestions, id: \.self.words) { suggestion in
         VStack(alignment: .leading) {
-          Text("///").foregroundColor(.accentColor) + Text((suggestion.words ?? ""))
+          Text("///").foregroundColor(.accentColor) + Text(suggestion.words ?? "")
           Text((suggestion.nearestPlace ?? "") + ", " + (suggestion.country ?? ""))
             .font(.footnote)
         }
@@ -62,7 +62,7 @@ struct ContentView: View {
 }
 
 
-//========================================
+//___________________________________________
 // MARK: App
 
 @main

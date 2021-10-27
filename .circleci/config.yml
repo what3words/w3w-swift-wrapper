@@ -9,6 +9,8 @@ jobs: # a basic unit of work in a run
       - run:
           name: Run Unit Tests
           command: swift test
+      - coverage:
+          xcrun llvm-cov show .build/debug/w3w-swift-wrapperPackageTests.xctest/Contents/MacOS/w3w-swift-wrapperPackageTests -instr-profile .build/debug/codecov/default.profdata > .build/cov.txt
           
 workflows:
   version: 2

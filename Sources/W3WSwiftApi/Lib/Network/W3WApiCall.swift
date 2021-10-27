@@ -98,9 +98,32 @@ public class W3WApiCall {
    */
   public func performRequest(path: String, params: [String: String], completion: @escaping W3WDataResponse) {
     
+    // generate the request
+    if let request = makeRequest(path: path, params: params) {
+      
+      // make the call
+      let task = URLSession.shared.dataTask(with: request) { (data, _, error) in
+        
+        // deal with the results, and complete with the info
+        self.parseResults(data: data, error: error, completion: completion)
+      }
+      
+      // start the call
+      task.resume()
+    }
+  }
+
+  
+  /**
+   given a path and parameters, make a URLRequest object
+   - parameter path: The URL to call
+   - parameter params: disctionary of parameters to send on querystring
+   */
+  func makeRequest(path: String, params: [String: String]) -> URLRequest? {
     // prepare url components
     var urlComponents = URLComponents(string: apiUrl + path)!
     
+    // add the querystring variables from the param dictionary
     var queryItems: [URLQueryItem] = [URLQueryItem(name: "key", value: apiKey)]
     for (name, value) in params {
       let item = URLQueryItem(name: name, value: value)
@@ -108,14 +131,16 @@ public class W3WApiCall {
     }
     urlComponents.queryItems = queryItems
     
+    // create the URL
     guard let url = urlComponents.url else {
       assertionFailure("Invalid url: \(urlComponents)")
-      return
+      return nil
     }
     
     // prepare request
     var request = URLRequest(url: url)
     
+    // set headers
     request.setValue(version_header, forHTTPHeaderField: "X-W3W-Wrapper")
     request.setValue(bundle_header, forHTTPHeaderField: "X-Ios-Bundle-Identifier")
     
@@ -124,56 +149,60 @@ public class W3WApiCall {
       request.setValue(value, forHTTPHeaderField: name)
     }
     
-    // make the call
-    let task = URLSession.shared.dataTask(with: request) { (data, _, error) in
-      
-      guard let data = data else {
-        completion(nil, W3WError.badConnection)
-        return
-      }
-      
-      if data.count == 0 {
-        completion(nil, nil)
-        return
-      }
-      
-      var jsonData:[String: Any]?
-      
-      do {
-        jsonData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-      }
-      catch {
-        completion(nil, W3WError.badJson) //(code: "BadData", message: "Malformed JSON data returned"))
-        return
-      }
-      
-      guard let json = jsonData else {
-        completion(nil, W3WError.invalidResponse) //(code: "Invalid", message: "Invalid response"))
-        return
-      }
-      
-      if let error = json["error"] as? [String: Any], let code = error["code"] as? String {
-        completion(nil, W3WError.from(code: code))
-        return
-      }
-      
-      if let code = json["code"] as? String {
-        completion(nil, W3WError.from(code: code))
-        return
-      }
-      
-      if let error = json["error"] as? String {
-        completion(nil, W3WError.from(code: error))
-        return
-      }
-      
-      completion(json, nil)
-    }
-    task.resume()
+    return request
   }
-
   
-
+  
+  /**
+   Calls w3w URL
+   - parameter data: the returned data from the API
+   - parameter error: an error if any
+   - parameter completion: The completion handler
+   */
+  func parseResults(data: Data?, error: Error?, completion: @escaping W3WDataResponse) {
+    guard let data = data else {
+      completion(nil, W3WError.badConnection)
+      return
+    }
+    
+    if data.count == 0 {
+      completion(nil, nil)
+      return
+    }
+    
+    var jsonData:[String: Any]?
+    
+    do {
+      jsonData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+    }
+    catch {
+      completion(nil, W3WError.badJson) //(code: "BadData", message: "Malformed JSON data returned"))
+      return
+    }
+    
+    guard let json = jsonData else {
+      completion(nil, W3WError.invalidResponse) //(code: "Invalid", message: "Invalid response"))
+      return
+    }
+    
+    if let error = json["error"] as? [String: Any], let code = error["code"] as? String {
+      completion(nil, W3WError.from(code: code))
+      return
+    }
+    
+    if let code = json["code"] as? String {
+      completion(nil, W3WError.from(code: code))
+      return
+    }
+    
+    if let error = json["error"] as? String {
+      completion(nil, W3WError.from(code: error))
+      return
+    }
+    
+    completion(json, nil)
+  }
+  
   
   // MARK: Json parsing
   

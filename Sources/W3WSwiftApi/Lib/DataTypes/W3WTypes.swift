@@ -476,6 +476,7 @@ public class W3WOptions {
 
   public var options = [W3WOption]()
 
+  /// this is to make the initializer public
   public init() {}
   
   public func language(_ language:String)            -> W3WOptions { options.append(W3WOption.language(language)); return self }
@@ -627,29 +628,45 @@ extension W3WProtocolV3 {
   
   /// Uses the regex to determine if a String fits the three word address form of three words in any language separated by two separator characters
   public func isPossible3wa(text: String) -> Bool {
-    let regex = try! NSRegularExpression(pattern:W3WSettings.regex_match, options: [])
-    let count = regex.numberOfMatches(in: text, options: [], range: NSRange(text.startIndex..<text.endIndex, in:text))
-    if (count > 0) {
-      return true
-    }
-    else {
-      return false
-    }
+    return regexMatch(text: text, regex: W3WSettings.regex_match)
+//    let regex = try! NSRegularExpression(pattern:W3WSettings.regex_match, options: [])
+//    let count = regex.numberOfMatches(in: text, options: [], range: NSRange(text.startIndex..<text.endIndex, in:text))
+//    if (count > 0) {
+//      return true
+//    }
+//    else {
+//      return false
+//    }
   }
   
   
   /// checks if input looks like a 3 word address or not
   public func didYouMean(text: String) -> Bool {
-    let regex = try! NSRegularExpression(pattern:W3WSettings.regex_loose_match, options: [])
-    let count = regex.numberOfMatches(in: text, options: [], range: NSRange(text.startIndex..<text.endIndex, in:text))
-    if (count > 0) {
-      return true
-    }
-    else {
+    return regexMatch(text: text, regex: W3WSettings.regex_loose_match)
+//    let regex = try! NSRegularExpression(pattern:W3WSettings.regex_loose_match, options: [])
+//    let count = regex.numberOfMatches(in: text, options: [], range: NSRange(text.startIndex..<text.endIndex, in:text))
+//    if (count > 0) {
+//      return true
+//    }
+//    else {
+//      return false
+//    }
+  }
+
+
+  func regexMatch(text: String, regex: String) -> Bool {
+    if let regex = try? NSRegularExpression(pattern:regex, options: []) {
+      let count = regex.numberOfMatches(in: text, options: [], range: NSRange(text.startIndex..<text.endIndex, in:text))
+      if (count > 0) {
+        return true
+      } else {
+        return false
+      }
+    } else {
       return false
     }
   }
-
+  
   
   /// searches a string for possible three word address matches
   public func findPossible3wa(text: String) -> [String] {
