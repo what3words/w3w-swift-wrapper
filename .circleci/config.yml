@@ -15,10 +15,8 @@ jobs: # a basic unit of work in a run
     docker:
       - image: cimg/base:2020.01
     steps:
-      - run:
-          name: Run Unit Tests
-          command: sonarcloud/scan
-
+     - sonarcloud/scan
+     
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.1
    
@@ -26,6 +24,7 @@ workflows:
   version: 2
   test_build:
     jobs:
-      - test
       - sonar:
+          requires:
+              - test
           context: SonarCloud
