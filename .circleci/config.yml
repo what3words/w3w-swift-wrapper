@@ -9,11 +9,16 @@ jobs: # a basic unit of work in a run
       - run:
           name: Run Unit Tests
           command: |-
-              swift test
+              swift test --enable-code-coverage
               xcrun llvm-cov show .build/debug/w3w-swift-wrapperPackageTests.xctest/Contents/MacOS/w3w-swift-wrapperPackageTests -instr-profile .build/debug/codecov/default.profdata > .build/cov.txt
+      - sonarcloud/scan
+
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.0.1
           
 workflows:
   version: 2
   test_build:
     jobs:
-      - test
+      - test:
+          context: SonarCloud
