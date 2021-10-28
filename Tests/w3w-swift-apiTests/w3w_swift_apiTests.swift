@@ -890,6 +890,30 @@ final class w3w_swift_apiTests: XCTestCase {
 //  }
 //
 //}
+  
+  
+  // MARK: Types Tests
+  func testTypes() {
+    let expectation = self.expectation(description: "Types")
+
+    let lang = W3WApiLanguage.english
+    XCTAssertEqual(lang.code, "en")
+
+    let s = W3WApiSquare(words: "filled.count.soap", coordinates: CLLocationCoordinate2D(latitude: 51.521, longitude: -0.343), country: "GB", nearestPlace: "Bayswater", language: "en")
+    XCTAssertEqual(s.words, "filled.count.soap")
+    
+    let sugg = W3WApiSuggestion(words: "filled.count.soap", country: "GB", nearestPlace: "Bayswater", language: "en")
+    XCTAssertEqual(sugg.words, "filled.count.soap")
+    
+    let vsugg = W3WVoiceSuggestion(words: "filled.count.soap", country: "GB", nearestPlace: "Bayswater", language: "en")
+    XCTAssertEqual(vsugg.words, "filled.count.soap")
+    
+
+    expectation.fulfill()
+
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
 
 #endif
 
