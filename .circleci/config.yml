@@ -23,6 +23,6 @@ jobs: # a basic unit of work in a run
 workflows:
   version: 2
   test_build:
-    jobs: test
-#      - test:
+    jobs: TestSwiftWrapper
+#      - TestSwiftWrapper:
 #          context: SonarCloud
