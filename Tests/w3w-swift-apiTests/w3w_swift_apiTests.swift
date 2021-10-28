@@ -908,8 +908,65 @@ final class w3w_swift_apiTests: XCTestCase {
     let vsugg = W3WVoiceSuggestion(words: "filled.count.soap", country: "GB", nearestPlace: "Bayswater", language: "en")
     XCTAssertEqual(vsugg.words, "filled.count.soap")
     
+    let option0 = W3WOption.clipToCountries(["en", "de", "fr"])
+    XCTAssertEqual(option0.asStringArray()[0], "en")
+    
+    let option1 = W3WOption.clipToCircle(center: CLLocationCoordinate2D(latitude: 51.521, longitude: -0.343), radius: 1.0)
+    XCTAssertEqual(option1.asCoordinates().latitude, 51.521)
+    
+    let option2 = W3WOption.preferLand(true)
+    XCTAssertEqual(option2.asBoolean(), true)
+    
+    let option3 = W3WOption.clipToBox(southWest: CLLocationCoordinate2D(latitude: 52.208867, longitude:0.117540), northEast: CLLocationCoordinate2D(latitude: 52.207988, longitude:0.116126))
+    let (a,_) = option3.asBoundingBox()
+    XCTAssertEqual(a.latitude, 52.208867)
+    
+    let option4 = W3WOption.clipToCircle(center: CLLocationCoordinate2D(latitude: 52.208867, longitude:0.117540), radius: 1.0)
+    let (b,_) = option4.asBoundingCircle()
+    XCTAssertEqual(b.latitude, 52.208867)
 
+    let polygon = [
+      CLLocationCoordinate2D(latitude:51.0, longitude:0.0),
+      CLLocationCoordinate2D(latitude:51.0, longitude:0.1),
+      CLLocationCoordinate2D(latitude:51.1, longitude:0.1),
+      CLLocationCoordinate2D(latitude:51.1, longitude:0.0),
+      CLLocationCoordinate2D(latitude:51.0, longitude:0.0),
+    ];
+    let option5 = W3WOption.clipToPolygon(polygon)
+    XCTAssertEqual(option5.asBoundingPolygon()[0].latitude, 51.0)
     expectation.fulfill()
+    
+    XCTAssertEqual(W3WError.from(code: "MissingLanguage"), W3WError.missingLanguage)
+    XCTAssertEqual(W3WError.from(code: "BadWords"), W3WError.badWords)
+    XCTAssertEqual(W3WError.from(code: "BadCoordinates"), W3WError.badCoordinates)
+    XCTAssertEqual(W3WError.from(code: "BadLanguage"), W3WError.badLanguage)
+    XCTAssertEqual(W3WError.from(code: "MissingLanguage"), W3WError.missingLanguage)
+    XCTAssertEqual(W3WError.from(code: "BadFormat"), W3WError.badFormat)
+    XCTAssertEqual(W3WError.from(code: "BadClipToPolygon"), W3WError.badClipToPolygon)
+    XCTAssertEqual(W3WError.from(code: "BadBoundingBoxTooBig"), W3WError.badBoundingBoxTooBig)
+    XCTAssertEqual(W3WError.from(code: "BadClipToCountry"), W3WError.badClipToCountry)
+    XCTAssertEqual(W3WError.from(code: "BadInput"), W3WError.badInput)
+    XCTAssertEqual(W3WError.from(code: "BadNResults"), W3WError.badNResults)
+    XCTAssertEqual(W3WError.from(code: "BadNFocusResults"), W3WError.badNFocusResults)
+    XCTAssertEqual(W3WError.from(code: "BadFocus"), W3WError.badFocus)
+    XCTAssertEqual(W3WError.from(code: "BadClipToCircle"), W3WError.badClipToCircle)
+    XCTAssertEqual(W3WError.from(code: "BadClipToBoundingBox"), W3WError.badClipToBoundingBox)
+    XCTAssertEqual(W3WError.from(code: "BadInputType"), W3WError.badInputType)
+    XCTAssertEqual(W3WError.from(code: "BadBoundingBox"), W3WError.badBoundingBox)
+    XCTAssertEqual(W3WError.from(code: "MissingWords"), W3WError.missingWords)
+    XCTAssertEqual(W3WError.from(code: "MissingInput"), W3WError.missingInput)
+    XCTAssertEqual(W3WError.from(code: "MissingBoundingBox"), W3WError.missingBoundingBox)
+    XCTAssertEqual(W3WError.from(code: "DuplicateParameter"), W3WError.duplicateParameter)
+    XCTAssertEqual(W3WError.from(code: "MissingKey"), W3WError.missingKey)
+    XCTAssertEqual(W3WError.from(code: "InvalidKey"), W3WError.invalidKey)
+    XCTAssertEqual(W3WError.from(code: "SuspendedKey"), W3WError.suspendedKey)
+    XCTAssertEqual(W3WError.from(code: "InvalidApiVersion"), W3WError.invalidApiVersion)
+    XCTAssertEqual(W3WError.from(code: "InvalidReferrer"), W3WError.invalidReferrer)
+    XCTAssertEqual(W3WError.from(code: "InvalidIpAddress"), W3WError.invalidIpAddress)
+    XCTAssertEqual(W3WError.from(code: "InvalidAppCredentials"), W3WError.invalidAppCredentials)
+    XCTAssertEqual(W3WError.from(code: "XXX"), W3WError.unknownErrorCodeFromServer)
+
+    
 
     waitForExpectations(timeout: 3.0, handler: nil)
   }
