@@ -934,7 +934,6 @@ final class w3w_swift_apiTests: XCTestCase {
     ];
     let option5 = W3WOption.clipToPolygon(polygon)
     XCTAssertEqual(option5.asBoundingPolygon()[0].latitude, 51.0)
-    expectation.fulfill()
     
     XCTAssertEqual(W3WError.from(code: "MissingLanguage"), W3WError.missingLanguage)
     XCTAssertEqual(W3WError.from(code: "BadWords"), W3WError.badWords)
@@ -965,22 +964,28 @@ final class w3w_swift_apiTests: XCTestCase {
     XCTAssertEqual(W3WError.from(code: "InvalidIpAddress"), W3WError.invalidIpAddress)
     XCTAssertEqual(W3WError.from(code: "InvalidAppCredentials"), W3WError.invalidAppCredentials)
     XCTAssertEqual(W3WError.from(code: "XXX"), W3WError.unknownErrorCodeFromServer)
+    expectation.fulfill()
 
     waitForExpectations(timeout: 3.0, handler: nil)
   }
 
   
   func testObcCTypes() {
+    let expectation = self.expectation(description: "ObjjcTypes")
 
     let sugg = W3WObjcSuggestion(words: "filled.count.soap", country: "GB", nearestPlace: "Bayswater", distanceToFocus: nil, language: "en")
     XCTAssertEqual(sugg.words, "filled.count.soap")
     
-    let s = W3WObjcSquare(words: "filled.count.soap", country: "GB", nearestPlace: "Bayswater", distanceToFocus: nil, language: "en", coordinates: W3WObjcCoordinates(latitude: 51.521, longitude: -0.343))
+    let s = W3WObjcSquare(words: "filled.count.soap", country: "GB", nearestPlace: "Bayswater", distanceToFocus: NSNumber(floatLiteral: 1.0), language: "en", coordinates: W3WObjcCoordinates(latitude: 51.521, longitude: -0.343))
     XCTAssertEqual(s.words, "filled.count.soap")
 
-    let c = W3WObjcCoordinates(latitude: 51.521, longitude: -0.343)
+    var c = W3WObjcCoordinates(latitude: 51.521, longitude: -0.343)
     XCTAssertEqual(c.latitude, 51.521)
     XCTAssertEqual(c.longitude, -0.343)
+    c.latitude = 0.0
+    c.longitude = 0.0
+    XCTAssertEqual(c.latitude, 0.0)
+    XCTAssertEqual(c.longitude, 0.0)
 
     let option1 = W3WObjcOptions()
     option1.addVoiceLanguage("en")
@@ -990,9 +995,25 @@ final class w3w_swift_apiTests: XCTestCase {
     option2.addClipToCountries(["en", "fr"])
     XCTAssertEqual(option2.options.first?.asString(), "en,fr")
     
+    let option3 = W3WObjcOptions()
+    option3.addInputType(.nmdpAsr)
+    XCTAssertEqual(option3.options.first?.asString(), "nmdp-asr")
+    let option4 = W3WObjcOptions()
+    option4.addInputType(.speechmatics)
+    XCTAssertEqual(option4.options.first?.asString(), "speechmatics")
+    let option5 = W3WObjcOptions()
+    option5.addInputType(.text)
+    XCTAssertEqual(option5.options.first?.asString(), "text")
+    let option6 = W3WObjcOptions()
+    option6.addInputType(.mawdoo3)
+    XCTAssertEqual(option6.options.first?.asString(), "mawdoo3")
+    let option7 = W3WObjcOptions()
+    option7.addInputType(.ocrSdk)
+    XCTAssertEqual(option7.options.first?.asString(), "w3w-ocr-sdk")
 
-      //.addClipToCountries(["en", "fr"])
-    
+    expectation.fulfill()
+
+    waitForExpectations(timeout: 3.0, handler: nil)
   }
   
 
