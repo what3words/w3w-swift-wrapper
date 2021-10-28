@@ -11,12 +11,7 @@ jobs: # a basic unit of work in a run
           command: |-
               swift test --enable-code-coverage
               xcrun llvm-cov show .build/debug/w3w-swift-wrapperPackageTests.xctest/Contents/MacOS/w3w-swift-wrapperPackageTests -instr-profile .build/debug/codecov/default.profdata > .build/cov.txt
-  sonar:
-    docker:
-      - image: cimg/base:2020.01
-    steps:
-      - checkout  # pull down code from
-      - sonarcloud/scan
+              sonarcloud/scan
      
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.1
