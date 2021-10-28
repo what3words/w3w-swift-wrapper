@@ -9,6 +9,10 @@ jobs: # a basic unit of work in a run
       - run:
           name: Run Unit Tests
           command: |-
+              brew tap homebrew/cask-versions
+              brew update
+              brew tap homebrew/cask
+              brew install java
               swift test --enable-code-coverage
               xcrun llvm-cov show .build/debug/w3w-swift-wrapperPackageTests.xctest/Contents/MacOS/w3w-swift-wrapperPackageTests -instr-profile .build/debug/codecov/default.profdata > .build/cov.txt
       - sonarcloud/scan
