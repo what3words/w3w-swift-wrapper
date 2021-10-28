@@ -8,21 +8,14 @@ jobs: # a basic unit of work in a run
       - checkout  # pull down code from
       - run:
           name: Run Unit Tests
-          command: swift test --enable-code-coverage
-#          command: |-
-#              brew tap homebrew/cask-versions
-#              brew update
-#              brew tap homebrew/cask
-#              brew install java
-#              swift test --enable-code-coverage
-#              xcrun llvm-cov show .build/debug/w3w-swift-wrapperPackageTests.xctest/Contents/MacOS/w3w-swift-wrapperPackageTests -instr-profile .build/debug/codecov/default.profdata > .build/cov.txt
-#      - sonarcloud/scan
-#orbs:
-#  sonarcloud: sonarsource/sonarcloud@1.0.1
+          command: |-
+              brew install sonar-scanner
+              swift test --enable-code-coverage
+              xcrun llvm-cov show .build/debug/w3w-swift-wrapperPackageTests.xctest/Contents/MacOS/w3w-swift-wrapperPackageTests -instr-profile .build/debug/codecov/default.profdata > .build/cov.txt
+              sonar-scanner -Dsonar.projectKey=what3words_w3w-swift-wrapper -Dsonar.organization=what3words -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=$SONAR_TOKEN -Dsonar.sources=project/Sources -Dsonar.swift.coverage.reportPath=.build/cov.txt
    
 workflows:
   version: 2
   test_build:
     jobs:
       - test
-#          context: SonarCloud
