@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs: # a basic unit of work in a run
-  TestSwiftWrapper: # your job name
+  test: # your job name
     macos:
       xcode: 12.2.0 # version of Xcode
     steps:
@@ -23,6 +23,6 @@ jobs: # a basic unit of work in a run
 workflows:
   version: 2
   test_build:
-    jobs: TestSwiftWrapper
-#      - TestSwiftWrapper:
+    jobs: test
+#      - test:
 #          context: SonarCloud
