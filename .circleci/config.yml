@@ -1,6 +1,6 @@
 version: 2.1
 
-jobs: # a basic unit of work in a run
+jobs: # the jobs
   test: # your job name
     macos:
       xcode: 12.2.0 # version of Xcode
