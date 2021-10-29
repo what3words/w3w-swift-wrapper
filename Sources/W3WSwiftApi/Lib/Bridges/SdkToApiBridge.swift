@@ -186,7 +186,7 @@ extension W3WSdkOption: W3WOptionProtocol {
     case W3WOptionKey.focus:
       return W3WSdkOption.focus(from.asCoordinates())
     case W3WOptionKey.numberFocusResults:
-      return W3WSdkOption.numberFocusResults((Int(from.asString()) ?? 3))
+      return W3WSdkOption.numberFocusResults(Int(from.asString()) ?? 3)
     case W3WOptionKey.inputType:
       return coreInputType(from:from)
     case W3WOptionKey.clipToCountry:

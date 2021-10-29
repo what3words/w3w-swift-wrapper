@@ -629,28 +629,12 @@ extension W3WProtocolV3 {
   /// Uses the regex to determine if a String fits the three word address form of three words in any language separated by two separator characters
   public func isPossible3wa(text: String) -> Bool {
     return regexMatch(text: text, regex: W3WSettings.regex_match)
-//    let regex = try! NSRegularExpression(pattern:W3WSettings.regex_match, options: [])
-//    let count = regex.numberOfMatches(in: text, options: [], range: NSRange(text.startIndex..<text.endIndex, in:text))
-//    if (count > 0) {
-//      return true
-//    }
-//    else {
-//      return false
-//    }
   }
   
   
   /// checks if input looks like a 3 word address or not
   public func didYouMean(text: String) -> Bool {
     return regexMatch(text: text, regex: W3WSettings.regex_loose_match)
-//    let regex = try! NSRegularExpression(pattern:W3WSettings.regex_loose_match, options: [])
-//    let count = regex.numberOfMatches(in: text, options: [], range: NSRange(text.startIndex..<text.endIndex, in:text))
-//    if (count > 0) {
-//      return true
-//    }
-//    else {
-//      return false
-//    }
   }
 
 

@@ -176,12 +176,12 @@ public class W3WApiCall {
       jsonData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
     }
     catch {
-      completion(nil, W3WError.badJson) //(code: "BadData", message: "Malformed JSON data returned"))
+      completion(nil, W3WError.badJson)
       return
     }
     
     guard let json = jsonData else {
-      completion(nil, W3WError.invalidResponse) //(code: "Invalid", message: "Invalid response"))
+      completion(nil, W3WError.invalidResponse)
       return
     }
     
@@ -200,6 +200,10 @@ public class W3WApiCall {
       return
     }
     
+    if error != nil {
+      completion(nil, W3WError.badConnection)
+    }
+
     completion(json, nil)
   }
   
