@@ -979,7 +979,7 @@ final class w3w_swift_apiTests: XCTestCase {
     let s = W3WObjcSquare(words: "filled.count.soap", country: "GB", nearestPlace: "Bayswater", distanceToFocus: NSNumber(floatLiteral: 1.0), language: "en", coordinates: W3WObjcCoordinates(latitude: 51.521, longitude: -0.343))
     XCTAssertEqual(s.words, "filled.count.soap")
 
-    var c = W3WObjcCoordinates(latitude: 51.521, longitude: -0.343)
+    let c = W3WObjcCoordinates(latitude: 51.521, longitude: -0.343)
     XCTAssertEqual(c.latitude, 51.521)
     XCTAssertEqual(c.longitude, -0.343)
     c.latitude = 0.0
