@@ -1016,6 +1016,38 @@ final class w3w_swift_apiTests: XCTestCase {
     waitForExpectations(timeout: 3.0, handler: nil)
   }
   
+  
+  // MARK: Utility Tests
+  
+  func testDistanceSquares() {
+    let expectation = self.expectation(description: "Distance")
+    
+    let s1 = W3WApiSquare(coordinates: CLLocationCoordinate2D(latitude: 50.0, longitude: 0.0))
+    let s2 = W3WApiSquare(coordinates: CLLocationCoordinate2D(latitude: 50.0, longitude: 0.1))
+    
+    let distance = api.distance(from: s1, to: s2)
+    XCTAssertEqual(distance, 7169.575361600302)
+    
+    expectation.fulfill()
+    
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
+  
+  func testDistanceCoords() {
+    let expectation = self.expectation(description: "Distance")
+    
+    let s1 = CLLocationCoordinate2D(latitude: 50.0, longitude: 0.0)
+    let s2 = CLLocationCoordinate2D(latitude: 50.0, longitude: 0.1)
+    
+    let distance = api.distance(from: s1, to: s2)
+    XCTAssertEqual(distance, 7169.575361600302)
+    
+    expectation.fulfill()
+    
+    waitForExpectations(timeout: 3.0, handler: nil)
+  }
+  
 
 #endif
 

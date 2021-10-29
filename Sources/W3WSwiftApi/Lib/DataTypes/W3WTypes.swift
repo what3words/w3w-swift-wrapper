@@ -656,12 +656,13 @@ extension W3WProtocolV3 {
   public func findPossible3wa(text: String) -> [String] {
     var results = [String]()
     
-    let regex   = try! NSRegularExpression(pattern:W3WSettings.regex_search)
-    let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in:text))
-    
-    for match in matches {
-      if let range = Range(match.range, in: text) {
-        results.append(String(text[range]))
+    if let regex = try? NSRegularExpression(pattern:W3WSettings.regex_search) {
+      let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in:text))
+      
+      for match in matches {
+        if let range = Range(match.range, in: text) {
+          results.append(String(text[range]))
+        }
       }
     }
 
