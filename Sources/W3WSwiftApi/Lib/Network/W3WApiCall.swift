@@ -82,6 +82,7 @@ public class W3WApiCall {
   /**
    indicates if W3W servers are being employed or this is set to a custom server
    */
+  @available(*, deprecated, message: "Use What3WordsV3.isCurrentServerW3W() instead. Note: it returns the opposite boolean value to this function")
   public func customServersSet() -> Bool {
     return apiUrl != W3WSettings.apiUrl
   }

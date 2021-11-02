@@ -205,7 +205,7 @@ public class What3WordsV3: W3WApiCall, W3WProtocolV3 {
   This is useful because some functions like autosuggestSelection only work
   with w3w servers, and not the enterprise server product
   */
-  func isCurrentServerW3W() -> Bool {
+  public func isCurrentServerW3W() -> Bool {
     var w3w = false
     
     for domain in W3WSettings.domains {
