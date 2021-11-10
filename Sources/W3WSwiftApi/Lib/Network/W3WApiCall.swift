@@ -186,6 +186,16 @@ public class W3WApiCall {
       return
     }
     
+    if let error = json["error"] as? [String: Any], let code = error["code"] as? String, let message = error["message"] as? String {
+      completion(nil, W3WError.from(code: code, message: message))
+      return
+    }
+    
+    if let code = json["code"] as? String, let message = json["message"] as? String {
+      completion(nil, W3WError.from(code: code, message: message))
+      return
+    }
+    
     if let error = json["error"] as? [String: Any], let code = error["code"] as? String {
       completion(nil, W3WError.from(code: code))
       return

@@ -57,6 +57,7 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
   case invalidReferrer
   case invalidIpAddress
   case invalidAppCredentials
+  case apiError(String)
   
   // Communication Errors
   case unknownErrorCodeFromServer
@@ -103,6 +104,7 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
       case .notFound404:             return "URL not found, 404 error"
       case .duplicateParameter:       return "A parameter was provided twice"
       case .invalidResponse:           return "Invalid Response"
+      case .apiError(let errorString):  return errorString
       case .unknownErrorCodeFromServer: return "Error code from API server is not recognized, upgrade this API?"
       case .socketError(let error):     return String(describing: error)
       case .sdkError(let error):       return String(describing: error)
@@ -111,7 +113,7 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
   }
 
   
-  static func from(code: String) -> W3WError {
+  static func from(code: String, message: String? = nil) -> W3WError {
     switch code {
     case "BadWords":
       return W3WError.badWords
@@ -168,7 +170,11 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
     case "InvalidAppCredentials":
       return W3WError.invalidAppCredentials
     default:
-      return W3WError.unknownErrorCodeFromServer
+      if let m = message {
+        return W3WError.apiError(m)
+      } else {
+        return W3WError.unknownErrorCodeFromServer
+      }
     }
     
   }
