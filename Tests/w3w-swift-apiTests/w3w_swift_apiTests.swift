@@ -806,7 +806,7 @@ final class w3w_swift_apiTests: XCTestCase {
     waitForExpectations(timeout: 30.0, handler: nil)
   }
 
-
+#if os(iOS)
   func testVoiceApi() {
     let expectation = self.expectation(description: "Voice API")
     
@@ -833,7 +833,7 @@ final class w3w_swift_apiTests: XCTestCase {
         // finally, send the audio data.  This can be called repeatedly as new data become available if you want to live stream
         audio.add(samples: data)
         
-        // tell the server no more data will come (optional, you can instead let end of speach detection terminate the process)
+        // tell the server no more data will come
         audio.endSamples()
         
         waitForExpectations(timeout: 60.0, handler: nil)
@@ -841,6 +841,7 @@ final class w3w_swift_apiTests: XCTestCase {
     }
     
   }
+#endif
 
 
 //  func callVoiceAutosuggest(data: Data, completion: @escaping () -> ()) {

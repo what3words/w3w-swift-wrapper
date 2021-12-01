@@ -9,7 +9,7 @@
 
 import Foundation
 import CoreLocation
-#if !os(macOS)
+#if canImport(UIKit)
 import UIKit
 #endif
 #if os(watchOS)
