@@ -194,6 +194,7 @@ public class W3WVoiceApi {
       
     } else {
       print("ERROR")
+      callback(nil, W3WVoiceError.invalidMessage)
     }
   }
   
@@ -243,18 +244,16 @@ public class W3WVoiceApi {
       // deal with reply from Speechmatics
       print("Got Reply From Server")
       if error != nil {
-        callback(nil, W3WVoiceError.unknown) // .voiceSocketError(error: W3WVoiceSocketError.other(error: error?.localizedDescription ?? "Unknown Error")))
-        //self.recieved(data: Data(), callback: callback)
+        callback(nil, W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.other(error: error ?? W3WVoiceError.unknown)))
+        return
       
       } else if let d = data {
         self.recieved(data: d, callback: callback)
-
-      } else {
-        callback(nil, W3WVoiceError.unknown)
+        return
 
       }
-      
-      
+        
+      callback(nil, W3WVoiceError.unknown)
     }
     .resume()
   }
