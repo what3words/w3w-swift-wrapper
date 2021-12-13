@@ -81,8 +81,10 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
     }
     
     // if we were given a microphone, then turn it on
-    if let microphone = audio as? W3WMicrophone {
-      microphone.start()
+    if #available(tvOS 11.0, *) {
+      if let microphone = audio as? W3WMicrophone {
+        microphone.start()
+      }
     }
 
     // open the ocnnection to the server
@@ -97,8 +99,10 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
     audio.endSamples()
     
     // if we were given a microphone, then turn it on
-    if let microphone = audio as? W3WMicrophone {
-      microphone.stop()
+    if #available(tvOS 11.0, *) {
+      if let microphone = audio as? W3WMicrophone {
+        microphone.stop()
+      }
     }
   }
 
@@ -151,6 +155,7 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
 
 #else
 
+  // MARK: watchOS version
 
 
 /// Communicates with the Speechmatics API

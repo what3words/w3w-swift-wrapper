@@ -19,3 +19,4 @@ xcuserdata/
 swiftpm/
 Package.resolved
 what3words/Config.plist
+/Carthage

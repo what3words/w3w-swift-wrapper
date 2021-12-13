@@ -9,7 +9,7 @@
 import Foundation
 
 
-@available(watchOS 4.0, *)
+@available(watchOS 4.0, tvOS 11.0, *)
 public class W3WAudioRecorder {
   
   /// Microphone to record the sound

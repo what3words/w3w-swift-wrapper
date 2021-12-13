@@ -32,7 +32,7 @@ public enum W3WMicrophoneError : Error, CustomStringConvertible {
 
 
 /// Manages the device microphone
-@available(watchOS 4.0, *)
+@available(watchOS 4.0, tvOS 11.0, *)
 
 
 
