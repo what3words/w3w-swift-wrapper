@@ -64,16 +64,10 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
       self.stop(audio: audio)
       callback(nil, error)
     }
-
-    audio.listeningUpdate = { state in
-    }
     
     audio.onError = { error in
       self.stop(audio: audio)
       callback(nil, error)
-    }
-    
-    audio.volumeUpdate = { volume in
     }
     
     audio.sampleArrived = { data in
@@ -81,7 +75,7 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
     }
     
     // if we were given a microphone, then turn it on
-    if #available(tvOS 11.0, *) {
+    if #available(tvOS 11.0, watchOS 4.0, *) {
       if let microphone = audio as? W3WMicrophone {
         microphone.start()
       }
@@ -99,7 +93,7 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
     audio.endSamples()
     
     // if we were given a microphone, then turn it on
-    if #available(tvOS 11.0, *) {
+    if #available(tvOS 11.0, watchOS 4.0, *) {
       if let microphone = audio as? W3WMicrophone {
         microphone.stop()
       }
@@ -152,14 +146,10 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
       
 }
 
-
-#else
-
-  // MARK: watchOS version
-
+#endif
 
 /// Communicates with the Speechmatics API
-public class W3WVoiceApi {
+public class W3WVoiceUploadApi {
   
   let endpoint: String!
   
@@ -318,15 +308,7 @@ public class W3WVoiceApi {
     let language = W3WOption.voiceLanguage(W3WSettings.defaultLanguage)
     return language.key() + "=" + language.asString()
   }
-  
-  
-}
 
-#endif // if !os(watchOS) - from top of file
-
-
-extension W3WVoiceApi {
-  
   /// utility to check that language was passed in as it is non-optional for voice
   func checkForLanguageOption(options: [W3WOption]?) -> Bool {
     var languagePresent = false
@@ -343,3 +325,5 @@ extension W3WVoiceApi {
 
   
 }
+
+
