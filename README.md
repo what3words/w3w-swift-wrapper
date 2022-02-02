@@ -70,8 +70,8 @@ A SwiftUI example using `W3WAutosuggestHelper` to create an autocomplete `TextFi
 [Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj](./Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj)
 
 #### Using Autosuggest Helper to augment your autocomplete:
-An iOS example using `W3WAutosuggestHelper` to augment another address datasource.  In other words, it shows how to use what3words in tandem with another address service.  The example uses Apple's `MKLocalSearchCompleter` and mixes it's results with what3words suggestions.
-[Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj](./Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj)
+An iOS example using `W3WAutosuggestHelper` to augment another address datasource.  In other words, it shows how to use what3words in tandem with another address service.  The example uses Apple's `MKLocalSearchCompleter` and mixes it's results with what3words suggestions.  
+[Examples/AutosuggestPlusYourData/AutosuggestPlusYourData.xcodeproj](./Examples/AutosuggestPlusYourData/AutosuggestPlusYourData.xcodeproj)
 
 
 # Installation
@@ -93,6 +93,16 @@ pod 'what3words', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
 ```
 
 If you are using CocoaPods use `import what3words` instead of `import W3WSwiftApi` in your Swift files.
+
+
+#### Carthage (iOS 9+)
+
+You can use [Carthage](https://github.com/Carthage/Carthage) to install `w3w-swift-wrapper` by adding it to your `Cartfile`:
+
+```
+github "what3words/w3w-swift-wrapper"
+```
+
 
 #### Note:
 

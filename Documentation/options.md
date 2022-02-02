@@ -111,7 +111,7 @@ autosuggest(text: text, options: [W3WOption.voiceLanguage("ar")]) { _,_ in }
 
 Others
 ----------------
-`inputType(W3WInputType)` is used if you are calling autosuggest with the output of a particular voice recognition system.  It doesn't apply to this component library
+`inputType(W3WInputType)` is used if you are calling autosuggest with the output of a particular voice recognition system.
 
 `numberOfResults(Int)` sets the number of results returned in an autosuggest call.  It defaults to 3 and it is reccomended that applicaitons use the default for best results and user experience.
 
