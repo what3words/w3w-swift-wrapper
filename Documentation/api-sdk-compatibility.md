@@ -4,7 +4,7 @@
 Overview
 --------
 
-The SDK and API are designed to be interoperable. This is done by making them conform to a common protocol called `W3WProtocolV3`.  To upgrade your code from using the API to the SDK, you should only have to chage the line that instantiates the API to instantiate the SDK instead.  All other subsequent calls can remain exactly the same.
+The SDK and API are designed to be interoperable. This is done by making them conform to a common protocol called `W3WProtocolV3`.  To upgrade your code from using the API to the SDK, you should only have to change the line that instantiates the API to instantiate the SDK instead.  All other subsequent calls can remain exactly the same.
 
 #### convertToCoordinates Example
 
@@ -34,12 +34,13 @@ sdk.convertToCoordinates(words: "filled.count.soap") { square, error in
 }
 ```
 
-Note that `W3WSwiftApi` is still imported in the SDK example. This is becuase the API has the `W3WProtocolV3` definition.
+Note that `W3WSwiftApi` is still imported in the SDK example. This is because the API has the `W3WProtocolV3` definition.
 
+For more info on parameters required when constructing the SDK's `What3Words` object, please refer to the SDK documentation.  Generally it needs the path to the what3words language data (`w3w-data`).  There is also an optional second parameter called `engineType` which for all Apple devices you'll almost certainly want to leave as the default `.device` type.
 
 ### W3WProtocolV3
 
-The `W3WProtocolV3` protocol ensures the following functions are peresent in the api's `What3WordsV3` and the sdk's `What3Words` objects:
+The `W3WProtocolV3` protocol ensures the following functions are present in the api's `What3WordsV3` and the sdk's `What3Words` objects:
 
 `convertToCoordinates`, `convertTo3wa`, `autosuggest`, `autosuggestWithCoordinates`, `gridSection`, `availableLanguages`, `distance`, `isPossible3wa`, `findPossible3wa`, `didYouMean`
 
