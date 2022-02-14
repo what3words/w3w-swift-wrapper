@@ -1,4 +1,4 @@
-![what3words](https://circleci.com/gh/what3words/w3w-swift-wrapper.svg?style=shield&branch=dd-ascoords)
+![what3words](https://circleci.com/gh/what3words/w3w-swift-wrapper.svg?style=shield&branch=master)
 
 # <img valign='top' src="https://what3words.com/assets/images/w3w_square_red.png" width="64" height="64" alt="what3words">&nbsp;w3w-swift-wrapper 
 
