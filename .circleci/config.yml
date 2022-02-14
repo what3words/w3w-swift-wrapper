@@ -3,11 +3,7 @@ version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.15
 
-  deploy:
-    steps:
-      - aws-s3/sync:
-          from: ./s3
-          to: 's3://${S3_ARTIFACTS_BUCKET}/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
+commands:
 
    test_code:
           name: Run Unit Tests
@@ -24,15 +20,21 @@ orbs:
           command: |-
             ./build.sh
 
+  deploy:
+    steps:
+      - aws-s3/sync:
+          from: ./s3
+          to: 's3://${S3_ARTIFACTS_BUCKET}/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
+
 
 jobs: # the jobs
-  test_and_deploy: # your job name
+  test_build_deploy: # your job name
     macos:
       xcode: 12.2.0 # version of Xcode
     steps:
-      - checkout  # pull down code from
       - test_code
       - build_api_sdk
+      - deploy
    
 workflows:
   version: 2
