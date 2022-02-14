@@ -23,14 +23,16 @@ commands:
           name: Build Framework
           command: |-
               ./build.sh
+              mkdir -p s3
               cd build
-              tar zcf what3words-ios-sdk-${CIRCLE_TAG:-$CIRCLE_BRANCH}.tar.gz  W3WSwiftApi.xcframework
+              tar zcf ../s3/what3words-ios-sdk-${CIRCLE_TAG:-$CIRCLE_BRANCH}.tar.gz  W3WSwiftApi.xcframework
+              cd ..
 
   deploy:
     steps:
       - aws-s3/sync:
           from: ./s3
-          to: 's3://${S3_ARTIFACTS_BUCKET}/ocr-ios/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
+          to: 's3://${S3_ARTIFACTS_BUCKET}/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
 
 
 jobs: # the jobs
