@@ -7,7 +7,7 @@ commands:
 
    test_code:
           name: Run Unit Tests
-          command: |-
+          command: |
               brew install sonar-scanner
               swift test --enable-code-coverage
               xcrun llvm-cov show .build/debug/w3w-swift-wrapperPackageTests.xctest/Contents/MacOS/w3w-swift-wrapperPackageTests -instr-profile .build/debug/codecov/default.profdata > .build/cov.txt
@@ -17,8 +17,7 @@ commands:
     steps:
       - run:
           name: Build SDK for Api Wrapper
-          command: |-
-            ./build.sh
+          command: ./build.sh
 
   deploy:
     steps:
