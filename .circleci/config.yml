@@ -37,7 +37,7 @@ jobs: # the jobs
   do_everything:
     - test
     - build
-    -deploy
+    - deploy
 
 workflows:
   version: 2
