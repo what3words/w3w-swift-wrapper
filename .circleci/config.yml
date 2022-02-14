@@ -1,10 +1,11 @@
 version: 2.1
 
+orbs:
+  aws-s3: circleci/aws-s3@1.0.15
+
 commands:
 
-  test: 
-    macos:
-      xcode: 12.2.0 # version of Xcode
+  test:
     steps:
       - checkout  # pull down code from
       - run:
@@ -16,8 +17,6 @@ commands:
               sonar-scanner -Dsonar.projectKey=what3words_w3w-swift-wrapper -Dsonar.organization=what3words -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=$SONAR_TOKEN -Dsonar.sources=Sources -Dsonar.swift.coverage.reportPath=.build/cov.txt
    
   build:
-    macos:
-      xcode: 12.2.0 # version of Xcode
     steps:
       - checkout  # pull down code from
       - run:
@@ -35,10 +34,14 @@ commands:
 
 
 jobs: # the jobs
+
   do_everything:
-    - test
-    - build
-    - deploy
+    macos:
+      xcode: 12.2.0 # version of Xcode
+    steps:
+      - test
+      - build
+      - deploy
 
 workflows:
   version: 2
