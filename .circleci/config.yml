@@ -35,7 +35,7 @@ commands:
 #          aws-region: eu-west-2
 #          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ./s3
-          to: 's3://${S3_ARTIFACTS_BUCKET}/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
+          to: 's3://what3words-artifacts/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
 
 
 jobs: # the jobs
