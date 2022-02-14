@@ -30,7 +30,8 @@ commands:
 
   deploy:
     steps:
-      - export AWS_REGION="eu-west-2"
+      - command: |
+          export AWS_REGION="eu-west-2"
       - aws-s3/sync:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
