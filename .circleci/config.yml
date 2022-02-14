@@ -14,11 +14,22 @@ jobs: # the jobs
               xcrun llvm-cov show .build/debug/w3w-swift-wrapperPackageTests.xctest/Contents/MacOS/w3w-swift-wrapperPackageTests -instr-profile .build/debug/codecov/default.profdata > .build/cov.txt
               sonar-scanner -Dsonar.projectKey=what3words_w3w-swift-wrapper -Dsonar.organization=what3words -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=$SONAR_TOKEN -Dsonar.sources=Sources -Dsonar.swift.coverage.reportPath=.build/cov.txt
    
+  build:
+    macos:
+      xcode: 12.2.0 # version of Xcode
+    steps:
+      - checkout  # pull down code from
+      - run:
+          name: Run Unit Tests
+          command: |-
+              ./build.sh
+   
 workflows:
   version: 2
   test_build:
     jobs:
       - test
+      - build
 
 #version: 2.1
 #
