@@ -32,7 +32,7 @@ commands:
     steps:
       - aws-s3/sync:
           aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-region: eu-west-2
+          aws-region: "eu-west-2"
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ./s3
           to: 's3://what3words-artifacts/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
