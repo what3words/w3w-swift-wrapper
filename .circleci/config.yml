@@ -20,16 +20,33 @@ jobs: # the jobs
     steps:
       - checkout  # pull down code from
       - run:
-          name: Run Unit Tests
+          name: Build Framework
           command: |-
               ./build.sh
-   
+              cd build
+              tar zcf what3words-ios-sdk-${CIRCLE_TAG:-$CIRCLE_BRANCH}.tar.gz  W3WSwiftApi.xcframework
+
+  deploy:
+    steps:
+      - aws-s3/sync:
+          from: ./s3
+          to: 's3://${S3_ARTIFACTS_BUCKET}/ocr-ios/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
+
+
+jobs: # the jobs
+  do_everything
+    steps:
+      - test
+      - build
+      -deploy
+
 workflows:
   version: 2
   test_build:
     jobs:
-      - test
-      - build
+      - do_everything
+#      - test
+#      - build
 
 #version: 2.1
 #
