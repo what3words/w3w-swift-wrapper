@@ -31,6 +31,9 @@ commands:
   deploy:
     steps:
       - aws-s3/sync:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+#          aws-region:
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ./s3
           to: 's3://${S3_ARTIFACTS_BUCKET}/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
 
