@@ -1,7 +1,8 @@
 version: 2.1
 
-jobs: # the jobs
-  test: # your job name
+commands:
+
+  test: 
     macos:
       xcode: 12.2.0 # version of Xcode
     steps:
