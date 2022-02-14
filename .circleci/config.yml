@@ -27,11 +27,10 @@ commands:
               cd build
               tar zcf ../s3/what3words-ios-sdk-${CIRCLE_TAG:-$CIRCLE_BRANCH}.tar.gz  W3WSwiftApi.xcframework
               cd ..
+              export AWS_REGION="eu-west-2"
 
   deploy:
     steps:
-      - command: |
-          export AWS_REGION="eu-west-2"
       - aws-s3/sync:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
