@@ -34,11 +34,10 @@ jobs: # the jobs
 
 
 jobs: # the jobs
-  do_everything
-    steps:
-      - test
-      - build
-      -deploy
+  do_everything:
+    - test
+    - build
+    -deploy
 
 workflows:
   version: 2
