@@ -31,29 +31,27 @@ commands:
   deploy:
     steps:
       - aws-s3/sync:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-region: AWS_REGION
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ./s3
-          to: 's3://${S3_ARTIFACTS_BUCKET}/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
+          to: 's3://what3words-artifacts/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
 
 
 jobs: # the jobs
 
   build_test_deploy:
     macos:
-      xcode: 12.2.0 # version of Xcode
+      xcode: 12.4.0 # version of Xcode
     steps:
 #      - test
       - build
       - deploy
 
 workflows:
-  version: 2
+
   test_build:
     jobs:
       - build_test_deploy:
-          context: org-global
+          context:
+            - org-global
       
       
       
