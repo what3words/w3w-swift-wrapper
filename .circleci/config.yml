@@ -32,7 +32,7 @@ commands:
     steps:
       - aws-s3/sync:
           from: ./s3
-          to: 's3://what3words-artifacts/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
+          to: 's3://what3words-artifacts/swift-packages/w3w-swift-wrapper/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
 
 
 jobs: # the jobs
