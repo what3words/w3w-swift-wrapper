@@ -27,12 +27,12 @@ commands:
               cd build
               tar zcf ../s3/what3words-ios-sdk-${CIRCLE_TAG:-$CIRCLE_BRANCH}.tar.gz  W3WSwiftApi.xcframework
               cd ..
-              export AWS_REGION="eu-west-2"
 
   deploy:
     steps:
       - aws-s3/sync:
           aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ./s3
           to: 's3://what3words-artifacts/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
@@ -53,6 +53,11 @@ workflows:
   test_build:
     jobs:
       - build_test_deploy
+          name: Build test and deploy
+          context: org-global
+      
+      
+      
 #      - test
 #      - build
 
