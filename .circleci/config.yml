@@ -41,7 +41,7 @@ jobs: # the jobs
     macos:
       xcode: 12.4.0 # version of Xcode
     steps:
-#      - test
+      - test
       - build
       - deploy
 
