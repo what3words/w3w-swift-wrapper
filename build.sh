@@ -1,3 +1,7 @@
+# This script builds an XCFramework for this package
+# it is used to make XCFramework builds for internal use
+# via CircleCI
+
 # remove any old builds
 if [ -d "build" ]
 then

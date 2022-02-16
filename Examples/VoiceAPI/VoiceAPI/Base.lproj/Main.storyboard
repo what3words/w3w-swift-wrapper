@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="VoiceAPI" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tZb-JU-k0D">
+                                <rect key="frame" x="143" y="123" width="128" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="128" id="IEo-u6-ifh"/>
+                                    <constraint firstAttribute="height" constant="128" id="rGH-GH-c7F"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <color key="tintColor" red="0.62870460750000001" green="0.78888428209999995" blue="0.80282312629999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="white.480">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="128"/>
+                                </state>
+                                <state key="disabled" image="white.fill.480"/>
+                                <state key="selected" image="white.fill.480"/>
+                                <state key="highlighted" image="white.fill.480"/>
+                                <connections>
+                                    <action selector="microphoneButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YXU-nb-KDT"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap To Speak" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="g4T-BN-bMi">
+                                <rect key="frame" x="32" y="259" width="350" height="20"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" red="0.03154170513" green="0.21455764769999999" blue="0.32461863759999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="g4T-BN-bMi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="ACK-aI-prQ"/>
+                            <constraint firstItem="tZb-JU-k0D" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LNI-9O-qUa"/>
+                            <constraint firstItem="g4T-BN-bMi" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="NdA-fH-X9I"/>
+                            <constraint firstItem="tZb-JU-k0D" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="79" id="RII-CO-eEj"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="g4T-BN-bMi" secondAttribute="trailing" constant="32" id="T0W-RK-YbT"/>
+                            <constraint firstItem="g4T-BN-bMi" firstAttribute="top" secondItem="tZb-JU-k0D" secondAttribute="bottom" constant="8" id="hCl-3V-o5q"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="microphoneButton" destination="tZb-JU-k0D" id="37T-1A-7WU"/>
+                        <outlet property="textLabel" destination="g4T-BN-bMi" id="bXs-Ub-rlH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-341" y="116"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="white.480" width="480" height="480"/>
+        <image name="white.fill.480" width="480" height="480"/>
+    </resources>
+</document>
