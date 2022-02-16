@@ -23,7 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		OBJ_104 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_58 /* W3wGeocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* W3wGeocoder.swift */; };
 		OBJ_59 /* SdkToApiBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* SdkToApiBridge.swift */; };
 		OBJ_60 /* W3WApiDataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* W3WApiDataTypes.swift */; };
 		OBJ_61 /* W3WTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* W3WTypes.swift */; };
@@ -83,7 +82,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		OBJ_10 /* W3wGeocoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3wGeocoder.swift; sourceTree = "<group>"; };
 		OBJ_13 /* SdkToApiBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdkToApiBridge.swift; sourceTree = "<group>"; };
 		OBJ_15 /* W3WApiDataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WApiDataTypes.swift; sourceTree = "<group>"; };
 		OBJ_16 /* W3WTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WTypes.swift; sourceTree = "<group>"; };
@@ -280,7 +278,6 @@
 		OBJ_8 /* W3WSwiftApi */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_9 /* Depreciated */,
 				OBJ_11 /* Lib */,
 				OBJ_26 /* Voice */,
 				OBJ_35 /* W3WAutosuggestHelper.swift */,
@@ -290,14 +287,6 @@
 			name = W3WSwiftApi;
 			path = Sources/W3WSwiftApi;
 			sourceTree = SOURCE_ROOT;
-		};
-		OBJ_9 /* Depreciated */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_10 /* W3wGeocoder.swift */,
-			);
-			path = Depreciated;
-			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -409,7 +398,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_58 /* W3wGeocoder.swift in Sources */,
 				OBJ_59 /* SdkToApiBridge.swift in Sources */,
 				OBJ_60 /* W3WApiDataTypes.swift in Sources */,
 				OBJ_61 /* W3WTypes.swift in Sources */,
