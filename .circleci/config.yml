@@ -1,41 +1,54 @@
 version: 2.1
 
 orbs:
-  aws-s3: circleci/aws-s3@1.0.15
+  aws-s3: circleci/aws-s3@3.0
 
-  deploy:
+commands:
+
+  test:
     steps:
-      - aws-s3/sync:
-          from: ./s3
-          to: 's3://${S3_ARTIFACTS_BUCKET}/temp/api/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
-
-   test_code:
+      - checkout  # pull down code from
+      - run:
           name: Run Unit Tests
           command: |-
               brew install sonar-scanner
               swift test --enable-code-coverage
               xcrun llvm-cov show .build/debug/w3w-swift-wrapperPackageTests.xctest/Contents/MacOS/w3w-swift-wrapperPackageTests -instr-profile .build/debug/codecov/default.profdata > .build/cov.txt
               sonar-scanner -Dsonar.projectKey=what3words_w3w-swift-wrapper -Dsonar.organization=what3words -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=$SONAR_TOKEN -Dsonar.sources=Sources -Dsonar.swift.coverage.reportPath=.build/cov.txt
-
-  build_api_sdk:
+   
+  build:
     steps:
+      - checkout  # pull down code from
       - run:
-          name: Build SDK for Api Wrapper
+          name: Build Framework
           command: |-
-            ./build.sh
+              ./build.sh
+              mkdir -p s3
+              cd build
+              tar zcf ../s3/W3WSwiftApi-${CIRCLE_TAG:-$CIRCLE_BRANCH}.tar.gz W3WSwiftApi.xcframework
+              cd ..
+
+  deploy:
+    steps:
+      - aws-s3/sync:
+          from: ./s3
+          to: 's3://what3words-artifacts/swift-packages/w3w-swift-wrapper/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
 
 
 jobs: # the jobs
-  test_and_deploy: # your job name
+
+  build_test_deploy:
     macos:
-      xcode: 12.2.0 # version of Xcode
+      xcode: 12.4.0 # version of Xcode
     steps:
-      - checkout  # pull down code from
-      - test_code
-      - build_api_sdk
-   
+#      - test
+      - build
+      - deploy
+
 workflows:
-  version: 2
-  api_wrapper:
+
+  test_build:
     jobs:
-      - test_and_deploy
+      - build_test_deploy:
+          context:
+            - org-global
