@@ -21,7 +21,6 @@
 
 -(void)setUp
 {
-  //if let apikey = ProcessInfo.processInfo.environment["APIKEY"] {
   NSString *api_key = NSProcessInfo.processInfo.environment[@"APIKEY"];
   if (api_key == NULL) {
     NSLog(@"Environment variable APIKEY must be set");

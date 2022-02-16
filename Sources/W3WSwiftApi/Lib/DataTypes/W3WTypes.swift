@@ -57,6 +57,7 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
   case invalidReferrer
   case invalidIpAddress
   case invalidAppCredentials
+  case apiError(String)
   
   // Communication Errors
   case unknownErrorCodeFromServer
@@ -103,6 +104,7 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
       case .notFound404:             return "URL not found, 404 error"
       case .duplicateParameter:       return "A parameter was provided twice"
       case .invalidResponse:           return "Invalid Response"
+      case .apiError(let errorString):  return errorString
       case .unknownErrorCodeFromServer: return "Error code from API server is not recognized, upgrade this API?"
       case .socketError(let error):     return String(describing: error)
       case .sdkError(let error):       return String(describing: error)
@@ -111,7 +113,7 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
   }
 
   
-  static func from(code: String) -> W3WError {
+  static func from(code: String, message: String? = nil) -> W3WError {
     switch code {
     case "BadWords":
       return W3WError.badWords
@@ -168,7 +170,11 @@ public enum W3WError : Error, CustomStringConvertible, Equatable {
     case "InvalidAppCredentials":
       return W3WError.invalidAppCredentials
     default:
-      return W3WError.unknownErrorCodeFromServer
+      if let m = message {
+        return W3WError.apiError(m)
+      } else {
+        return W3WError.unknownErrorCodeFromServer
+      }
     }
     
   }
@@ -186,6 +192,8 @@ public enum W3WInputType : String {
   case genericVoice = "generic-voice"
   case speechmatics = "speechmatics"
   case mihup        = "mihup"
+  case mawdoo3      = "mawdoo3"
+  case ocrSdk       = "w3w-ocr-sdk"
 }
 
 
@@ -322,7 +330,7 @@ public struct W3WOptionKey {
   public static let numberFocusResults = "n-focus-results"
   public static let inputType = "input-type"
   public static let clipToCountry = "clip-to-country"
-  public static let clipToCountries = "clip-to-countries"
+  public static let clipToCountries = "clip-to-country"
   public static let preferLand = "prefer-land"
   public static let clipToCircle = "clip-to-circle"
   public static let clipToBox = "clip-to-bounding-box"
@@ -474,6 +482,7 @@ public class W3WOptions {
 
   public var options = [W3WOption]()
 
+  /// this is to make the initializer public
   public init() {}
   
   public func language(_ language:String)            -> W3WOptions { options.append(W3WOption.language(language)); return self }
@@ -481,6 +490,7 @@ public class W3WOptions {
   public func numberOfResults(_ numberOfResults:Int) -> W3WOptions { options.append(W3WOption.numberOfResults(numberOfResults)); return self }
   public func inputType(_ inputType:W3WInputType)     -> W3WOptions { options.append(W3WOption.inputType(inputType)); return self }
   public func clipToCountry(_ clipToCountry:String)     -> W3WOptions { options.append(W3WOption.clipToCountry(clipToCountry)); return self }
+  public func clipToCountries(_ clipToCountries:[String])  -> W3WOptions { options.append(W3WOption.clipToCountries(clipToCountries)); return self }
   public func preferLand(_ preferLand:Bool)                   -> W3WOptions { options.append(W3WOption.preferLand(preferLand)); return self }
   public func focus(_ focus:CLLocationCoordinate2D)                       -> W3WOptions { options.append(W3WOption.focus(focus)); return self }
   public func numberFocusResults(_ numberFocusResults:Int)                        -> W3WOptions { options.append(W3WOption.numberFocusResults(numberFocusResults)); return self }
@@ -598,17 +608,73 @@ extension W3WProtocolV3 {
   }
   
   
+  // MARK: Utility
+
+
+  /// returns the distance in meters between two squares or nil if the points are bad
+  public func distance(from: W3WSquare?, to: W3WSquare?) -> Double? {
+    return distance(from: from?.coordinates, to: to?.coordinates)
+  }
+  
+  
+  /// returns the distance in meters between two points or nil if the points are bad
+  /// - parameter from: point to measure from
+  /// - parameter to: point to measure to
+  /// - returns distance in meters
+  public func distance(from: CLLocationCoordinate2D?, to: CLLocationCoordinate2D?) -> Double? {
+    if let from = from, let to = to {
+      let from = CLLocation(latitude: from.latitude, longitude: from.longitude)
+      let to = CLLocation(latitude: to.latitude, longitude: to.longitude)
+      return from.distance(from: to)
+    } else {
+      return nil
+    }
+  }
+  
+  
   /// Uses the regex to determine if a String fits the three word address form of three words in any language separated by two separator characters
   public func isPossible3wa(text: String) -> Bool {
-    let regex = try! NSRegularExpression(pattern:W3WSettings.regex_match, options: [])
-    let count = regex.numberOfMatches(in: text, options: [], range: NSRange(text.startIndex..<text.endIndex, in:text))
-    if (count > 0) {
-      return true
-    }
-    else {
+    return regexMatch(text: text, regex: W3WSettings.regex_match)
+  }
+  
+  
+  /// checks if input looks like a 3 word address or not
+  public func didYouMean(text: String) -> Bool {
+    return regexMatch(text: text, regex: W3WSettings.regex_loose_match)
+  }
+
+
+  func regexMatch(text: String, regex: String) -> Bool {
+    if let regex = try? NSRegularExpression(pattern:regex, options: []) {
+      let count = regex.numberOfMatches(in: text, options: [], range: NSRange(text.startIndex..<text.endIndex, in:text))
+      if (count > 0) {
+        return true
+      } else {
+        return false
+      }
+    } else {
       return false
     }
   }
+  
+  
+  /// searches a string for possible three word address matches
+  public func findPossible3wa(text: String) -> [String] {
+    var results = [String]()
+    
+    if let regex = try? NSRegularExpression(pattern:W3WSettings.regex_search) {
+      let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in:text))
+      
+      for match in matches {
+        if let range = Range(match.range, in: text) {
+          results.append(String(text[range]))
+        }
+      }
+    }
+
+    return results
+  }
+  
   
 }
 

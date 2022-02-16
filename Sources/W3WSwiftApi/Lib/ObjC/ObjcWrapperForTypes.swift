@@ -171,6 +171,8 @@ import MapKit
   case genericVoice
   case speechmatics
   case mihup
+  case mawdoo3
+  case ocrSdk
 }
 
 
@@ -251,6 +253,10 @@ import MapKit
       it = W3WOption.inputType(.text)
     case .voconHybrid:
       it = W3WOption.inputType(.voconHybrid)
+    case .mawdoo3:
+      it = W3WOption.inputType(.mawdoo3)
+    case .ocrSdk:
+      it = W3WOption.inputType(.ocrSdk)
     }
     
     if let i = it {

@@ -32,20 +32,29 @@ public enum W3WMicrophoneError : Error, CustomStringConvertible {
 
 
 /// Manages the device microphone
-@available(watchOS 4.0, *)
+@available(watchOS 4.0, tvOS 11.0, *)
 
 
 
 public class W3WMicrophone: W3WAudioStream {
 
-  /// callback for when the mic has new audio date
-  public var sampleArrived: (UnsafeBufferPointer<Float>) -> () = { _ in }
-
-  /// callback for the UI to update/animate any graphics showing microphone volume/amplitude
-  public var volumeUpdate: (Double) -> () = { _ in }
-
-  /// callback for when the voice recognition stopped
-  public var listeningUpdate: ((W3WVoiceListeningState) -> ()) = { _ in }
+//  /// the sample rate
+//  public var sampleRate: Int = 44100
+//
+//  /// the audio encoding format
+//  public var encoding: W3WEncoding = .pcm_f32le
+//  
+//  /// callback for when the mic has new audio date
+//  public var sampleArrived: (Data) -> () = { _ in }
+//
+//  /// callback for the UI to update/animate any graphics showing microphone volume/amplitude
+//  public var volumeUpdate: (Double) -> () = { _ in }
+//
+//  /// callback for when the voice recognition stopped
+//  public var listeningUpdate: ((W3WVoiceListeningState) -> ()) = { _ in }
+//
+//  /// error callback
+//  public var onError: (W3WVoiceError) -> () = { _ in }
 
   
   /// CoreAudio interface
@@ -57,7 +66,7 @@ public class W3WMicrophone: W3WAudioStream {
   /// a current amplitude
   public var amplitude = 0.0
   /// the maximum amplitude so far
-  public var maxAmplitude = 0.0
+  public var maxAmplitude = W3WSettings.defaulMaxAmplitude
   /// the minimum amplitude so far
   public var minAmplitude = 0.0
   /// the smallest "max" volume for the amplitude normalization function
@@ -65,8 +74,19 @@ public class W3WMicrophone: W3WAudioStream {
 
   
   // MARK: Initialization
+
+  override public init() {
+    super.init()
+    configure()
+  }
   
-  public init() {
+  override public init(sampleRate: Int, encoding:W3WEncoding) {
+    super.init(sampleRate: sampleRate, encoding: encoding)
+    configure()
+  }
+
+    
+  func configure() {
     audioEngine = AVAudioEngine()
     mic = audioEngine.inputNode
     
@@ -78,8 +98,6 @@ public class W3WMicrophone: W3WAudioStream {
     } catch {
       print("Error using microphone")
     }
-    
-    super.init(sampleRate: Int(mic.inputFormat(forBus: 0).sampleRate), encoding: .pcm_f32le)
   }
   
   
@@ -135,7 +153,8 @@ public class W3WMicrophone: W3WAudioStream {
 
     // make sure this hardware can record and mic is available
     if !isInputAvailable() || !isMicrophoneAvailable() {
-      update(error: W3WVoiceError.microphoneError(error: W3WMicrophoneError.noInputAvailable))
+      onError(W3WVoiceError.microphoneError(error: W3WMicrophoneError.noInputAvailable))
+      //update(error: W3WVoiceError.microphoneError(error: W3WMicrophoneError.noInputAvailable))
       
     // all good to go, so tap the mic
     } else {
@@ -157,7 +176,8 @@ public class W3WMicrophone: W3WAudioStream {
       do {
         try audioEngine.start()
       } catch {
-        update(error: W3WVoiceError.microphoneError(error: W3WMicrophoneError.audioSystemFailedToStart))
+        onError(W3WVoiceError.microphoneError(error: W3WMicrophoneError.audioSystemFailedToStart))
+        //update(error: W3WVoiceError.microphoneError(error: W3WMicrophoneError.audioSystemFailedToStart))
       }
     }
     
@@ -217,8 +237,8 @@ public class W3WMicrophone: W3WAudioStream {
       //print("Warning: microphone was stopped twice")
     }
 
-    endSamples()
-    close()
+    //endSamples()
+    //close()
     
     listeningUpdate(.stopped)
   }
@@ -251,22 +271,7 @@ public class W3WMicrophone: W3WAudioStream {
     // a code block to update amplitude for the UI;
     self.volumeUpdate(getNomralizedVolumeLevelForUI())
     
-    //self.sampleArrived(sampleData)
-    self.add(samples: Data(buffer: sampleData))
-  }
-  
-
-  // override errors so we can stop the mic if nessesary
-  override func update(error: W3WVoiceError) {
-    stop()
-    super.update(error: error)
-  }
-
-  
-  // override suggestions so we can stop the mic if nessesary
-  override func update(suggestions: [W3WVoiceSuggestion]) {
-    stop()
-    callback?(suggestions, nil)
+    self.sampleArrived(sampleData)
   }
 
   

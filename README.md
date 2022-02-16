@@ -1,4 +1,4 @@
-![what3words](https://circleci.com/gh/what3words/w3w-swift-wrapper.svg?style=shield&branch=dd-ascoords)
+![what3words](https://circleci.com/gh/what3words/w3w-swift-wrapper.svg?style=shield&branch=master)
 
 # <img valign='top' src="https://what3words.com/assets/images/w3w_square_red.png" width="64" height="64" alt="what3words">&nbsp;w3w-swift-wrapper 
 
@@ -14,6 +14,10 @@ The what3words Swift API wrapper gives you programmatic access to
 * obtain a section of the 3m x 3m what3words grid for a bounding box.
 * determine the currently support 3 word address languages.
 * autosuggest functionality to convert a spoken 3 word address (via voiceAPI) to a list of valid 3 word addresses
+
+The main API swift wrapper object is `What3WordsV3` and provides the above functionality.  There is also a higher level `W3WAutosuggestHelper` that does a lot of the work of calling the API for text field autosuggest functionality.  This is particularly helpful if you want to add what3words to your existing autocomplete code. A tutorial can be found [here](Documentation/tutorial-as-helper.md).
+
+Even higher level UI functionality can be found in our UI components library, [w3w-swift-components](https://github.com/what3words/w3w-swift-components), found on GitHub.  Notably our `W3WAutosuggestTextField` inherits `UITextField` and adds three word address autocomplete functionality.
 
 #### TLDR: 
 
@@ -39,22 +43,36 @@ To use this library you’ll need a what3words API key, which can be signed up f
 
 # Examples
 
-There are four examples in this package:
-
-#### iOS SwiftUI:
-An iOS SwiftUI example using `autosuggest` is in this package at [Examples/AutoSuggest/AutoSuggest.xcodeproj](./Examples/AutoSuggest/AutoSuggest.xcodeproj)
+Examples in this package:
 
 #### macOS terminal:
-A macOS terminal example demonstrating `convertToCoordinates` is at: [Examples/ConvertToCoords/ConvertToCoords.xcodeproj](./Examples/ConvertToCoords/ConvertToCoords.xcodeproj)
+A macOS terminal example demonstrating `convertToCoordinates` is at:  
+[Examples/ConvertToCoords/ConvertToCoords.xcodeproj](./Examples/ConvertToCoords/ConvertToCoords.xcodeproj)
 
 #### iOS UIKit Voice API:
-An iOS UIKit example using the VoiceAPI is at: [Examples/VoiceAPI/VoiceAPI.xcodeproj](./Examples/VoiceAPI/VoiceAPI.xcodeproj)
+An iOS UIKit example using the VoiceAPI is at:  
+[Examples/VoiceAPI/VoiceAPI.xcodeproj](./Examples/VoiceAPI/VoiceAPI.xcodeproj)
 
 #### iOS UIKit GridLine:
-An iOS example using MapKit to show what3words gridlines on a map: [Examples/GridLines/GridLines.xcodeproj](./Examples/GridLines/GridLines.xcodeproj)
+An iOS example using MapKit to show what3words gridlines on a map:  
+[Examples/GridLines/GridLines.xcodeproj](./Examples/GridLines/GridLines.xcodeproj)
 
 #### Objective-C
-An example using Objective-C. [Examples/ObjectiveC/ObjectiveC.xcodeproj](./Examples/ObjectiveC/ObjectiveC.xcodeproj)
+An example using Objective-C.  
+[Examples/ObjectiveC/ObjectiveC.xcodeproj](./Examples/ObjectiveC/ObjectiveC.xcodeproj)
+
+#### iOS SwiftUI:
+A very simple SwiftUI example that calls `autosuggest` and displays the results.  
+[Examples/AutoSuggest/AutoSuggest.xcodeproj](./Examples/AutoSuggest/AutoSuggest.xcodeproj)
+
+#### iOS SwiftUI Autosuggest Helper:
+A SwiftUI example using `W3WAutosuggestHelper` to create an autocomplete `TextField` with suggestions in a `List`.  
+[Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj](./Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj)
+
+#### Using Autosuggest Helper to augment your autocomplete:
+An iOS example using `W3WAutosuggestHelper` to augment another address datasource.  In other words, it shows how to use what3words in tandem with another address service.  The example uses Apple's `MKLocalSearchCompleter` and mixes it's results with what3words suggestions.  
+[Examples/AutosuggestPlusYourData/AutosuggestPlusYourData.xcodeproj](./Examples/AutosuggestPlusYourData/AutosuggestPlusYourData.xcodeproj)
+
 
 # Installation
 
@@ -76,12 +94,9 @@ pod 'what3words', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
 
 If you are using CocoaPods use `import what3words` instead of `import W3WSwiftApi` in your Swift files.
 
-#### Note:
+#### XCFramework
 
-If you are using this package's Voice API features on device, you should include Microphone permissions:
-
-<img src="Documentation/plist2.png" width="75%">
-
+There is a `build.sh` script can be run to build this code as an XCFramework.  This uses the included `w3w-swift-wrapper.xcodeproj`.
 
 ## Usage
 
@@ -94,7 +109,13 @@ import W3WSwiftApi
 import CoreLocation
 ```
 
-If you are using CocoaPods use `import what3words` instead.
+##### Note:
+
+* If you are using CocoaPods use `import what3words` instead.
+* If you are using this package's Voice API features on device, you should include Microphone permissions:
+
+<img src="Documentation/plist2.png" width="75%">
+
 
 ### Initialise
 
@@ -115,11 +136,11 @@ Additionally, if you run the Enterprise Suite API Server there is another option
 let api = What3WordsV3(apiKey: "YourApiKey", apiUrl: "https://api.yourserver.com", customHeaders: ["x-header-1":"value-1", "x-header-2":"value-2"])
 ```
 
-## Functions
+# Functions
 
 Each call takes a completion block as the last parameter. This allows Swift's trailing closure syntax to be used.  The closure's parameters contain the results.  If there was a problem with any call, it will be indicated by the [error object](#errors).
 
-### Convert To 3 Word Address
+## Convert To 3 Word Address
 
 Convert coordinates, expressed as latitude and longitude to a 3 word address. This function takes the latitude and longitude as a [CLLocationCoordinate2D](https://developer.apple.com/documentation/corelocation/cllocationcoordinate2d) object. The values returned from the `convertTo3wa` method are described in the [API documentation](https://docs.what3words.com/api/v3/#convert-to-3wa).
 
@@ -133,7 +154,7 @@ api.convertTo3wa(coordinates: coords, language: "en") { square, error in
 ```
 
 
-### Convert To Coordinates
+## Convert To Coordinates
 
 Convert a 3 word address to a position, expressed as coordinates of latitude and longitude. This function takes the words parameter as a string of 3 words `'table.book.chair'`. The values returned from the `convertToCoordinates` method are described in the [API documentation](https://docs.what3words.com/api/v3/#convert-to-coords).
 

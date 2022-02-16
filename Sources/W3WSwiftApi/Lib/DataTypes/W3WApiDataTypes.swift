@@ -145,6 +145,23 @@ public struct W3WApiSquare: W3WSquare, W3WWithCoordinates {
     }
   }
 
+  
+  /**
+   Make a W3WApiSquare
+   */
+  public init(words: String? = nil, coordinates: CLLocationCoordinate2D? = nil, country : String? = nil, nearestPlace : String? = nil, distanceToFocus : Double? = nil, language : String? = nil, southWestBounds: CLLocationCoordinate2D? = nil, northEastBounds: CLLocationCoordinate2D? = nil, map: String? = nil) {
+    self.words = words
+    self.coordinates = coordinates
+    self.country = country
+    self.nearestPlace = nearestPlace
+    self.distanceToFocus = distanceToFocus
+    self.language = language
+    self.southWestBounds = southWestBounds
+    self.northEastBounds = northEastBounds
+    self.map = map
+  }
+
+  
 }
 
 
@@ -219,24 +236,6 @@ extension W3WApiSuggestion {
     self.nearestPlace = nearestPlace
     self.distanceToFocus = distanceToFocus
     self.language = language
-  }
-  
-}
-
-
-
-extension W3WApiSquare {
-  
-  public init(words: String? = nil, coordinates: CLLocationCoordinate2D? = nil, country : String? = nil, nearestPlace : String? = nil, distanceToFocus : Double? = nil, language : String? = nil, southWestBounds: CLLocationCoordinate2D? = nil, northEastBounds: CLLocationCoordinate2D? = nil, map: String? = nil) {
-    self.words = words
-    self.coordinates = coordinates
-    self.country = country
-    self.nearestPlace = nearestPlace
-    self.distanceToFocus = distanceToFocus
-    self.language = language
-    self.southWestBounds = southWestBounds
-    self.northEastBounds = northEastBounds
-    self.map = map
   }
   
 }

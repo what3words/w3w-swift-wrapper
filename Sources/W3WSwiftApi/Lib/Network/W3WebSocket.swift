@@ -445,7 +445,9 @@ private class W3Inflater {
   }
   deinit{
     _ = inflateEndG(&strm)
-    free(buffer)
+    if buffer != nil {
+      free(buffer!)
+    }
   }
   func inflate(_ bufin : UnsafePointer<UInt8>, length : Int, final : Bool) throws -> (p : UnsafeMutablePointer<UInt8>, n : Int){
     var buf = buffer
@@ -507,7 +509,9 @@ private class W3Deflater {
   }
   deinit{
     _ = deflateEnd(&strm)
-    free(buffer)
+    if buffer != nil {
+      free(buffer!)
+    }
   }
   /*func deflate(_ bufin : UnsafePointer<UInt8>, length : Int, final : Bool) -> (p : UnsafeMutablePointer<UInt8>, n : Int, err : NSError?){
    return (nil, 0, nil)
@@ -653,10 +657,10 @@ private class W3InnerWebSocket: Hashable {
   }
   deinit{
     if outputBytes != nil {
-      free(outputBytes)
+      free(outputBytes!)
     }
     if inputBytes != nil {
-      free(inputBytes)
+      free(inputBytes!)
     }
     pthread_mutex_init(&mutex, nil)
   }
