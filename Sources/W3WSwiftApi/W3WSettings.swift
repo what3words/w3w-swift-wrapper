@@ -41,7 +41,7 @@ public struct W3WSettings {
   public static let regex_3wa_mistaken_separator = "[.｡。･・︒។։။۔።। ,\\\\^_/+'&:;|　-]{1,2}"
   public static let regex_3wa_word               = "\\w+"
   public static let regex_exlusionary_word       = "[^0-9`~!@#$%^&*()+\\-_=\\]\\[{\\}\\\\|'<,.>?/\";:£§º©®\\s]{1,}"
-  public static let regex_match                  = "^/*" + W3WSettings.regex_3wa_word + W3WSettings.regex_3wa_separator + W3WSettings.regex_3wa_word + W3WSettings.regex_3wa_separator + W3WSettings.regex_3wa_word + "$"
+  public static let regex_match                  = "^(?:/*\\w+[.｡。･・︒។։။۔።।]\\w+[.｡。･・︒។։။۔።।]\\w+|/*\\w+([\u{20}\u{A0}]\\w+){1,3}[.｡。･・︒។։။۔።।]\\w+([\u{20}\u{A0}]\\w+){1,3}[.｡。･・︒។։။۔።।]\\w+([\u{20}\u{A0}]\\w+){1,3})$"
   public static let regex_loose_match            = "^/*" + W3WSettings.regex_3wa_word + W3WSettings.regex_3wa_mistaken_separator + W3WSettings.regex_3wa_word + W3WSettings.regex_3wa_mistaken_separator + W3WSettings.regex_3wa_word + "$"
   public static let regex_search                 = W3WSettings.regex_3wa_word + W3WSettings.regex_3wa_separator + W3WSettings.regex_3wa_word + W3WSettings.regex_3wa_separator + W3WSettings.regex_3wa_word
   

@@ -287,7 +287,11 @@ public class W3WAudioRecorder {
   
   /// add a 32 bit float sample to the sound file
   public func addSample(sample:Float32) {
-    let convertedToInt16 = Int16(sample * 32768 / (2.0 * .pi))
+    var convertedToInt16 = Int16(0)
+    let s = sample * 32768 / (2.0 * .pi)
+    if s > Float(Int16.min) && s < Float(Int16.max) {
+      convertedToInt16 = Int16(sample * 32768 / (2.0 * .pi))
+    }
     recording.add(sample: convertedToInt16)
   }
 

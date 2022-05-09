@@ -28,5 +28,5 @@ api.convertToCoordinates(words: "filled.count.soap")  { (square, error) in
 
 // Wait to allow the above call to finish
 // The wait is only nessesary because this is a command line app. Command line apps don't wait for asychronous calls to finish
-// A better way to handle this is with DispatchSemaphore(), but as example code, we felt this would neeslessly muddy up the example
+// A better way to handle this is with DispatchSemaphore(), but as example code, we felt this would needlessly muddy up the example
 Thread.sleep(forTimeInterval: 10)

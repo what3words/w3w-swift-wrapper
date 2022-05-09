@@ -87,6 +87,7 @@ public class W3WVoiceApi: W3WApiCall, W3WVoice {
   
   
   func stop(audio: W3WAudioStream) {
+    voiceSocket?.endSamples()
     voiceSocket?.close()
     voiceSocket = nil
     

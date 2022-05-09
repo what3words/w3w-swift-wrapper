@@ -51,7 +51,11 @@ extension What3Words: W3WProtocolV3 {
   /// - parameter completion: code block whose parameters contain a W3WSquare and if any, an error
   public func convertToCoordinates(words: String, completion: @escaping W3WSquareResponse) {
     do {
-      try completion(convertToSquare(words: words), nil)
+      if let square = try convertToSquare(words: words), square.coordinates != nil {
+        completion(square, nil)
+      } else {
+        completion(nil, W3WError.badWords)
+      }
     } catch {
       completion(nil, convert(error: error))
     }
@@ -64,7 +68,11 @@ extension What3Words: W3WProtocolV3 {
   /// - parameter completion: code block whose parameters contain a W3WSquare and if any, an error
   public func convertTo3wa(coordinates: CLLocationCoordinate2D, language: String, completion: @escaping W3WSquareResponse) {
     do {
-      try completion(convertToSquare(coordinates: coordinates, language: language), nil)
+      if let square = try convertToSquare(coordinates: coordinates, language: language), square.words != nil {
+        completion(square, nil)
+      } else {
+        completion(nil, W3WError.badCoordinates)
+      }
     } catch {
       completion(nil, convert(error: error))
     }

@@ -792,7 +792,7 @@ private class W3InnerWebSocket: Hashable {
         }
       case .closeConn:
         if let error = finalError {
-          self.event.error(W3WWebSocketError.final)
+          self.event.error(error as? W3WWebSocketError ?? W3WWebSocketError.network(error.localizedDescription))
           self.eventDelegate?.webSocketError(error as NSError)
         }
         privateReadyState = .closed
@@ -1081,7 +1081,7 @@ private class W3InnerWebSocket: Hashable {
     for i in 0 ..< 4 {
       keyb[i] = arc4random()
     }
-    let rkey = Data(bytes: UnsafePointer(keyb), count: 16).base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))  // sorry for the warning here, can't see a way around it, let us know if you think of a better way...
+    let rkey = Data(bytes: keyb, count: 16).base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     reqs += "Sec-WebSocket-Key: \(rkey)\r\n"
     reqs += "\r\n"
     var header = [UInt8]()

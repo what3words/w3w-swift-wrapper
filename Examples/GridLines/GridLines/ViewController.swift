@@ -57,20 +57,31 @@ class ViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDe
   // MARK: Grid Functions
   
   
-  /// calls api.gridSection() and gets the lines for the grid, then calls presentNewGrid() to present the map on the view
+  /// This calls api.gridSection() and gets the lines for the grid, then calls presentNewGrid() to present the map on the view
+  ///
   /// IMPORTANT:
-  /// typically you would call this in a mapViewDidChangeVisibleRegion(_ mapView:) call, but be sure to debounce or
+  /// Typically you would call this in a mapViewDidChangeVisibleRegion(_ mapView:) call, but be sure to debounce or
   /// throttle the frequency api.gridSection is called.  mapViewDidChangeVisibleRegion can be called extremly rapidly
-  /// as the user scrolls around the view.  typically we make sure it's called less than three times a second
+  /// as the user scrolls around the view.  Typically we make sure it's called less than three times a second
+  /// If you are unfamiliar with debouncers, check out: https://www.google.com/search?q=ios+swift+api+call+debouncer
   func getGridSection() {
+    
     // ask for a grid twice the size of the currently showing map area
     let sw = CLLocationCoordinate2D(latitude: mapView.region.center.latitude - mapView.region.span.latitudeDelta * 1.5, longitude: mapView.region.center.longitude - mapView.region.span.longitudeDelta * 1.5)
     let ne = CLLocationCoordinate2D(latitude: mapView.region.center.latitude + mapView.region.span.latitudeDelta * 1.5, longitude: mapView.region.center.longitude + mapView.region.span.longitudeDelta * 1.5)
-    
-    // call w3w api for lines
-    self.api.gridSection(southWest:sw, northEast:ne) { lines, error in
-      self.showErrorIfAny(error: error)
-      self.presentNewGrid(lines: lines)
+
+    // check we aren't asking for too big an area (maximum is 4000 meters - 4km), here for aesthetic purposes we clip at 2000.
+    if let distance = api.distance(from: sw, to: ne), distance < 2000.0 {
+
+      // Here we call w3w api for gridlines in a briute force way for illustrative purposes, but in your app try not to call this too frequently.  See IMPORTANT note at the top of this function
+      self.api.gridSection(southWest:sw, northEast:ne) { lines, error in
+        self.showErrorIfAny(error: error)
+        self.presentNewGrid(lines: lines)
+      }
+      
+    // if the area shown is greater than 2000m, then remove the grid (if any shown)
+    } else {
+      self.mapView.removeOverlays(self.mapView.overlays)
     }
   }
   
@@ -112,7 +123,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDe
   
   
   
-  // MARK: MapView overrides
+  // MARK: MapView Delegate calls
   
   
   /// when the map view asks for one, give it a renderer that can draw the lines
@@ -127,6 +138,12 @@ class ViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDe
     } else {
       return MKOverlayRenderer()
     }
+  }
+
+  
+  /// update the grid when the map region changes
+  public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    getGridSection()
   }
 
   

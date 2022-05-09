@@ -22,6 +22,7 @@ public enum W3WVoiceSocketError : Error, CustomStringConvertible {
   case serverReturnedUnexpectedType
   case notFound404
   case other(error: Error)
+  case message(message: String)
   case unknown
   case socketError(error: W3WWebSocketError)
   
@@ -34,6 +35,7 @@ public enum W3WVoiceSocketError : Error, CustomStringConvertible {
       case .serverReturnedUnexpectedType:  return "The server returned unrecognized data types"
       case .notFound404:                   return "404 error.  The URL to the voice API is incorrect"
       case .other(let error):              return error.localizedDescription
+      case .message(let message):          return message
       case .unknown:                       return "Unknown error"
       case .socketError(let error):        return String(describing: error)
     }
@@ -154,22 +156,23 @@ public class W3WVoiceSocket {
             update(close: reasonCode, message: message)
           }
         } else {
-          switch code {
-            case 1001: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Going Away"))))
-            case 1002: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Protocol Error"))))
-            case 1003: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Protocol Error: Unhandled Type"))))
-            case 1005: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("No Status received"))))
-            case 1006: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .network(error?.localizedDescription ?? "Abnormal Socket Closure"))))
-            case 1007: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .payloadError(error?.localizedDescription ?? "Encoding Error"))))
-            case 1008: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Policy violation"))))
-            case 1009: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .payloadError("Message Too Big"))))
-            default:
-              if let e = error {
-                self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError(e.localizedDescription))))
-              } else {
-                self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.unknown))
-              }
-          }
+          self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.message(message: reason)))
+          //switch code {
+          //  case 1001: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Going Away"))))
+          //  case 1002: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Protocol Error"))))
+          //  case 1003: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.message(message: reason)))
+          //  case 1005: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("No Status received"))))
+          //  case 1006: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .network(error?.localizedDescription ?? "Abnormal Socket Closure"))))
+          //  case 1007: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .payloadError(error?.localizedDescription ?? "Encoding Error"))))
+          //  case 1008: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Policy violation"))))
+          //  case 1009: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .payloadError("Message Too Big"))))
+          //  default:
+          //    if let e = error {
+          //      self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError(reason + " " + e.localizedDescription))))
+          //    } else {
+          //      self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.message(message: reason)))
+          //    }
+          //}
         }
       }
     }
