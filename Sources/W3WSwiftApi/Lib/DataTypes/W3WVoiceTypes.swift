@@ -31,6 +31,7 @@ public enum W3WVoiceError : Error, CustomStringConvertible {
   case unknown
   
   case platformNotSupported
+  case apiDoesNotSupportVoice
   case apiError(error: W3WError)
   case voiceSocketError(error: W3WVoiceSocketError)
   case microphoneError(error: W3WMicrophoneError)
@@ -39,7 +40,7 @@ public enum W3WVoiceError : Error, CustomStringConvertible {
     switch self {
       case .noLanguageSpecified:  return "No language was specified"
       case .invalidApiKey:        return "Invalid API key provided"
-      case .unknown:              return "Unknown voice API errror"
+      case .unknown:              return "Unknown voice API error"
       case .missingKey:           return "Api key was missing"
       case .suspendedKey:         return "Api key is suspended"
       case .badInput:             return "Api input was bad"
@@ -53,6 +54,7 @@ public enum W3WVoiceError : Error, CustomStringConvertible {
       case .protocolError:        return "Message received was syntactically correct, but could not be accepted due to protocol limitations. This is usually caused by messages sent in the wrong order."
         
       case .platformNotSupported: return "This API wrapper is not supported for this type of device yet"
+      case .apiDoesNotSupportVoice: return "The SDK or API passed in does not support voice functionality (W3WVoice protocol)"
     
       case .apiError(error: let error):  return String(describing: error)
       case .voiceSocketError(let error): return String(describing: error)

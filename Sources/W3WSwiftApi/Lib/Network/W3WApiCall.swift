@@ -57,6 +57,15 @@ public class W3WApiCall {
     self.figureOutVersions()
   }
   
+
+    
+  /// Make a copy of this instance
+  /// - Parameters:
+  ///     - api: the `What3WordsV3` object to be copied
+  public func copy(api: What3WordsV3) -> What3WordsV3 {
+    return What3WordsV3(apiKey: apiKey, apiUrl: apiUrl, customHeaders: customHeaders)
+  }
+  
   
   // MARK: Accessors
   
@@ -68,6 +77,26 @@ public class W3WApiCall {
    */
   public func set(customHeaders: [String: String]) {
     self.customHeaders = customHeaders
+  }
+  
+  
+  /**
+   If a header with `key` already exists, it updates the header with `value`
+   if a header with key does not exist is adds this header to the custom headers
+   - parameter key: key of the header to be updated / added
+   - parameter value: value for the header
+   */
+  public func updateHeader(key: String, value: String) {
+    self.customHeaders[key] = value
+  }
+  
+  
+  /**
+   Remove a header with `key`
+   - parameter key: key of the header to be removed
+   */
+  public func removeHeader(key: String) {
+    self.customHeaders.removeValue(forKey: key)
   }
   
   
@@ -328,37 +357,58 @@ public class W3WApiCall {
   // MARK: Version Headers
   
   
+  public func getOsName() -> String {
+    #if os(macOS)
+      let os_name        = "Mac"
+    #elseif os(watchOS)
+      let os_name        = WKInterfaceDevice.current().systemName
+    #else
+      let os_name        = UIDevice.current.systemName
+    #endif
+    
+    return os_name
+  }
+  
+  
+  public func getOsVersion() -> String {
+    let osv = ProcessInfo().operatingSystemVersion
+    return String(osv.majorVersion) + "."  + String(osv.minorVersion) + "."  + String(osv.patchVersion)
+  }
+  
+  
+  public func getSwiftVersion() -> String {
+    var swift_version  = "x.x"
+    
+    #if swift(>=7)
+        swift_version = "7.x"
+    #elseif swift(>=6)
+        swift_version = "6.x"
+    #elseif swift(>=5)
+        swift_version = "5.x"
+    #elseif swift(>=4)
+        swift_version = "4.x"
+    #elseif swift(>=3)
+        swift_version = "3.x"
+    #elseif swift(>=2)
+        swift_version = "2.x"
+    #else
+        swift_version = "1.x"
+    #endif
+    
+    return swift_version
+  }
+  
+  
+  /// make the value for a header in W3W format to indicate version number and other basic info
+  public func getHeaderValue(version: String) -> String {
+    return "what3words-Swift/" + version + " (Swift " + getSwiftVersion() + "; " + getOsName() + " "  + getOsVersion() + ")"
+  }
+  
+  
   // Establish the various version numbers in order to set an HTTP header for the URL session
   // ugly, but haven't found a better, way, if anyone knows a better way to get the swift version at runtime, let us know...
   private func figureOutVersions() {
-    #if os(macOS)
-    let os_name        = "Mac"
-    #elseif os(watchOS)
-    let os_name        = WKInterfaceDevice.current().systemName
-    #else
-    let os_name        = UIDevice.current.systemName
-    #endif
-    let os_version     = ProcessInfo().operatingSystemVersion
-    var swift_version  = "x.x"
-    //var api_version    = "x.x.x"
-    
-    #if swift(>=7)
-    swift_version = "7.x"
-    #elseif swift(>=6)
-    swift_version = "6.x"
-    #elseif swift(>=5)
-    swift_version = "5.x"
-    #elseif swift(>=4)
-    swift_version = "4.x"
-    #elseif swift(>=3)
-    swift_version = "3.x"
-    #elseif swift(>=2)
-    swift_version = "2.x"
-    #else
-    swift_version = "1.x"
-    #endif
-    
-    version_header  = "what3words-Swift/" + api_version + " (Swift " + swift_version + "; " + os_name + " "  + String(os_version.majorVersion) + "."  + String(os_version.minorVersion) + "."  + String(os_version.patchVersion) + ")"
+    version_header  = getHeaderValue(version: api_version)
     bundle_header   = Bundle.main.bundleIdentifier ?? ""
   }
   

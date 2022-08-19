@@ -31,9 +31,9 @@ This package also contains an Objective-C compatible version, `What3WordsObjC` -
 
 This package works with:
  
- * macOS version 10.10 or higher
+ * macOS version 10.11 or higher
  * iOS version 9 or higher
- * tvOS version 11 or higher
+ * tvOS version 9 or higher
  * watchOS version 2 or higher
 
 
