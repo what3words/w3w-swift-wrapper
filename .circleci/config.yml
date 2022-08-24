@@ -39,7 +39,7 @@ jobs: # the jobs
 
   build_test_deploy:
     macos:
-      xcode: 12.4.0 # version of Xcode
+      xcode: 13.4.1 # version of Xcode
     steps:
       - test
       - build
