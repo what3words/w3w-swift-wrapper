@@ -10,6 +10,15 @@ import MapKit
 import W3WSwiftApi
 
 
+/// NOTE:
+///
+/// This is an example of using the GridLines API call to put gridlines onto your own
+/// map. An easier way to do this is to use our W3WSwiftComponents Swift Package and
+/// employ W3WMapHelper. W3WMapHelper does all of the work of drawing the lines
+/// and provides functions you can call from your MKMapViewDelegate functions.
+/// There is an example of W3WMapHelper in the W3WSwiftComponents package.
+
+
 class ViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDelegate {
 
   // MARK: Variables

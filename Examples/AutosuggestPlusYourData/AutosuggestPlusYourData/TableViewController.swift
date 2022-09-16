@@ -35,7 +35,7 @@ import W3WSwiftApi
 // and centerpoint of the square.
 //
 // The notable autosuggest helper code in this example is unabashedly commented in
-// capital letters to make it esasier to identify the important parts
+// capital letters to make it easier to identify the important parts
 
 
 class TableViewController: UITableViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate, MKLocalSearchCompleterDelegate {
