@@ -50,5 +50,8 @@ workflows:
   test_build:
     jobs:
       - build_test_deploy:
+          filters:
+            tags:
+              only: /^v.*/
           context:
             - org-global
