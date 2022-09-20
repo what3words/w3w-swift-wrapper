@@ -357,7 +357,7 @@ public class W3WApiCall {
   // MARK: Version Headers
   
   
-  public func getOsName() -> String {
+  func getOsName() -> String {
     #if os(macOS)
       let os_name        = "Mac"
     #elseif os(watchOS)
@@ -370,13 +370,13 @@ public class W3WApiCall {
   }
   
   
-  public func getOsVersion() -> String {
+  func getOsVersion() -> String {
     let osv = ProcessInfo().operatingSystemVersion
     return String(osv.majorVersion) + "."  + String(osv.minorVersion) + "."  + String(osv.patchVersion)
   }
   
   
-  public func getSwiftVersion() -> String {
+  func getSwiftVersion() -> String {
     var swift_version  = "x.x"
     
     #if swift(>=7)
@@ -411,8 +411,5 @@ public class W3WApiCall {
     version_header  = getHeaderValue(version: api_version)
     bundle_header   = Bundle.main.bundleIdentifier ?? ""
   }
-  
-  
-  
   
 }
