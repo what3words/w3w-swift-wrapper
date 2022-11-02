@@ -11,7 +11,7 @@ import Foundation
 import w3w
 
 
-public class W3WSdkWrapper {
+public class W3WSdkWrapper: W3WProtocolV3 {
   
   
   /// reference to the swift SDK
