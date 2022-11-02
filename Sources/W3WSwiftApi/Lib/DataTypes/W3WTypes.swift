@@ -205,7 +205,7 @@ public enum W3WFormat : String {
 
 public enum W3WEncoding : String {
   case pcm_f32le = "pcm_f32le"
-  //case pcm_s16le = "pcm_s16le"
+  case pcm_s16le = "pcm_s16le"
 }
 
 
@@ -527,7 +527,7 @@ public protocol W3WProtocolV3 {
   
   /**
    Returns a list of 3 word addresses based on user input and other parameters.
-   - parameter input: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
+   - parameter text: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
    - options are provided by instantiating W3Option objects in the varidic length parameter list.  Eg:
    */
   func autosuggest(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsResponse)

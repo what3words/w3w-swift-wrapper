@@ -8,10 +8,36 @@
 
 
 import Foundation
-import CoreLocation
 
 
-public class W3WAudioStream {
+
+public struct W3WSampleData {
+  public let buffer: W3WSampleDataBuffer
+  public let sampleRate: Int
+  
+  public func numberOfSamples() -> UInt {
+    return buffer.numberOfSamples()
+  }
+}
+
+
+public enum W3WSampleDataBuffer {
+  case pcm_f32le(UnsafeBufferPointer<Float>)
+  case pcm_s16le(UnsafeBufferPointer<Int16>)
+  
+  public func numberOfSamples() -> UInt {
+    switch self {
+    case .pcm_s16le(let sample):
+      return UInt(sample.count)
+    case .pcm_f32le(let sample):
+      return UInt(sample.count)
+    }
+  }
+
+}
+
+
+open class W3WAudioStream {
 
   /// the sample rate
   public var sampleRate: Int = 44100
@@ -22,6 +48,9 @@ public class W3WAudioStream {
   /// callback for when the mic has new audio data
   public var sampleArrived: (UnsafeBufferPointer<Float>) -> () = { _ in }
   
+  /// expermental new callback for multi-format buffers
+  public var onSamples: (W3WSampleData) -> () = { _ in }
+  
   /// callback for the UI to update/animate any graphics showing microphone volume/amplitude
   public var volumeUpdate: (Double) -> () = { _ in }
   
@@ -30,6 +59,7 @@ public class W3WAudioStream {
   
   /// error callback
   public var onError: (W3WVoiceError) -> () = { _ in }
+
 
   /// base class for audio streaming
   public init(sampleRate: Int, encoding:W3WEncoding) {

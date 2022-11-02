@@ -462,7 +462,13 @@ private class W3Inflater {
           break
         }
         strm.avail_in = CUnsignedInt(inflateEnd.count)
-        strm.next_in = UnsafePointer<UInt8>(inflateEnd)  // sorry for the warning here, can't see a way around it, let us know if you think of a better way...
+
+        // The following commented line was causing a warning.
+        // It's been replaced by the three lines below to suppress it.
+        //strm.next_in = UnsafePointer<UInt8>(inflateEnd)
+        let uint8Pointer = UnsafeMutablePointer<UInt8>.allocate(capacity: inflateEnd.count)
+        uint8Pointer.initialize(from: &(inflateEnd[0]), count: inflateEnd.count)
+        strm.next_in = UnsafePointer(uint8Pointer)
       }
       while true {
         strm.avail_out = CUnsignedInt(bufsiz)

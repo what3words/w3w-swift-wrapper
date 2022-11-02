@@ -9,9 +9,13 @@ import Foundation
 import CoreLocation
 
 
+@available(*, deprecated, renamed: "W3WAutoSuggestHelper")
+public typealias W3WAutosuggestHelper = W3WAutoSuggestHelper
+
+
 /// Wrapper for autosuggest calls including a debouncer to throttle calls and an onSelected to
 /// find the coordinates only for the selected result.
-public class W3WAutosuggestHelper {
+public class W3WAutoSuggestHelper {
   
   /// The API or SDK
   var w3w: W3WProtocolV3?
