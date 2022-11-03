@@ -17,7 +17,7 @@
 import Foundation
 
 
-#if canImport(w3w)
+//#if canImport(w3w)
 import w3w
 
 // make the following conform to the main protocols
@@ -248,4 +248,4 @@ private func coreInputType(from: W3WOptionProtocol) -> W3WSdkOption {
   }
 }
 
-#endif
+//#endif
