@@ -1,4 +1,7 @@
-# This script builds an XCFramework for this package
+# This script builds an XCFramework for this package against
+# the what3words core SDK. used, only in very specific
+# circumstances. It currently is used to make XCFramework builds
+# for internal what3words use via CircleCI
 
 # remove any old builds
 if [ -d "build" ]
@@ -11,7 +14,8 @@ if [ -d "w3w-swift-wrapper.xcodeproj" ]
 then
     rm -r w3w-swift-wrapper.xcodeproj
 fi
-swift package generate-xcodeproj
+
+cp -R AltBuild/w3w-swift-wrapper.xcodeproj ./
 
 # make the frameworks for each architecture
 xcodebuild archive -project w3w-swift-wrapper.xcodeproj -scheme w3w-swift-wrapper-Package -sdk iphoneos -archivePath build/W3WSwiftApiIosDevice SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES
