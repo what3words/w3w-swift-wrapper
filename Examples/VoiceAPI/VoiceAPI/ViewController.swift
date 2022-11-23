@@ -23,6 +23,7 @@ class ViewController: UIViewController {
   
   // called when the button is pressed
   @IBAction func microphoneButtonPressed(_ sender: Any) {
+    microphoneButton.isEnabled = false
 
     // update the button and text to encourage the user
     textLabel.text = "Say a three word address"
@@ -37,7 +38,8 @@ class ViewController: UIViewController {
       print("Finished recording")
       DispatchQueue.main.async {
         self.microphoneButton.setImage(UIImage(named: "white.480"), for: .normal)
-        self.microphoneButton.alpha = 1.0
+        self.microphoneButton.transform = CGAffineTransform.init(scaleX: 0.8, y: 0.8)
+        self.microphoneButton.isEnabled = true
       }
 
       // check for error, and display results
@@ -48,11 +50,11 @@ class ViewController: UIViewController {
       }
     }
     
-    // ask the microphone for amplitude updates and send them into the alpha colour of the mic
+    // ask the microphone for amplitude updates and use them to scale the mic
     // for rudimentary user feedback while they talk
     microphone.volumeUpdate = { volume in
       DispatchQueue.main.async {
-        self.microphoneButton.alpha = 1.0 - CGFloat(volume)
+        self.microphoneButton.transform = CGAffineTransform.init(scaleX: 0.8 + volume * 0.2, y: 0.8 + volume * 0.2)
       }
     }
     

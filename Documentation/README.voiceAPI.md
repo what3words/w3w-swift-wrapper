@@ -111,7 +111,7 @@ microphone?.volumeUpdate = { volume in
 
 ### Bring your own audio data
 
-To use an audio stream that is not captured by W3WMicrophone, perhaps something streaming in, or a bespoke device, use `W3WAudioStream` and pass it to `autosuggest(audio: W3WAudioStream)` instead.  Call `add(samples:)` while there is data to send and call `endSamples()` after the last data.
+To use an audio stream that is not captured by W3WMicrophone, perhaps something streaming, or a bespoke device, use `W3WAudioStream` and pass it to `autosuggest(audio: W3WAudioStream)` instead.  Call `add(samples:)` while there is data to send and call `endSamples()` after the last data.
 
 ##### Example:
 

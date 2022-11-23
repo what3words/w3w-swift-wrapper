@@ -73,6 +73,8 @@ class ViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDe
   /// throttle the frequency api.gridSection is called.  mapViewDidChangeVisibleRegion can be called extremly rapidly
   /// as the user scrolls around the view.  Typically we make sure it's called less than three times a second
   /// If you are unfamiliar with debouncers, check out: https://www.google.com/search?q=ios+swift+api+call+debouncer
+  /// Or better yet, take a look at our `W3WMapHelper` class that does the line drawing, and debouncing for you.
+  /// It is found in our Components package: https://github.com/what3words/w3w-swift-components
   func getGridSection() {
     
     // ask for a grid twice the size of the currently showing map area
@@ -82,7 +84,7 @@ class ViewController: UIViewController, MKMapViewDelegate, UIGestureRecognizerDe
     // check we aren't asking for too big an area (maximum is 4000 meters - 4km), here for aesthetic purposes we clip at 2000.
     if let distance = api.distance(from: sw, to: ne), distance < 2000.0 {
 
-      // Here we call w3w api for gridlines in a briute force way for illustrative purposes, but in your app try not to call this too frequently.  See IMPORTANT note at the top of this function
+      // Here we call w3w api for gridlines in a brute force way for illustrative purposes, but in your app try not to call this too frequently.  See IMPORTANT note at the top of this function
       self.api.gridSection(southWest:sw, northEast:ne) { lines, error in
         self.showErrorIfAny(error: error)
         self.presentNewGrid(lines: lines)

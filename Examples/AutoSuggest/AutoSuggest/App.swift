@@ -50,6 +50,7 @@ struct ContentView: View {
           Text("///").foregroundColor(.accentColor) + Text(suggestion.words ?? "")
           Text((suggestion.nearestPlace ?? "") + ", " + (suggestion.country ?? ""))
             .font(.footnote)
+            .foregroundColor(.gray)
         }
       }
 

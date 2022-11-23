@@ -102,7 +102,7 @@ There is a `build.sh` script can be run to build this code as an XCFramework.  T
 
 ### Import
 
-In any swift file you use the what3words API, import the following:
+In any file you use the what3words API in, import the following:
 
 ```swift
 import W3WSwiftApi
@@ -291,6 +291,8 @@ For the available Voice API languages call `api.availableVoiceLanguages(completi
 
 Returns a section of the 3m x 3m what3words grid for a given area. The requested box must not exceed 4km from corner to corner, or a BadBoundingBoxTooBig error will be returned. Latitudes must be >= -90 and <= 90, but longitudes are allowed to wrap around 180. To specify a bounding-box that crosses the anti-meridian, use longitude greater than 180. Example value: 50.0, 179.995, 50.01, 180.0005. 
 
+The grid is returned as `[W3WLine]?` and each `W3WLine` contains a `start` and `end` variable, both of type `CLLocationCoordinate2D`.
+
 The values returned from the `gridSection` function are described in the [what3words REST API documentation](https://docs.what3words.com/api/v3/#grid-section)
 
 #### Code Example
@@ -299,7 +301,9 @@ let southWest = CLLocationCoordinate2D(latitude: 52.208867, longitude: 0.117540)
 let northEast = CLLocationCoordinate2D(latitude: 52.207988, longitude: 0.116126)
 
 api.gridSection(southWest: southWest, northEast: northEast) { (lines, error) in
-  print("Line count: ", lines?.count ?? "zero")
+  for line in lines ?? [] {
+    print(line.start, " -> ", line.end)
+  }
 }
 ```
 
