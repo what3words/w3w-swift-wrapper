@@ -138,13 +138,14 @@ extension What3Words: W3WProtocolV3 {
   /// - parameter completion: code block whose parameters contain an array of W3WSuggestions, and, if any, an error
   public func autosuggest(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsResponse) {
     var coreOptions = [W3WSdkOption]()
-    for option in options {
-      if let o = W3WSdkOption.convert(from: option) {
-        coreOptions.append(o)
-      }
-    }
     
     do {
+      for option in options {
+        if let o = W3WSdkOption.convert(from: option) {
+          coreOptions.append(o)
+        }
+      }
+    
       let suggestions = try autosuggest(text: text, options: coreOptions)
       let apiSuggestionArray = suggestions.map { suggestion in return suggestion.asW3WSuggestion() }
       completion(apiSuggestionArray, nil)
@@ -161,13 +162,14 @@ extension What3Words: W3WProtocolV3 {
   /// - parameter completion: code block whose parameters contain an array of W3WSuggestions, and, if any, an error
   public func autosuggestWithCoordinates(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsWithCoordinatesResponse) {
     var coreOptions = [W3WSdkOption]()
-    for option in options {
-      if let o = W3WSdkOption.convert(from: option) {
-        coreOptions.append(o)
-      }
-    }
-    
+
     do {
+      for option in options {
+        if let o = W3WSdkOption.convert(from: option) {
+          coreOptions.append(o)
+        }
+      }
+    
       let suggestions = try autosuggest(text: text, options: coreOptions)
       
       var suggestionsWithCoordinates = [W3WApiSuggestionWithCoordinates]()
@@ -288,7 +290,12 @@ extension W3WSdkOption: W3WOptionProtocol {
     case W3WOptionKey.inputType:
       return coreInputType(from:from)
     case W3WOptionKey.clipToCountry:
-      return W3WSdkOption.clip(to: W3WSdkCountry(code: from.asString()))
+      if from.asString().contains(",") {
+        let countries = from.asStringArray().map { code in return W3WSdkCountry(code: code) }
+        return W3WSdkOption.clip(to: countries)
+      } else {
+        return W3WSdkOption.clip(to: W3WSdkCountry(code: from.asString()))
+      }
     case W3WOptionKey.clipToCountries:
       return W3WSdkOption.clip(to: from.asStringArray().map { code in return W3WSdkCountry(code: code) } )
     case W3WOptionKey.preferLand:
