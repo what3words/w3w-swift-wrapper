@@ -183,6 +183,21 @@ public struct W3WApiSuggestionWithCoordinates: W3WSuggestionWithCoordinates, W3W
   // W3WRanked
   public var rank: Int?
 
+  
+  public init(words: String? = nil, coordinates: CLLocationCoordinate2D? = nil, country : String? = nil, nearestPlace : String? = nil, distanceToFocus : Double? = nil, language : String? = nil, southWestBounds: CLLocationCoordinate2D? = nil, northEastBounds: CLLocationCoordinate2D? = nil, map: String? = nil, rank: Int? = nil) {
+    self.words = words
+    self.coordinates = coordinates
+    self.country = country
+    self.nearestPlace = nearestPlace
+    self.distanceToFocus = distanceToFocus
+    self.language = language
+    self.southWestBounds = southWestBounds
+    self.northEastBounds = northEastBounds
+    self.map = map
+    self.rank = rank
+  }
+
+  
   /**
    Make a W3Square from a data dictionary
    - parameter from: Dictionary of values, usually from a JSON decode
