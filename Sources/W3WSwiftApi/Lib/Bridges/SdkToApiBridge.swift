@@ -141,7 +141,7 @@ extension What3Words: W3WProtocolV3 {
     
     do {
       for option in options {
-        if let o = W3WSdkOption.convert(from: option) {
+        if let o = try? W3WSdkOption.convert(from: option) {
           coreOptions.append(o)
         }
       }
@@ -165,7 +165,7 @@ extension What3Words: W3WProtocolV3 {
 
     do {
       for option in options {
-        if let o = W3WSdkOption.convert(from: option) {
+        if let o = try? W3WSdkOption.convert(from: option) {
           coreOptions.append(o)
         }
       }
@@ -268,7 +268,7 @@ extension W3WSdkOption: W3WOptionProtocol {
   }
   
   
-  static func convert(from: W3WOptionProtocol) -> W3WSdkOption? {
+  static func convert(from: W3WOptionProtocol) throws -> W3WSdkOption? {
     
     switch from.key() {
     
@@ -291,21 +291,21 @@ extension W3WSdkOption: W3WOptionProtocol {
       return coreInputType(from:from)
     case W3WOptionKey.clipToCountry:
       if from.asString().contains(",") {
-        let countries = from.asStringArray().map { code in return W3WSdkCountry(code: code) }
+        let countries = try from.asStringArray().map { code in return try W3WSdkCountry(code: code) }
         return W3WSdkOption.clip(to: countries)
       } else {
-        return W3WSdkOption.clip(to: W3WSdkCountry(code: from.asString()))
+        return W3WSdkOption.clip(to: try W3WSdkCountry(code: from.asString()))
       }
     case W3WOptionKey.clipToCountries:
-      return W3WSdkOption.clip(to: from.asStringArray().map { code in return W3WSdkCountry(code: code) } )
+      return W3WSdkOption.clip(to: try from.asStringArray().map { code in return try W3WSdkCountry(code: code) } )
     case W3WOptionKey.preferLand:
       return W3WSdkOption.preferLand(from.asBoolean())
     case W3WOptionKey.clipToCircle:
-      return W3WSdkOption.clip(to: W3WSdkCircle(center: from.asBoundingCircle().0, radius: W3WSdkDistance(kilometers: from.asBoundingCircle().1)))
+      return W3WSdkOption.clip(to: try W3WSdkCircle(center: from.asBoundingCircle().0, radius: W3WSdkDistance(kilometers: from.asBoundingCircle().1)))
     case W3WOptionKey.clipToBox:
-      return W3WSdkOption.clip(to: W3WSdkBox(southWest: from.asBoundingBox().0, northEast: from.asBoundingBox().1))
+      return W3WSdkOption.clip(to: try W3WSdkBox(southWest: from.asBoundingBox().0, northEast: from.asBoundingBox().1))
     case W3WOptionKey.clipToPolygon:
-      return W3WSdkOption.clip(to: W3WSdkPolygon(points: from.asBoundingPolygon()))
+      return W3WSdkOption.clip(to: try W3WSdkPolygon(points: from.asBoundingPolygon()))
     default:
       return W3WSdkOption.language(W3WSdkLanguage.english)
     }
