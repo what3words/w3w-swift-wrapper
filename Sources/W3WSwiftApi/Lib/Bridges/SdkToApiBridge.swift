@@ -21,6 +21,7 @@ import Foundation
 import w3w
 
 // make the following conform to the main protocols
+
 //extension W3WSdkSuggestion: W3WSuggestion { }
 //extension W3WSdkBoundingBox: W3WBoundingBox { }
 //extension W3WSdkSquare: W3WSquare, W3WWithCoordinates, W3WSuggestion { }
@@ -141,7 +142,7 @@ extension What3Words: W3WProtocolV3 {
     
     do {
       for option in options {
-        if let o = try? W3WSdkOption.convert(from: option) {
+        if let o = try W3WSdkOption.convert(from: option) {
           coreOptions.append(o)
         }
       }
@@ -219,6 +220,8 @@ extension What3Words: W3WProtocolV3 {
   
   private func convert(error: Any) -> W3WError {
     if let e = error as? W3WSdkError {
+      return W3WError.sdkError(error: e)
+    } else if let e = error as? NSError {
       return W3WError.sdkError(error: e)
     } else {
       return W3WError.unknown
