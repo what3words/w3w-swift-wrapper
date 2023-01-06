@@ -190,66 +190,45 @@ open class W3WMicrophone: W3WAudioStream {
     }
 
     let micFormat    = mic.inputFormat(forBus: 0)
-    let converter    = AVAudioConverter(from: micFormat, to: outputFormat)!
-    
-    if (audioIsTapped == false) {
-      audioIsTapped = true
+    if let converter    = AVAudioConverter(from: micFormat, to: outputFormat) {
       
-      listeningUpdate(.started)
-      
-      mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer, time) in
+      if (audioIsTapped == false) {
+        audioIsTapped = true
         
-//        let inputCallback: AVAudioConverterInputBlock = { inNumPackets, outStatus in
-//          outStatus.pointee = AVAudioConverterInputStatus.haveData
-//          return buffer
-//        }
-//
-//        for i in 0 ..< buffer.frameLength {
-//          print(buffer.floatChannelData![Int(i)])
-//        }
-
-//        let arraySize = Int(buffer.frameLength)
-//        let samples = Array(UnsafeBufferPointer(start: buffer.floatChannelData![0], count:arraySize))
-//        for sample in samples {
-//          print(sample)
-//        }
+        listeningUpdate(.started)
         
-        
-        let convertedBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: AVAudioFrameCount(outputFormat.sampleRate) * buffer.frameLength / AVAudioFrameCount(buffer.format.sampleRate))!
-        
-        var error: NSError? = nil
-        let status = converter.convert(to: convertedBuffer, error: &error) { inNumPackets, outStatus in
-          outStatus.pointee = AVAudioConverterInputStatus.haveData
-          return buffer
+        mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer, time) in
+          
+          let convertedBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: AVAudioFrameCount(outputFormat.sampleRate) * buffer.frameLength / AVAudioFrameCount(buffer.format.sampleRate))!
+          
+          var error: NSError? = nil
+          let status = converter.convert(to: convertedBuffer, error: &error) { inNumPackets, outStatus in
+            outStatus.pointee = AVAudioConverterInputStatus.haveData
+            return buffer
+          }
+          
+          assert(status != .error)
+          
+          self.micReturnedSamples(buffer: convertedBuffer, time: time)
         }
         
-        assert(status != .error)
-
-//        let arraySize2 = Int(convertedBuffer.frameLength)
-//        let samples2 = Array(UnsafeBufferPointer(start: convertedBuffer.int16ChannelData![0], count:arraySize2))
-//        for sample in samples2 {
-//          print(sample)
-//        }
-
-        
-        self.micReturnedSamples(buffer: convertedBuffer, time: time)
+      } else {
+        //print("Warning: microphone was started twice")
       }
       
     } else {
-      //print("Warning: microphone was started twice")
+      onError(W3WVoiceError.microphoneError(error: W3WMicrophoneError.audioSystemFailedToStart))
     }
-    
+      
     do {
       try audioEngine.start()
     } catch {
     }
   }
 
-// quick conversion code float to int
-//  let fac = Float(1 << 15)
-//  for i in 0..<count {
-//    let val = min(max(inBuffer!.floatChannelData![ch][i] * fac, -fac), fac - 1)
-//    xxx[I] = Int16(val)
+    
+//  public override func endSamples() {
+//    stop()
 //  }
   
   
@@ -302,22 +281,25 @@ open class W3WMicrophone: W3WAudioStream {
 //    }
 
     
-//    // remember the max amplitude
-//    if let m = Float(sampleDataInt16.max()) {
-//      self.amplitude = Double(m)
-//      if m > abs(Float(self.maxAmplitude)) {
-//        self.maxAmplitude = abs(Double(m))
-//      }
-//    }
-//
-//    // remember the min amplitude
-//    if let m = Float(sampleDataInt16.min()) {
-//      if m < abs(Float(self.minAmplitude)) {
-//        self.minAmplitude = abs(Double(m))
-//      }
-//    }
+    // remember the max amplitude
+    if let i = sampleDataInt16.max() {
+      let m = Float(i) / Float(Int16.max)
+      self.amplitude = Double(m)
+      if m > abs(Float(self.maxAmplitude)) {
+        self.maxAmplitude = abs(Double(m))
+        print(self.maxAmplitude)
+      }
+    }
+
+    // remember the min amplitude
+    if let i = sampleDataInt16.max() {
+      let m = Float(i) / Float(Int16.max)
+      if m < abs(Float(self.minAmplitude)) {
+        self.minAmplitude = abs(Double(m))
+      }
+    }
     
-    self.onSamples(W3WSampleData(buffer: .pcm_s16le(sampleDataInt16), sampleRate: sampleRate))
+    self.onSamples(W3WSampleData(buffer: .pcm_s16le(sampleDataInt16), sampleRate: sampleRate, avBuffer: buffer))
   }
   
   
@@ -339,7 +321,7 @@ open class W3WMicrophone: W3WAudioStream {
       }
     }
     
-    self.onSamples(W3WSampleData(buffer: .pcm_f32le(sampleDataFloat), sampleRate: sampleRate))
+    self.onSamples(W3WSampleData(buffer: .pcm_f32le(sampleDataFloat), sampleRate: sampleRate, avBuffer: buffer))
     self.sampleArrived(sampleDataFloat)
   }
   

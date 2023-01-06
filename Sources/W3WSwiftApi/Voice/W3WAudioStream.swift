@@ -7,7 +7,7 @@
 //
 
 
-import Foundation
+import AVKit
 
 
 
@@ -15,9 +15,17 @@ public struct W3WSampleData {
   public let buffer: W3WSampleDataBuffer
   public let sampleRate: Int
   
+  let avBuffer: AVAudioPCMBuffer?
+  
   public func numberOfSamples() -> UInt {
     return buffer.numberOfSamples()
   }
+
+  
+  public func asAVAudioPCMBuffer() -> AVAudioPCMBuffer? {
+    return avBuffer
+  }
+
 }
 
 
@@ -33,7 +41,7 @@ public enum W3WSampleDataBuffer {
       return UInt(sample.count)
     }
   }
-
+  
 }
 
 
