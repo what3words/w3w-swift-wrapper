@@ -19,13 +19,13 @@ commands:
   download_dependancies:
     steps:
       - aws-s3/copy:
-          from: '${SOURCE_BUCKET}/ios/v${W3W_SDK_VERSION}/what3words-ios-sdk-v${W3W_SDK_VERSION}.tar.gz'
+          from: '${SOURCE_BUCKET}/ios/${W3W_SDK_VERSION}/what3words-ios-sdk-${W3W_SDK_VERSION}.tar.gz'
           to: .
       - run:
           name: Unzip Dependancies
           command: |
             mkdir Frameworks
-            tar -zxvf what3words-ios-sdk-v${W3W_SDK_VERSION}.tar.gz -C Frameworks/
+            tar -zxvf what3words-ios-sdk-${W3W_SDK_VERSION}.tar.gz -C Frameworks/
             mv Frameworks/lib/w3w.xcframework/ Frameworks/
             ls -la Frameworks
 
@@ -54,7 +54,7 @@ jobs: # the jobs
     macos:
       xcode: 14.0.0 # version of Xcode
     environment:
-      W3W_SDK_VERSION: dd-4.0.0 # 3.7.0
+      W3W_SDK_VERSION: dd-4.0.0 # v3.7.0
     steps:
       - test
       - download_dependancies
