@@ -38,7 +38,7 @@ commands:
               ./AltBuild/build.sh
               mkdir -p s3
               cd build
-              tar zcf ../s3/W3WSwiftApi-${CIRCLE_TAG:-$CIRCLE_BRANCH}.tar.gz W3WSwiftApi.xcframework
+              tar zcf ../s3/W3WSwiftApi-${CIRCLE_TAG:-$CIRCLE_BRANCH}-[sdk-${W3W_SDK_VERSION}.tar.gz W3WSwiftApi.xcframework
               cd ..
 
   deploy:
