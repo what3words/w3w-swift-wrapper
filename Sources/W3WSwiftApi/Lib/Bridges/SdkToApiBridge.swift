@@ -31,7 +31,7 @@ import w3w
 
 extension W3WSdkSquare {
   func asW3WSquare() -> W3WSquare {
-    return W3WApiSquare(words: words, coordinates: coordinates, country : country?.code, nearestPlace : nearestPlace, distanceToFocus : distanceToFocus?.meters, language : language?.code, southWestBounds: southWestBounds, northEastBounds: northEastBounds, map: nil)
+    return W3WApiSquare(words: words, coordinates: coordinates, country : country?.code, nearestPlace : nearestPlace, distanceToFocus : distanceToFocus?.meters, language : language?.code, southWestBounds: bounds?.southWest, northEastBounds: bounds?.northEast, map: nil)
   }
 }
 
@@ -78,17 +78,6 @@ public struct W3WSdkSuggestionWithCoordinates: W3WSuggestionWithCoordinates, W3W
   public var coordinates: CLLocationCoordinate2D?
   public var southWestBounds: CLLocationCoordinate2D?
   public var northEastBounds: CLLocationCoordinate2D?
-  
-//  public init(words: String? = nil, coordinates: CLLocationCoordinate2D? = nil, country : String? = nil, nearestPlace : String? = nil, distanceToFocus : Double? = nil, language : String? = nil, southWestBounds: CLLocationCoordinate2D? = nil, northEastBounds: CLLocationCoordinate2D? = nil) {
-//    self.words = words
-//    self.coordinates = coordinates
-//    self.country = country
-//    self.nearestPlace = nearestPlace
-//    self.distanceToFocus = distanceToFocus
-//    self.language = language
-//    self.southWestBounds = southWestBounds
-//    self.northEastBounds = northEastBounds
-//  }
   
   func asW3WSuggestion() -> W3WSuggestion {
     return W3WApiSuggestionWithCoordinates(words: words, country : country, nearestPlace : nearestPlace, distanceToFocus : distanceToFocus, language : language, southWestBounds: southWestBounds, northEastBounds: northEastBounds)
@@ -176,7 +165,7 @@ extension What3Words: W3WProtocolV3 {
       var suggestionsWithCoordinates = [W3WApiSuggestionWithCoordinates]()
       for suggestion in suggestions {
         if let words = suggestion.words, let square = try? convertToSquare(words: words) {
-          let suggestionWithCoordinate = W3WApiSuggestionWithCoordinates(words: square.words, coordinates: square.coordinates, country: square.country?.code, nearestPlace: square.nearestPlace, distanceToFocus: square.distanceToFocus?.kilometers, language: square.language?.code, southWestBounds: square.southWestBounds, northEastBounds: square.northEastBounds)
+          let suggestionWithCoordinate = W3WApiSuggestionWithCoordinates(words: square.words, coordinates: square.coordinates, country: square.country?.code, nearestPlace: square.nearestPlace, distanceToFocus: square.distanceToFocus?.kilometers, language: square.language?.code, southWestBounds: square.bounds?.southWest, northEastBounds: square.bounds?.northEast)
           suggestionsWithCoordinates.append(suggestionWithCoordinate)
         }
       }
@@ -234,42 +223,96 @@ extension What3Words: W3WProtocolV3 {
 
 /// Ensures the SDK's options conform to the main Option protocol
 extension W3WSdkOption: W3WOptionProtocol {
-  public func key() -> String {
-    key.description
-  }
-  
-  public func asString() -> String {
-    value.asString()
-  }
-  
+
   public func asBoolean() -> Bool {
-    value.asBoolean() ?? false
+    switch self {
+      
+    case .preferLand(let b):
+      return b
+      
+    default:
+      return false
+    }
   }
+  
   
   public func asCoordinates() -> CLLocationCoordinate2D {
-    value.asCoordinates() ?? CLLocationCoordinate2D()
+    switch self {
+    case .clipToCircle(let c):
+      return c.center
+    case .focus(let f):
+      return f
+    default:
+      return CLLocationCoordinate2D()
+    }
   }
   
+  
   public func asBoundingBox() -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {
-    let box = value.asBox()
-    return (box?.southWest ?? CLLocationCoordinate2D(), box?.northEast ?? CLLocationCoordinate2D())
+    switch self {
+    case .clipToBox(let b):
+      return (b.southWest, b.northEast)
+    default:
+      return (CLLocationCoordinate2D(), CLLocationCoordinate2D())
+    }
   }
   
   public func asBoundingCircle() -> (CLLocationCoordinate2D, Double) {
-    let circle = value.asCircle()
-    return (circle?.center ?? CLLocationCoordinate2D(), circle?.radius.kilometers ?? 0.0)
+    switch self {
+    case .clipToCircle(let c):
+      return (c.center, c.radius.kilometers)
+    default:
+      return (CLLocationCoordinate2D(), .zero)
+    }
   }
   
   public func asBoundingPolygon() -> [CLLocationCoordinate2D] {
-    value.asPolygon()?.points ?? []
+    switch self {
+    case .clipToPolygon(let p):
+      return p.points
+    default:
+      return []
+    }
   }
   
   
   
-  public func asStringArray() -> [String] {
-    return value.asStringArray()
-  }
-  
+//  public func key() -> String {
+//    key()
+//  }
+//
+////  public func asString() -> String {
+////    .asString()
+////  }
+//
+//  public func asBoolean() -> Bool {
+//    value.asBoolean() ?? false
+//  }
+//
+//  public func asCoordinates() -> CLLocationCoordinate2D {
+//    value.asCoordinates() ?? CLLocationCoordinate2D()
+//  }
+//
+//  public func asBoundingBox() -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {
+//    let box = value.asBox()
+//    return (box?.southWest ?? CLLocationCoordinate2D(), box?.northEast ?? CLLocationCoordinate2D())
+//  }
+//
+//  public func asBoundingCircle() -> (CLLocationCoordinate2D, Double) {
+//    let circle = value.asCircle()
+//    return (circle?.center ?? CLLocationCoordinate2D(), circle?.radius.kilometers ?? 0.0)
+//  }
+//
+//  public func asBoundingPolygon() -> [CLLocationCoordinate2D] {
+//    value.asPolygon()?.points ?? []
+//  }
+//
+//
+//
+//  public func asStringArray() -> [String] {
+//    return value.asStringArray()
+//  }
+//
   
   static func convert(from: W3WOptionProtocol) throws -> W3WSdkOption? {
     
@@ -282,7 +325,7 @@ extension W3WSdkOption: W3WOptionProtocol {
       
     case W3WOptionKey.voiceLanguage:
       if let l = try? W3WSdkLanguage(code: from.asString()) {
-        return W3WSdkOption.voiceLanguage(l)
+        return W3WSdkOption.language(l)
       }
     case W3WOptionKey.numberOfResults:
       return W3WSdkOption.numberOfResults(Int(from.asString()) ?? 3)
@@ -295,12 +338,12 @@ extension W3WSdkOption: W3WOptionProtocol {
     case W3WOptionKey.clipToCountry:
       if from.asString().contains(",") {
         let countries = try from.asStringArray().map { code in return try W3WSdkCountry(code: code) }
-        return W3WSdkOption.clip(to: countries)
+        return W3WSdkOption.clip(to: try W3WSdkCountries(countries: countries))
       } else {
         return W3WSdkOption.clip(to: try W3WSdkCountry(code: from.asString()))
       }
     case W3WOptionKey.clipToCountries:
-      return W3WSdkOption.clip(to: try from.asStringArray().map { code in return try W3WSdkCountry(code: code) } )
+      return W3WSdkOption.clip(to: try W3WSdkCountries(countries: try from.asStringArray().map { code in return try W3WSdkCountry(code: code) } ))
     case W3WOptionKey.preferLand:
       return W3WSdkOption.preferLand(from.asBoolean())
     case W3WOptionKey.clipToCircle:
@@ -321,40 +364,35 @@ extension W3WSdkOption: W3WOptionProtocol {
 
 private func coreInputType(from: W3WOptionProtocol) -> W3WSdkOption {
 
-  return W3WSdkOption.inputType(W3WSdkInputType.custom(from.asString()))
-  
-//  switch from.key() {
+  switch from.key() {
     
-//  case W3WOptionKey.language:
+  case W3WSdkInputType.text.rawValue:
+    return W3WSdkOption.inputType(.text)
 
-  
-  //  case W3WSdkInputType.text:
-//    return W3WSdkOption.inputType(W3WSdkInputType.text)
-//
-//  case W3WSdkInputType.voconHybrid:
-//    return W3WSdkOption.inputType(W3WSdkInputType.voconHybrid)
-//
-//  case W3WSdkInputType.genericVoice.rawValue:
-//    return W3WSdkOption.inputType(W3WSdkInputType.genericVoice)
-//
-//  case W3WSdkInputType.nmdpAsr.rawValue:
-//    return W3WSdkOption.inputType(W3WSdkInputType.nmdpAsr)
-//
-//  case W3WSdkInputType.speechmatics.rawValue:
-//    return W3WSdkOption.inputType(W3WSdkInputType.speechmatics)
-//
-//  case W3WSdkInputType.mihup.rawValue:
-//    return W3WSdkOption.inputType(W3WSdkInputType.mihup)
-//
-//  case W3WSdkInputType.mawdoo3.rawValue:
-//    return W3WSdkOption.inputType(W3WSdkInputType.mawdoo3)
-//
-//  case W3WSdkInputType.ocrSdk.rawValue:
-//    return W3WSdkOption.inputType(W3WSdkInputType.ocrSdk)
-//
-//  default:
-//    return W3WSdkOption.inputType(W3WSdkInputType.text)
-//  }
+  case W3WSdkInputType.voconHybrid.rawValue:
+    return W3WSdkOption.inputType(.voconHybrid)
+
+  case W3WSdkInputType.genericVoice.rawValue:
+    return W3WSdkOption.inputType(.genericVoice)
+
+  case W3WSdkInputType.nmdpAsr.rawValue:
+    return W3WSdkOption.inputType(.nmdpAsr)
+
+  case W3WSdkInputType.speechmatics.rawValue:
+    return W3WSdkOption.inputType(.speechmatics)
+
+  case W3WSdkInputType.mihup.rawValue:
+    return W3WSdkOption.inputType(.mihup)
+
+  case W3WSdkInputType.mawdoo3.rawValue:
+    return W3WSdkOption.inputType(.mawdoo3)
+
+  case W3WSdkInputType.ocrSdk.rawValue:
+    return W3WSdkOption.inputType(.ocrSdk)
+
+  default:
+    return W3WSdkOption.inputType(.text)
+  }
 }
 
 #endif
