@@ -21,9 +21,9 @@
 
 -(void)setUp
 {
-  NSString *api_key = NSProcessInfo.processInfo.environment[@"APIKEY"];
+  NSString *api_key = NSProcessInfo.processInfo.environment[@"PROD_API_KEY"];
   if (api_key == NULL) {
-    NSLog(@"Environment variable APIKEY must be set");
+    NSLog(@"Environment variable PROD_API_KEY must be set");
     abort();
   }
   api = [[What3WordsObjC alloc] initWithApiKey: api_key];
