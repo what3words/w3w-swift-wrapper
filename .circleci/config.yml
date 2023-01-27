@@ -71,3 +71,4 @@ workflows:
               only: /^v.*/
           context:
             - org-global
+            - mobile
