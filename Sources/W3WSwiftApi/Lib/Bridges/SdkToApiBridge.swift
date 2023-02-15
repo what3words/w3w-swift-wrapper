@@ -110,7 +110,7 @@ extension What3Words: W3WProtocolV3 {
   /// - parameter completion: code block whose parameters contain a W3WSquare and if any, an error
   public func convertTo3wa(coordinates: CLLocationCoordinate2D, language: String, completion: @escaping W3WSquareResponse) {
     do {
-      if let square = try convertToSquare(coordinates: coordinates, language: W3WSdkLanguage(code: language)), square.words != nil {
+      if let square = try convertToSquare(coordinates: coordinates, language: W3WSdkLanguage(language)), square.words != nil {
         completion(square.asW3WSquare(), nil)
       } else {
         completion(nil, W3WError.badCoordinates)
@@ -319,12 +319,12 @@ extension W3WSdkOption: W3WOptionProtocol {
     switch from.key() {
     
     case W3WOptionKey.language:
-      if let l = try? W3WSdkLanguage(code: from.asString()) {
+      if let l = try? W3WSdkLanguage(from.asString()) {
         return W3WSdkOption.language(l)
       }
       
     case W3WOptionKey.voiceLanguage:
-      if let l = try? W3WSdkLanguage(code: from.asString()) {
+      if let l = try? W3WSdkLanguage(from.asString()) {
         return W3WSdkOption.language(l)
       }
     case W3WOptionKey.numberOfResults:
