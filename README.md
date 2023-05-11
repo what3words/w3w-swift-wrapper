@@ -324,3 +324,17 @@ api.convertTo3wa(coordinates: CLLocationCoordinate2D(latitude: 51.4243877, longi
 ```
 
 Api call errors are of type `W3WError` enum and the voice `autosuggest` call returns a `W3WVoiceError` enum.
+
+<a name="sdk"></a>
+## SDK Compatibility
+
+There is also an SDK that works offline. More information is available [here](https://developer.what3words.com/enterprise-suite/mobile-offline-sdk).
+
+The SDK can be used interchangeably with this API wrapper.  That is, you can start your project using this API wrapper, and you can later upgrade to the SDK with minimal changes to your code.
+
+Below is a table of which SDK version is compatible with which API wrapper version:
+
+| w3w-swift-wrapper | SDK Version       |
+| ----------------- | ----------------- |
+| v3.8.2 and lower  | v3.8.0 and lower  |
+| v3.9.0 and higher | v4.0.0 and higher |
