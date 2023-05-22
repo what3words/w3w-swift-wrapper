@@ -22,12 +22,6 @@ import w3w
 
 // make the following conform to the main protocols
 
-//extension W3WSdkSuggestion: W3WSuggestion { }
-//extension W3WSdkBoundingBox: W3WBoundingBox { }
-//extension W3WSdkSquare: W3WSquare, W3WWithCoordinates, W3WSuggestion { }
-//extension W3WSdkLanguage: W3WLanguage { }
-//extension W3WSdkLine: W3WLine { }
-
 
 extension W3WSdkSquare {
   func asW3WSquare() -> W3WSquare {
@@ -220,7 +214,6 @@ extension What3Words: W3WProtocolV3 {
 }
 
 
-
 /// Ensures the SDK's options conform to the main Option protocol
 extension W3WSdkOption: W3WOptionProtocol {
 
@@ -275,45 +268,7 @@ extension W3WSdkOption: W3WOptionProtocol {
     }
   }
   
-  
-  
-//  public func key() -> String {
-//    key()
-//  }
-//
-////  public func asString() -> String {
-////    .asString()
-////  }
-//
-//  public func asBoolean() -> Bool {
-//    value.asBoolean() ?? false
-//  }
-//
-//  public func asCoordinates() -> CLLocationCoordinate2D {
-//    value.asCoordinates() ?? CLLocationCoordinate2D()
-//  }
-//
-//  public func asBoundingBox() -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {
-//    let box = value.asBox()
-//    return (box?.southWest ?? CLLocationCoordinate2D(), box?.northEast ?? CLLocationCoordinate2D())
-//  }
-//
-//  public func asBoundingCircle() -> (CLLocationCoordinate2D, Double) {
-//    let circle = value.asCircle()
-//    return (circle?.center ?? CLLocationCoordinate2D(), circle?.radius.kilometers ?? 0.0)
-//  }
-//
-//  public func asBoundingPolygon() -> [CLLocationCoordinate2D] {
-//    value.asPolygon()?.points ?? []
-//  }
-//
-//
-//
-//  public func asStringArray() -> [String] {
-//    return value.asStringArray()
-//  }
-//
-  
+    
   static func convert(from: W3WOptionProtocol) throws -> W3WSdkOption? {
     
     switch from.key() {
@@ -364,7 +319,7 @@ extension W3WSdkOption: W3WOptionProtocol {
 
 private func coreInputType(from: W3WOptionProtocol) -> W3WSdkOption {
 
-  switch from.key() {
+  switch from.asString() {
     
   case W3WSdkInputType.text.rawValue:
     return W3WSdkOption.inputType(.text)
