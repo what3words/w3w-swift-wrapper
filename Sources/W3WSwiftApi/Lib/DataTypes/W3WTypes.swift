@@ -205,7 +205,7 @@ public enum W3WFormat : String {
 
 public enum W3WEncoding : String {
   case pcm_f32le = "pcm_f32le"
-  //case pcm_s16le = "pcm_s16le"
+  case pcm_s16le = "pcm_s16le"
 }
 
 

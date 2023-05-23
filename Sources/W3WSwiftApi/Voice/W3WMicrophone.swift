@@ -36,26 +36,7 @@ public enum W3WMicrophoneError : Error, CustomStringConvertible {
 
 
 
-public class W3WMicrophone: W3WAudioStream {
-
-//  /// the sample rate
-//  public var sampleRate: Int = 44100
-//
-//  /// the audio encoding format
-//  public var encoding: W3WEncoding = .pcm_f32le
-//  
-//  /// callback for when the mic has new audio date
-//  public var sampleArrived: (Data) -> () = { _ in }
-//
-//  /// callback for the UI to update/animate any graphics showing microphone volume/amplitude
-//  public var volumeUpdate: (Double) -> () = { _ in }
-//
-//  /// callback for when the voice recognition stopped
-//  public var listeningUpdate: ((W3WVoiceListeningState) -> ()) = { _ in }
-//
-//  /// error callback
-//  public var onError: (W3WVoiceError) -> () = { _ in }
-
+open class W3WMicrophone: W3WAudioStream {
   
   /// CoreAudio interface
   private var audioEngine: AVAudioEngine!
@@ -120,7 +101,9 @@ public class W3WMicrophone: W3WAudioStream {
     #endif
 
     // figure out if the sample rate was changed and signal that back
-    if self.getSampleRate() == sampleRate {
+    let newRate = self.getSampleRate()
+    if newRate == sampleRate {
+      self.sampleRate = newRate
       return true
     } else {
       return false
@@ -150,79 +133,103 @@ public class W3WMicrophone: W3WAudioStream {
   
   /// start the mic recording
   public func start() {
+    
+    start(convertingToSampleRate: sampleRate)
 
-    // make sure this hardware can record and mic is available
-    if !isInputAvailable() || !isMicrophoneAvailable() {
-      onError(W3WVoiceError.microphoneError(error: W3WMicrophoneError.noInputAvailable))
-      //update(error: W3WVoiceError.microphoneError(error: W3WMicrophoneError.noInputAvailable))
-      
-    // all good to go, so tap the mic
+//    // make sure this hardware can record and mic is available
+//    if !isInputAvailable() || !isMicrophoneAvailable() {
+//      onError(W3WVoiceError.microphoneError(error: W3WMicrophoneError.noInputAvailable))
+//
+//    // all good to go, so tap the mic
+//    } else {
+//      var micFormat: AVAudioFormat!
+//
+//      if encoding == .pcm_s16le {
+//        micFormat = AVAudioFormat(commonFormat: .pcmFormatInt16, sampleRate: Double(sampleRate), channels: 1, interleaved: false)!
+//      } else {
+//        micFormat = mic.inputFormat(forBus: 0)
+//      }
+//
+//      // make sure we got the right rate recorded
+//      self.sampleRate = Int(micFormat.sampleRate)
+//
+//      if (audioIsTapped == false) {
+//        audioIsTapped = true
+//
+//        listeningUpdate(.started)
+//
+//        mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) in
+//          self.micReturnedSamples(buffer: buffer, time: time)
+//        }
+//
+//      } else {
+//        //print("Warning: microphone was started twice")
+//      }
+//
+//      // start the actual recording
+//      do {
+//        try audioEngine.start()
+//      } catch {
+//        onError(W3WVoiceError.microphoneError(error: W3WMicrophoneError.audioSystemFailedToStart))
+//      }
+//    }
+    
+  }
+  
+  
+  /// start the mic recording, and return the data converted to a custom sampleRate
+  @available(macOS 10.11, *)
+  public func start(convertingToSampleRate: Int) {
+    
+    var outputFormat: AVAudioFormat!
+    
+    if encoding == .pcm_s16le {
+      outputFormat = AVAudioFormat(commonFormat: .pcmFormatInt16, sampleRate: Double(convertingToSampleRate), channels: 1, interleaved: false)!
     } else {
-      let micFormat = mic.inputFormat(forBus: 0)
+      outputFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: Double(convertingToSampleRate), channels: 1, interleaved: false)!
+    }
+
+    let micFormat    = mic.inputFormat(forBus: 0)
+    if let converter    = AVAudioConverter(from: micFormat, to: outputFormat) {
       
       if (audioIsTapped == false) {
         audioIsTapped = true
         
         listeningUpdate(.started)
-
-        mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) in
-          self.micReturnedSamples(buffer: buffer, time: time)
+        
+        mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer, time) in
+          
+          let convertedBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: AVAudioFrameCount(outputFormat.sampleRate) * buffer.frameLength / AVAudioFrameCount(buffer.format.sampleRate))!
+          
+          var error: NSError? = nil
+          let status = converter.convert(to: convertedBuffer, error: &error) { inNumPackets, outStatus in
+            outStatus.pointee = AVAudioConverterInputStatus.haveData
+            return buffer
+          }
+          
+          assert(status != .error)
+          
+          self.micReturnedSamples(buffer: convertedBuffer, time: time)
         }
+        
       } else {
         //print("Warning: microphone was started twice")
       }
       
-      // start the actual recording
-      do {
-        try audioEngine.start()
-      } catch {
-        onError(W3WVoiceError.microphoneError(error: W3WMicrophoneError.audioSystemFailedToStart))
-        //update(error: W3WVoiceError.microphoneError(error: W3WMicrophoneError.audioSystemFailedToStart))
-      }
-    }
-    
-  }
-  
-  
-  /// start the mic recording, but return the data converted to a custom sampleRate
-  @available(macOS 10.11, *)
-  public func start(convertingToSampleRate: Int) {
-    
-    let micFormat    = mic.inputFormat(forBus: 0)
-    let outputFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: Double(convertingToSampleRate), channels: 1, interleaved: false)!
-    let converter    = AVAudioConverter(from: micFormat, to: outputFormat)!
-    
-    if (audioIsTapped == false) {
-      audioIsTapped = true
-      
-      listeningUpdate(.started)
-      
-      mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer, time) in
-        
-        let inputCallback: AVAudioConverterInputBlock = { inNumPackets, outStatus in
-          outStatus.pointee = AVAudioConverterInputStatus.haveData
-          return buffer
-        }
-        
-        let convertedBuffer = AVAudioPCMBuffer(pcmFormat: outputFormat, frameCapacity: AVAudioFrameCount(outputFormat.sampleRate) * buffer.frameLength / AVAudioFrameCount(buffer.format.sampleRate))!
-        
-        var error: NSError? = nil
-        let status = converter.convert(to: convertedBuffer, error: &error, withInputFrom: inputCallback)
-        assert(status != .error)
-        
-        self.micReturnedSamples(buffer: convertedBuffer, time: time)
-      }
-      
     } else {
-      //print("Warning: microphone was started twice")
+      onError(W3WVoiceError.microphoneError(error: W3WMicrophoneError.audioSystemFailedToStart))
     }
-    
+      
     do {
       try audioEngine.start()
     } catch {
     }
   }
 
+    
+//  public override func endSamples() {
+//    stop()
+//  }
   
   
   /// stop the mic recording
@@ -248,13 +255,59 @@ public class W3WMicrophone: W3WAudioStream {
   
   /// called when there are new data from the microphone
   private func micReturnedSamples(buffer: AVAudioPCMBuffer!, time: AVAudioTime!) {
-    let sampleData = UnsafeBufferPointer(start: buffer.floatChannelData![0], count: Int(buffer.frameLength))
-    
     // fade the amplitude indicator quickly, but not imediately
     self.amplitude = self.amplitude * 0.3
     
+    if encoding == .pcm_f32le {
+      processFloatBuffer(buffer: buffer)
+    }
+    
+    if encoding == .pcm_s16le {
+      processIntBuffer(buffer: buffer)
+    }
+    
+    // a code block to update amplitude for the UI;
+    self.volumeUpdate(getNomralizedVolumeLevelForUI())
+  }
+  
+  
+  private func processIntBuffer(buffer: AVAudioPCMBuffer) {
+    let sampleDataInt16 = UnsafeBufferPointer(start: buffer.int16ChannelData![0], count: Int(buffer.frameLength))
+
+//    let arraySize = sampleDataInt16.count
+//    let samples = Array<Int16>(UnsafeBufferPointer(start: sampleDataInt16.baseAddress, count:arraySize))
+//    for sample in samples {
+//      print(sample)
+//    }
+
+    
     // remember the max amplitude
-    if let m = sampleData.max() {
+    if let i = sampleDataInt16.max() {
+      let m = Float(i) / Float(Int16.max)
+      self.amplitude = Double(m)
+      if m > abs(Float(self.maxAmplitude)) {
+        self.maxAmplitude = abs(Double(m))
+        print(self.maxAmplitude)
+      }
+    }
+
+    // remember the min amplitude
+    if let i = sampleDataInt16.max() {
+      let m = Float(i) / Float(Int16.max)
+      if m < abs(Float(self.minAmplitude)) {
+        self.minAmplitude = abs(Double(m))
+      }
+    }
+    
+    self.onSamples(W3WSampleData(buffer: .pcm_s16le(sampleDataInt16), sampleRate: sampleRate, avBuffer: buffer))
+  }
+  
+  
+  private func processFloatBuffer(buffer: AVAudioPCMBuffer) {
+    let sampleDataFloat = UnsafeBufferPointer(start: buffer.floatChannelData![0], count: Int(buffer.frameLength))
+    
+    // remember the max amplitude
+    if let m = sampleDataFloat.max() {
       self.amplitude = Double(m)
       if m > abs(Float(self.maxAmplitude)) {
         self.maxAmplitude = abs(Double(m))
@@ -262,19 +315,17 @@ public class W3WMicrophone: W3WAudioStream {
     }
     
     // remember the min amplitude
-    if let m = sampleData.min() {
+    if let m = sampleDataFloat.min() {
       if m < abs(Float(self.minAmplitude)) {
         self.minAmplitude = abs(Double(m))
       }
     }
     
-    // a code block to update amplitude for the UI;
-    self.volumeUpdate(getNomralizedVolumeLevelForUI())
-    
-    self.sampleArrived(sampleData)
-    //self.add(samples: Data(buffer: sampleData))
+    self.onSamples(W3WSampleData(buffer: .pcm_f32le(sampleDataFloat), sampleRate: sampleRate, avBuffer: buffer))
+    self.sampleArrived(sampleDataFloat)
   }
   
+
 
 //  // override errors so we can stop the mic if nessesary
 //  override func update(error: W3WVoiceError) {
