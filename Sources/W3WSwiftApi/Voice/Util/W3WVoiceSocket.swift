@@ -14,37 +14,6 @@ import UIKit
 #endif
 
 
-public enum W3WVoiceSocketError : Error, CustomStringConvertible {
-  case socketAlreadyOpen
-  case socketCreationError
-  case attemptToSendOnCLosedSocket
-  case serverReturnedUnexpectedData
-  case serverReturnedUnexpectedType
-  case notFound404
-  case other(error: Error)
-  case message(message: String)
-  case unknown
-  case socketError(error: W3WWebSocketError)
-  
-  public var description : String {
-    switch self {
-      case .socketAlreadyOpen:             return "Socket was already open when open() was called"
-      case .socketCreationError:           return "Error opening the socket to the server"
-      case .attemptToSendOnCLosedSocket:   return "send() was called, but the socket has already been closed"
-      case .serverReturnedUnexpectedData:  return "The server returned an unrecognized result"
-      case .serverReturnedUnexpectedType:  return "The server returned unrecognized data types"
-      case .notFound404:                   return "404 error.  The URL to the voice API is incorrect"
-      case .other(let error):              return error.localizedDescription
-      case .message(let message):          return message
-      case .unknown:                       return "Unknown error"
-      case .socketError(let error):        return String(describing: error)
-    }
-  }
-
-  
-}
-
-
 #if !os(watchOS)
 
 public class W3WVoiceSocket {
@@ -76,10 +45,6 @@ public class W3WVoiceSocket {
   
   /// a callback block for when recognition is complete
   public var suggestions: ([W3WVoiceSuggestion]) -> () = { _ in }
-  //public var received: (String) -> () = { _ in }
-  
-  /// a callback block for when an error happens
-  //public var closed: (String?, String?) -> () = { _,_ in }
   
   /// a callback block for when an error happens
   public var error: (W3WVoiceError) -> () = { _ in }
@@ -157,22 +122,6 @@ public class W3WVoiceSocket {
           }
         } else {
           self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.message(message: reason)))
-          //switch code {
-          //  case 1001: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Going Away"))))
-          //  case 1002: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Protocol Error"))))
-          //  case 1003: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.message(message: reason)))
-          //  case 1005: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("No Status received"))))
-          //  case 1006: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .network(error?.localizedDescription ?? "Abnormal Socket Closure"))))
-          //  case 1007: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .payloadError(error?.localizedDescription ?? "Encoding Error"))))
-          //  case 1008: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError("Policy violation"))))
-          //  case 1009: self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .payloadError("Message Too Big"))))
-          //  default:
-          //    if let e = error {
-          //      self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.socketError(error: .protocolError(reason + " " + e.localizedDescription))))
-          //    } else {
-          //      self.error(W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.message(message: reason)))
-          //    }
-          //}
         }
       }
     }

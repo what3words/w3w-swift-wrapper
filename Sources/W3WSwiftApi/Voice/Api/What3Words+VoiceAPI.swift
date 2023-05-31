@@ -60,6 +60,7 @@ extension What3WordsV3: W3WVoice {
   
   /**
    Retrieve a list of languages supported by VoiceAPI
+   - parameter completion: A completion block providing the langauges and any error
    */
   public func availableVoiceLanguages(completion: @escaping W3WLanguagesResponse) {
     let voiceApi = W3WVoiceApi(api: self)

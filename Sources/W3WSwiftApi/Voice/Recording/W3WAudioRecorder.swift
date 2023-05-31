@@ -73,17 +73,22 @@ public class W3WAudioRecorder {
     microphone.listeningUpdate = { state in
       self.listeningUpdate(state)
     }
-    
-    //microphone.updateError   = { error in self.recordingError(String(describing: error)) }
   }
   
   
+  /// Initialises a W3WAudioRecorder
+  /// - parameter sampleRate: The sample rate of the data to be produced
   public init(sampleRate: Int) {
-    _ = microphone.set(sampleRate: sampleRate)  // we ignore if this call succeeds, because if it fails, the next line uses whatever the mic wants
+    // we ignore if this call fails, because if it fails, the next line uses whatever the mic wants
+    _ = microphone.set(sampleRate: sampleRate)
+    
+    // set the sample rate to whatever we got
     currentSampleRate = microphone.getSampleRate()
     recording.setSampleRate(currentSampleRate)
-    microphone.sampleArrived = { data in self.sampleArrivedFromMic(data: data) }
-    //microphone.updateError   = { error in self.recordingError(String(describing: error)) }
+    
+    microphone.sampleArrived = { data in
+      self.sampleArrivedFromMic(data: data)
+    }
   }
   
 
@@ -93,16 +98,21 @@ public class W3WAudioRecorder {
   }
 
   
+  /// Indicates if this is actively recording or if it's idle
   public func isRecording() -> Bool {
     return engaged
   }
   
   
+  /// Stop the recording automatically after speech ends
+  /// - parameter enabled: Set to true to turn on speech recognition
   public func endOfSpeech(enabled: Bool) {
     endOfSpeechEnabled = enabled
   }
   
   
+  /// Change the recording length lemit
+  /// - parameter maximumRecordingLength: Maximum recording length in seconds
   public func set(maximumRecordingLength: Double) {
     maxRecordingLength = maximumRecordingLength
   }
@@ -127,15 +137,6 @@ public class W3WAudioRecorder {
     configureSampleRate()
     microphone.start()
     engaged = true
-
-    
-//    if microphone.isMicrophoneAvailable() {
-//      engaged = true
-//      microphone.start()
-//    } else {
-//      microphone.stop()
-//      microphone.start()
-//    }
   }
   
   
@@ -150,16 +151,19 @@ public class W3WAudioRecorder {
   }
   
   
+  /// Stop recording
   public func stop() {
     stop(andSend: true)
   }
   
   
+  /// Cancel the recording process
   public func cancel() {
     stop(andSend: false)
   }
   
   
+  /// Stop recording, with the option to send the recoding to the recordingFinished closure
   private func stop(andSend: Bool) {
     if engaged {
       engaged = false
@@ -177,6 +181,7 @@ public class W3WAudioRecorder {
   }
   
   
+  /// clear the local copy of the sound
   private func reset() {
     // clear the local copy of the sound
     recording.removeAllSamples() // reset the sound
@@ -199,7 +204,7 @@ public class W3WAudioRecorder {
     // keep track of how loud stuff is, notably tracking lastLoudSampleTime
     recordingLevels()
 
-    // add samples individually to sound (they need to be converted one at a time at this point, todo: modify Microphone to recieve the data as Int using AVAudioMixerNode)
+    // add samples individually to sound
     if (data.baseAddress != nil) {
       for f in data {
         addSample(sample: f)
@@ -274,18 +279,21 @@ public class W3WAudioRecorder {
   
   
   /// add a 16 bit int sample to the sound file
+  /// - parameter sample: Int16 sample of sound
   public func addSample(sample:Int16) {
     recording.add(sample: sample)
   }
   
   
   /// add a 32 bit int sample to the sound file
+  /// - parameter sample: Int32 sample of sound
   public func addSample(sample:Int32) {
     recording.add(sample: sample)
   }
   
   
   /// add a 32 bit float sample to the sound file
+  /// - parameter sample: Float32 sample of sound
   public func addSample(sample:Float32) {
     var convertedToInt16 = Int16(0)
     let s = sample * 32768 / (2.0 * .pi)

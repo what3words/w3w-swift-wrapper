@@ -197,7 +197,7 @@ public class What3WordsV3: W3WApiCall, W3WProtocolV3 {
   }
 
   
-  // MARK: Other API calls
+  // MARK: Other calls
   
 
   /**

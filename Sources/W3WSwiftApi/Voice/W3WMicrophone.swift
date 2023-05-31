@@ -10,46 +10,29 @@ import Foundation
 import AVFoundation
 
 
-public enum W3WVoiceListeningState {
-  case started
-  case stopped
-}
-
-
-public enum W3WMicrophoneError : Error, CustomStringConvertible {
-  case noInputAvailable
-  case audioSystemFailedToStart
-  
-  public var description : String {
-    switch self {
-    case .noInputAvailable:         return "No audio inputs available"
-    case .audioSystemFailedToStart: return "The audio system failed to start"
-    }
-  }
-  
-}
-
-
 
 /// Manages the device microphone
 @available(watchOS 4.0, tvOS 11.0, *)
-
-
-
 open class W3WMicrophone: W3WAudioStream {
   
   /// CoreAudio interface
   private var audioEngine: AVAudioEngine!
+  
   /// handle to a microphone
   private var mic: AVAudioInputNode!
+  
   /// keep track as to whether 'mic' has been connected to the audio system
   private var audioIsTapped = false
+  
   /// a current amplitude
   public var amplitude = 0.0
+  
   /// the maximum amplitude so far
   public var maxAmplitude = W3WSettings.defaulMaxAmplitude
+  
   /// the minimum amplitude so far
   public var minAmplitude = 0.0
+  
   /// the smallest "max" volume for the amplitude normalization function
   private static let smallestMaxVolume = 0.25
 
@@ -61,7 +44,11 @@ open class W3WMicrophone: W3WAudioStream {
     configure()
   }
   
-  override public init(sampleRate: Int, encoding:W3WEncoding) {
+  
+  /// Represents the device mirophone
+  /// - paramter sampleRate: The sample rate (Hz) to request the microphone use
+  /// - paramter encoding: The sample type - Int16 or Float32
+  override public init(sampleRate: Int, encoding: W3WEncoding) {
     super.init(sampleRate: sampleRate, encoding: encoding)
     configure()
   }
@@ -116,11 +103,13 @@ open class W3WMicrophone: W3WAudioStream {
   }
   
   
+  /// indicates if there is an available microphone
   public func isMicrophoneAvailable() -> Bool {
     return (mic.inputFormat(forBus: 0).channelCount > 0)
   }
 
   
+  /// indicates if the microphone is available
   public func isInputAvailable() -> Bool {
     if mic.inputFormat(forBus: 0).sampleRate != 0 {
       return true
@@ -129,51 +118,12 @@ open class W3WMicrophone: W3WAudioStream {
     }
   }
   
+  
   // MARK: start() stop()
   
   /// start the mic recording
   public func start() {
-    
     start(convertingToSampleRate: sampleRate)
-
-//    // make sure this hardware can record and mic is available
-//    if !isInputAvailable() || !isMicrophoneAvailable() {
-//      onError(W3WVoiceError.microphoneError(error: W3WMicrophoneError.noInputAvailable))
-//
-//    // all good to go, so tap the mic
-//    } else {
-//      var micFormat: AVAudioFormat!
-//
-//      if encoding == .pcm_s16le {
-//        micFormat = AVAudioFormat(commonFormat: .pcmFormatInt16, sampleRate: Double(sampleRate), channels: 1, interleaved: false)!
-//      } else {
-//        micFormat = mic.inputFormat(forBus: 0)
-//      }
-//
-//      // make sure we got the right rate recorded
-//      self.sampleRate = Int(micFormat.sampleRate)
-//
-//      if (audioIsTapped == false) {
-//        audioIsTapped = true
-//
-//        listeningUpdate(.started)
-//
-//        mic.installTap(onBus: 0, bufferSize: 2048, format: micFormat) { (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) in
-//          self.micReturnedSamples(buffer: buffer, time: time)
-//        }
-//
-//      } else {
-//        //print("Warning: microphone was started twice")
-//      }
-//
-//      // start the actual recording
-//      do {
-//        try audioEngine.start()
-//      } catch {
-//        onError(W3WVoiceError.microphoneError(error: W3WMicrophoneError.audioSystemFailedToStart))
-//      }
-//    }
-    
   }
   
   
@@ -227,11 +177,6 @@ open class W3WMicrophone: W3WAudioStream {
   }
 
     
-//  public override func endSamples() {
-//    stop()
-//  }
-  
-  
   /// stop the mic recording
   public func stop() {
     audioEngine.stop()
@@ -240,13 +185,8 @@ open class W3WMicrophone: W3WAudioStream {
     if (audioIsTapped == true) {
       audioIsTapped = false
       mic.removeTap(onBus: 0)
-    } else {
-      //print("Warning: microphone was stopped twice")
     }
 
-    //endSamples()
-    //close()
-    
     listeningUpdate(.stopped)
   }
   
@@ -254,16 +194,26 @@ open class W3WMicrophone: W3WAudioStream {
   // MARK: Events
   
   /// called when there are new data from the microphone
-  private func micReturnedSamples(buffer: AVAudioPCMBuffer!, time: AVAudioTime!) {
+  private func micReturnedSamples(buffer: AVAudioPCMBuffer, time: AVAudioTime!) {
+    calulateAmplitude(buffer: buffer)
+    
+    let sampleData = W3WSampleData(buffer: buffer)
+    onSamples(sampleData)
+  }
+  
+  
+  func calulateAmplitude(buffer: AVAudioPCMBuffer) {
     // fade the amplitude indicator quickly, but not imediately
     self.amplitude = self.amplitude * 0.3
-    
+
+    // if it's float data
     if encoding == .pcm_f32le {
-      processFloatBuffer(buffer: buffer)
-    }
-    
-    if encoding == .pcm_s16le {
-      processIntBuffer(buffer: buffer)
+      calculateAmplitudeFloat(buffer: buffer)
+      sampleArrived(UnsafeBufferPointer(start: buffer.floatChannelData![0], count: Int(buffer.frameLength)))
+
+    // if it's int data
+    } else {
+      calculateAmplitudeInt16(buffer: buffer)
     }
     
     // a code block to update amplitude for the UI;
@@ -271,16 +221,10 @@ open class W3WMicrophone: W3WAudioStream {
   }
   
   
-  private func processIntBuffer(buffer: AVAudioPCMBuffer) {
+  
+  private func calculateAmplitudeInt16(buffer: AVAudioPCMBuffer) {
     let sampleDataInt16 = UnsafeBufferPointer(start: buffer.int16ChannelData![0], count: Int(buffer.frameLength))
 
-//    let arraySize = sampleDataInt16.count
-//    let samples = Array<Int16>(UnsafeBufferPointer(start: sampleDataInt16.baseAddress, count:arraySize))
-//    for sample in samples {
-//      print(sample)
-//    }
-
-    
     // remember the max amplitude
     if let i = sampleDataInt16.max() {
       let m = Float(i) / Float(Int16.max)
@@ -299,11 +243,10 @@ open class W3WMicrophone: W3WAudioStream {
       }
     }
     
-    self.onSamples(W3WSampleData(buffer: .pcm_s16le(sampleDataInt16), sampleRate: sampleRate, avBuffer: buffer))
   }
   
   
-  private func processFloatBuffer(buffer: AVAudioPCMBuffer) {
+  private func calculateAmplitudeFloat(buffer: AVAudioPCMBuffer) {
     let sampleDataFloat = UnsafeBufferPointer(start: buffer.floatChannelData![0], count: Int(buffer.frameLength))
     
     // remember the max amplitude
@@ -321,25 +264,7 @@ open class W3WMicrophone: W3WAudioStream {
       }
     }
     
-    self.onSamples(W3WSampleData(buffer: .pcm_f32le(sampleDataFloat), sampleRate: sampleRate, avBuffer: buffer))
-    self.sampleArrived(sampleDataFloat)
   }
-  
-
-
-//  // override errors so we can stop the mic if nessesary
-//  override func update(error: W3WVoiceError) {
-//    stop()
-//    super.update(error: error)
-//  }
-//
-//  
-//  // override suggestions so we can stop the mic if nessesary
-//  override func update(suggestions: [W3WVoiceSuggestion]) {
-//    stop()
-//    callback?(suggestions, nil)
-//  }
-
   
   
   // MARK: Util
@@ -362,7 +287,5 @@ open class W3WMicrophone: W3WAudioStream {
     }
     
   }
-
-  
 
 }

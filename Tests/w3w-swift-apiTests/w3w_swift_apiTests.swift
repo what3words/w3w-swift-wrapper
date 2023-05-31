@@ -21,12 +21,26 @@ final class w3w_swift_apiTests: XCTestCase {
     
     if let apikey = ProcessInfo.processInfo.environment["PROD_API_KEY"] {
       api = What3WordsV3(apiKey: apikey, apiUrl: W3WSettings.apiUrl, customHeaders: headers)
+    } else if let apikey = getApikeyFromFile() {
+      api = What3WordsV3(apiKey: apikey)
     } else {
       print("Environment variable PROD_API_KEY must be set")
       abort()
     }
   }
   
+  
+  func getApikeyFromFile() -> String? {
+    var apikey: String? = nil
+    
+    let url = URL(fileURLWithPath: "/tmp/key.txt")
+    if let key = try? String(contentsOf: url, encoding: .utf8) {
+      apikey = key.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    return apikey
+  }
+
   
   func testConvertToCoordinates() {
     let expectation = self.expectation(description: "Convert To Coordinates")
@@ -624,7 +638,7 @@ final class w3w_swift_apiTests: XCTestCase {
 
 
   func testAutosuggestHelper() {
-    let expectation = self.expectation(description: "Voice API")
+    let expectation = self.expectation(description: "Autosuggest Helper 01 API")
 
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
 
@@ -640,7 +654,7 @@ final class w3w_swift_apiTests: XCTestCase {
 
 
   func testAutosuggestHelperOptions() {
-    let expectation = self.expectation(description: "Voice API")
+    let expectation = self.expectation(description: "Autosuggest Helper 02 API")
 
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
 
@@ -656,7 +670,7 @@ final class w3w_swift_apiTests: XCTestCase {
 
 
   func testAutosuggestHelperOptionArray() {
-    let expectation = self.expectation(description: "Voice API")
+    let expectation = self.expectation(description: "Autosuggest Helper 03 API")
 
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
 
@@ -673,7 +687,7 @@ final class w3w_swift_apiTests: XCTestCase {
 
 
   func testAutosuggestSelected() {
-    let expectation = self.expectation(description: "Voice API")
+    let expectation = self.expectation(description: "Autosuggest Helper 04 API")
 
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
 
@@ -692,7 +706,7 @@ final class w3w_swift_apiTests: XCTestCase {
 
 
   func testAutosuggestHelperDebouncer() {
-    let expectation = self.expectation(description: "Voice API")
+    let expectation = self.expectation(description: "Autosuggest Helper 05 API")
 
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
 
@@ -794,7 +808,7 @@ final class w3w_swift_apiTests: XCTestCase {
 #if !os(watchOS)
   /// test for a timeout error
   func testVoiceApiTimoutError() {
-    let expectation = self.expectation(description: "Voice API")
+    let expectation = self.expectation(description: "Voice API Timeout")
     
     let stream = W3WAudioStream(sampleRate: 44100, encoding: .pcm_f32le)
     
@@ -805,21 +819,21 @@ final class w3w_swift_apiTests: XCTestCase {
     
     waitForExpectations(timeout: 30.0, handler: nil)
   }
+  
 
-#if os(iOS)
   func testVoiceApi() {
     let expectation = self.expectation(description: "Voice API")
-    
+
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
-    
+
     if let resource = try? Resource(name: "test", type: "dat") {
 
       // load a file of raw audio data containing a mono stream of 32 bit float data samples
       if let data = try? Data(contentsOf: resource.url) {
-      
+
         // set the stream to accept PCM 32 bit float audio data at 44.1kHz sample rate
         let audio = W3WAudioStream(sampleRate: 44100, encoding: .pcm_f32le)
-        
+
         // assign the audio stream to an autosuggest call
         api.autosuggest(audio: audio, language: "en", options: W3WOption.focus(somewhereInLondon)) { suggestions, error in
 
@@ -829,71 +843,23 @@ final class w3w_swift_apiTests: XCTestCase {
             expectation.fulfill()
           }
         }
-        
+
         // finally, send the audio data.  This can be called repeatedly as new data become available if you want to live stream
-        audio.add(samples: data)
-        
+        audio.add(samples: W3WSampleData(data: data, format: .pcm_f32le, sampleRate: 44100))
+
         // tell the server no more data will come
         audio.endSamples()
-        
+
         waitForExpectations(timeout: 60.0, handler: nil)
       }
     }
-    
+
   }
-#endif
 
-
-//  func callVoiceAutosuggest(data: Data, completion: @escaping () -> ()) {
-//    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
-//
-//    // set the stream to accept PCM 32 bit float audio data at 44.1kHz sample rate
-//    let audio = W3WAudioStream(sampleRate: 44100, encoding: .pcm_f32le)
-//
-//    // assign the audio stream to an autosuggest call
-//    api.autosuggest(audio: audio, language: "en", options: W3WOption.focus(somewhereInLondon)) { suggestions, error in
-//
-//      if error != nil {
-//        print(error!)
-//      }
-//
-//      XCTAssertNil(error)
-//      XCTAssertEqual(suggestions?.first?.words, "filled.count.soap")
-//
-//      completion()
-//    }
-//
-//    // finally, send the audio data.  This can be called repeatedly as new data become available if you want to live stream
-//    audio.add(samples: data)
-//
-//    // tell the server no more data will come (optional, you can instead let end of speach detection terminate the process)
-//    audio.endSamples()
-//  }
-
-
-//func testVoiceMultipleTimes() {
-//  let expectation = self.expectation(description: "Voice API Multiple")
-//
-//  if let resource = try? Resource(name: "test", type: "dat") {
-//
-//    // load a file of raw audio data containing a mono stream of 32 bit float data samples
-//    if let data = try? Data(contentsOf: resource.url) {
-//      self.callVoiceAutosuggest(data: data) {
-//        self.callVoiceAutosuggest(data: data) {
-//          self.callVoiceAutosuggest(data: data) {
-//            expectation.fulfill()
-//          }
-//        }
-//      }
-//
-//      waitForExpectations(timeout: 30.0, handler: nil)
-//    }
-//  }
-//
-//}
-  
   
   // MARK: Types Tests
+  
+  
   func testTypes() {
     let expectation = self.expectation(description: "Types")
 
