@@ -6,13 +6,6 @@ then
     rm -r build
 fi
 
-# remove any previous project
-if [ -d "w3w-swift-wrapper.xcodeproj" ]
-then
-    rm -r w3w-swift-wrapper.xcodeproj
-fi
-swift package generate-xcodeproj
-
 # make the frameworks for each architecture
 xcodebuild archive -project w3w-swift-wrapper.xcodeproj -scheme w3w-swift-wrapper-Package -sdk iphoneos -archivePath build/W3WSwiftApiIosDevice SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES
 xcodebuild archive -project w3w-swift-wrapper.xcodeproj -scheme w3w-swift-wrapper-Package -sdk iphonesimulator -archivePath build/W3WSwiftApiIosSimulator SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES

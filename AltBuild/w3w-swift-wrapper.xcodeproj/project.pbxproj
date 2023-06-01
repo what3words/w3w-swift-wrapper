@@ -28,20 +28,11 @@
 		OBJ_59 /* SdkToApiBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* SdkToApiBridge.swift */; };
 		OBJ_60 /* W3WApiDataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* W3WApiDataTypes.swift */; };
 		OBJ_61 /* W3WTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* W3WTypes.swift */; };
-		OBJ_62 /* W3WVoiceTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* W3WVoiceTypes.swift */; };
 		OBJ_63 /* W3WApiCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* W3WApiCall.swift */; };
 		OBJ_64 /* W3WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* W3WebSocket.swift */; };
 		OBJ_65 /* ObjcWrapperForTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_22 /* ObjcWrapperForTypes.swift */; };
 		OBJ_66 /* What3WordsObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_23 /* What3WordsObjC.swift */; };
 		OBJ_67 /* W3WTextDebouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_25 /* W3WTextDebouncer.swift */; };
-		OBJ_68 /* W3WAudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_27 /* W3WAudioRecorder.swift */; };
-		OBJ_69 /* W3WAudioRecording.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* W3WAudioRecording.swift */; };
-		OBJ_70 /* W3WAudioStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* W3WAudioStream.swift */; };
-		OBJ_71 /* W3WMicrophone.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_30 /* W3WMicrophone.swift */; };
-		OBJ_72 /* W3WVoiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_31 /* W3WVoiceApi.swift */; };
-		OBJ_73 /* W3WVoiceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_32 /* W3WVoiceSettings.swift */; };
-		OBJ_74 /* W3WVoiceSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_33 /* W3WVoiceSocket.swift */; };
-		OBJ_75 /* What3Words+VoiceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_34 /* What3Words+VoiceAPI.swift */; };
 		OBJ_76 /* W3WAutosuggestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_35 /* W3WAutosuggestHelper.swift */; };
 		OBJ_77 /* W3WSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* W3WSettings.swift */; };
 		OBJ_78 /* What3WordsV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* What3WordsV3.swift */; };
@@ -84,26 +75,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		018FB6C62A28AC7B009194C5 /* Voice */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Voice; sourceTree = "<group>"; };
 		019BF06C291A83C300272563 /* W3WProtocolV3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = W3WProtocolV3.swift; sourceTree = "<group>"; };
 		019BF06F291A846400272563 /* w3w.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = w3w.xcframework; path = ../../../../SDKs/SDK/CoreSDKiOS/framework/v3.7.0/w3w.xcframework; sourceTree = "<group>"; };
 		01EF31C1291E8617002710D9 /* w3w.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = w3w.xcframework; path = Frameworks/w3w.xcframework; sourceTree = "<group>"; };
 		OBJ_13 /* SdkToApiBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdkToApiBridge.swift; sourceTree = "<group>"; };
 		OBJ_15 /* W3WApiDataTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WApiDataTypes.swift; sourceTree = "<group>"; };
 		OBJ_16 /* W3WTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WTypes.swift; sourceTree = "<group>"; };
-		OBJ_17 /* W3WVoiceTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WVoiceTypes.swift; sourceTree = "<group>"; };
 		OBJ_19 /* W3WApiCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WApiCall.swift; sourceTree = "<group>"; };
 		OBJ_20 /* W3WebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WebSocket.swift; sourceTree = "<group>"; };
 		OBJ_22 /* ObjcWrapperForTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjcWrapperForTypes.swift; sourceTree = "<group>"; };
 		OBJ_23 /* What3WordsObjC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = What3WordsObjC.swift; sourceTree = "<group>"; };
 		OBJ_25 /* W3WTextDebouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WTextDebouncer.swift; sourceTree = "<group>"; };
-		OBJ_27 /* W3WAudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WAudioRecorder.swift; sourceTree = "<group>"; };
-		OBJ_28 /* W3WAudioRecording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WAudioRecording.swift; sourceTree = "<group>"; };
-		OBJ_29 /* W3WAudioStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WAudioStream.swift; sourceTree = "<group>"; };
-		OBJ_30 /* W3WMicrophone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WMicrophone.swift; sourceTree = "<group>"; };
-		OBJ_31 /* W3WVoiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WVoiceApi.swift; sourceTree = "<group>"; };
-		OBJ_32 /* W3WVoiceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WVoiceSettings.swift; sourceTree = "<group>"; };
-		OBJ_33 /* W3WVoiceSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WVoiceSocket.swift; sourceTree = "<group>"; };
-		OBJ_34 /* What3Words+VoiceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "What3Words+VoiceAPI.swift"; sourceTree = "<group>"; };
 		OBJ_35 /* W3WAutosuggestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WAutosuggestHelper.swift; sourceTree = "<group>"; };
 		OBJ_36 /* W3WSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W3WSettings.swift; sourceTree = "<group>"; };
 		OBJ_37 /* What3WordsV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = What3WordsV3.swift; sourceTree = "<group>"; };
@@ -183,7 +166,6 @@
 			children = (
 				OBJ_15 /* W3WApiDataTypes.swift */,
 				OBJ_16 /* W3WTypes.swift */,
-				OBJ_17 /* W3WVoiceTypes.swift */,
 				019BF06C291A83C300272563 /* W3WProtocolV3.swift */,
 			);
 			path = DataTypes;
@@ -213,21 +195,6 @@
 				OBJ_25 /* W3WTextDebouncer.swift */,
 			);
 			path = Util;
-			sourceTree = "<group>";
-		};
-		OBJ_26 /* Voice */ = {
-			isa = PBXGroup;
-			children = (
-				OBJ_27 /* W3WAudioRecorder.swift */,
-				OBJ_28 /* W3WAudioRecording.swift */,
-				OBJ_29 /* W3WAudioStream.swift */,
-				OBJ_30 /* W3WMicrophone.swift */,
-				OBJ_31 /* W3WVoiceApi.swift */,
-				OBJ_32 /* W3WVoiceSettings.swift */,
-				OBJ_33 /* W3WVoiceSocket.swift */,
-				OBJ_34 /* What3Words+VoiceAPI.swift */,
-			);
-			path = Voice;
 			sourceTree = "<group>";
 		};
 		OBJ_38 /* Tests */ = {
@@ -296,7 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_11 /* Lib */,
-				OBJ_26 /* Voice */,
+				018FB6C62A28AC7B009194C5 /* Voice */,
 				OBJ_35 /* W3WAutosuggestHelper.swift */,
 				OBJ_36 /* W3WSettings.swift */,
 				OBJ_37 /* What3WordsV3.swift */,
@@ -381,7 +348,7 @@
 				LastSwiftMigration = 9999;
 				LastUpgradeCheck = 9999;
 			};
-			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "w3w-swift-wrapper.sdk" */;
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "w3w-swift-wrapper" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -419,20 +386,11 @@
 				019BF06D291A83C300272563 /* W3WProtocolV3.swift in Sources */,
 				OBJ_60 /* W3WApiDataTypes.swift in Sources */,
 				OBJ_61 /* W3WTypes.swift in Sources */,
-				OBJ_62 /* W3WVoiceTypes.swift in Sources */,
 				OBJ_63 /* W3WApiCall.swift in Sources */,
 				OBJ_64 /* W3WebSocket.swift in Sources */,
 				OBJ_65 /* ObjcWrapperForTypes.swift in Sources */,
 				OBJ_66 /* What3WordsObjC.swift in Sources */,
 				OBJ_67 /* W3WTextDebouncer.swift in Sources */,
-				OBJ_68 /* W3WAudioRecorder.swift in Sources */,
-				OBJ_69 /* W3WAudioRecording.swift in Sources */,
-				OBJ_70 /* W3WAudioStream.swift in Sources */,
-				OBJ_71 /* W3WMicrophone.swift in Sources */,
-				OBJ_72 /* W3WVoiceApi.swift in Sources */,
-				OBJ_73 /* W3WVoiceSettings.swift in Sources */,
-				OBJ_74 /* W3WVoiceSocket.swift in Sources */,
-				OBJ_75 /* What3Words+VoiceAPI.swift in Sources */,
 				OBJ_76 /* W3WAutosuggestHelper.swift in Sources */,
 				OBJ_77 /* W3WSettings.swift in Sources */,
 				OBJ_78 /* What3WordsV3.swift in Sources */,
@@ -777,7 +735,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		OBJ_2 /* Build configuration list for PBXProject "w3w-swift-wrapper.sdk" */ = {
+		OBJ_2 /* Build configuration list for PBXProject "w3w-swift-wrapper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				OBJ_3 /* Debug */,
