@@ -6,7 +6,6 @@ build/
 DerivedData/
 /.swiftpm
 /Frameworks
-/w3w-swift-wrapper.xcodeproj
 
 ## Various settings
 *.pbxuser
