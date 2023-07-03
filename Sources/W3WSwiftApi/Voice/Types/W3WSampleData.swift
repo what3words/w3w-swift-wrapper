@@ -5,6 +5,7 @@
 //
 
 import AVKit
+import AVFAudio
 
 
 /// a struct that manages AVAudioPCMBuffer and whose interface is mostly agnostic to it

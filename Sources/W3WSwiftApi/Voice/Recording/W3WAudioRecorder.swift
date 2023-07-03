@@ -259,16 +259,6 @@ public class W3WAudioRecorder {
     let muchQuietTime:Bool = (lastLoudSampleTime < recordingTime - W3WSettings.end_of_speech_quiet_time && recordingTime > W3WSettings.min_voice_sample_length)
     let recordingTooLong   = recordingTime > maxRecordingLength   //= (sound.samples.count == LibSettings.max_recording_sample_count)
     
-    if muchQuietTime {
-      print("EOS worked")
-    }
-    
-    if recordingTooLong && engaged {
-      print("Recording timeout")
-    }
-    
-    //print("Au: ", muchQuietTime, recordingTooLong, engaged, sampleCount, recordingTime, lastLoudSampleTime, maxRecordingLength, microphone.minAmplitude, microphone.maxAmplitude, microphone.amplitude)
-    
     // or if we've gone past the maximum number of samples we want
     //return (lastLoudSampleTime < recordingTime - LibSettings.end_of_speech_quiet_time && recordingTime > LibSettings.min_voice_sample_length) || (sound.samples.count == LibSettings.max_recording_sample_count)
     return (muchQuietTime || recordingTooLong) && engaged

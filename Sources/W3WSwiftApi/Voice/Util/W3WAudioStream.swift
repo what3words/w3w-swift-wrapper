@@ -8,6 +8,7 @@
 
 
 import AVKit
+import AVFAudio
 
 
 open class W3WAudioStream {

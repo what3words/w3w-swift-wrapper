@@ -102,11 +102,9 @@ public class W3WVoiceUploadApi {
     
     // make the call
     let session = URLSession(configuration: .default)
-    print("About To Send Sound")
     session.dataTask(with: request) { (data, response, error) in
       
       // deal with reply from Speechmatics
-      print("Got Reply From Server")
       if error != nil {
         callback(nil, W3WVoiceError.voiceSocketError(error: W3WVoiceSocketError.other(error: error ?? W3WVoiceError.unknown)))
         return
