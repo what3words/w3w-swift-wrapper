@@ -13,7 +13,7 @@ public struct W3WSettings {
   static let apiUrl      = "https://api.what3words.com/v3"
   
   /// The version of this code
-  static let apiVersion  = "3.9.2"
+  static let apiVersion  = "3.9.3"
   
   /// what3words domains
   static var domains     = ["what3words.com", "w3w.io"]
