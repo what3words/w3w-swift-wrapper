@@ -89,10 +89,8 @@ https://github.com/what3words/w3w-swift-wrapper.git
 You can use CocoaPods to install w3w-swift-wrapper by adding it to the target in your Podfile:
 
 ```
-pod 'what3words', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+pod 'W3WSwiftApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
 ```
-
-If you are using CocoaPods use `import what3words` instead of `import W3WSwiftApi` in your Swift files.
 
 #### XCFramework
 
