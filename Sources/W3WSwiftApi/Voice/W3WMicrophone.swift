@@ -36,8 +36,10 @@ open class W3WMicrophone: W3WAudioStream {
   /// the smallest "max" volume for the amplitude normalization function
   private static let smallestMaxVolume = 0.25
 
-  /// the session category to use, defaults to .record
+  /// the session category to use, defaults to .record (only for iOS)
+  #if canImport(UIKit)
   public static var category: AVAudioSession.Category? = nil
+  #endif
   
   
   // MARK: Initialization
