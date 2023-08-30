@@ -23,10 +23,27 @@
 {
   NSString *api_key = NSProcessInfo.processInfo.environment[@"PROD_API_KEY"];
   if (api_key == NULL) {
-    NSLog(@"Environment variable PROD_API_KEY must be set");
-    abort();
+    api_key = [self getApikeyFromFile];
+    if (api_key == NULL) {
+      NSLog(@"Environment variable PROD_API_KEY must be set");
+      abort();
+    }
   }
   api = [[What3WordsObjC alloc] initWithApiKey: api_key];
+}
+
+
+-(NSString *)getApikeyFromFile {
+  NSURL *url = [NSURL fileURLWithPath: @"/tmp/key.txt"];
+  NSString *key =  [NSString stringWithContentsOfURL: url  encoding: kCFStringEncodingUTF8 error: NULL];
+  NSString *apikey = @"";
+  
+  if (key != NULL)
+    {
+    apikey = [key stringByTrimmingCharactersInSet: NSCharacterSet.whitespaceAndNewlineCharacterSet];
+    }
+  
+  return apikey;
 }
 
 
