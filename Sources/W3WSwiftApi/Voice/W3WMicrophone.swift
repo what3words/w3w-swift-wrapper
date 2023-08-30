@@ -38,7 +38,7 @@ open class W3WMicrophone: W3WAudioStream {
 
   /// the session category to use, defaults to .record (only for iOS)
   #if canImport(UIKit)
-  public static var category: AVAudioSession.Category? = nil
+  public static var category: AVAudioSession.Category? = .record
   #endif
   
   
@@ -65,7 +65,9 @@ open class W3WMicrophone: W3WAudioStream {
     
     do {
       #if canImport(UIKit)
-      try AVAudioSession.sharedInstance().setCategory(Self.category ?? .record)
+      if let c = Self.category {
+        try AVAudioSession.sharedInstance().setCategory(c)
+      }
       try AVAudioSession.sharedInstance().setActive(true)
       #endif
     } catch {
