@@ -15,51 +15,14 @@ commands:
               swift test --enable-code-coverage
               xcrun llvm-cov show .build/debug/w3w-swift-wrapperPackageTests.xctest/Contents/MacOS/w3w-swift-wrapperPackageTests -instr-profile .build/debug/codecov/default.profdata > .build/cov.txt
               sonar-scanner -Dsonar.projectKey=what3words_w3w-swift-wrapper -Dsonar.organization=what3words -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=$SONAR_TOKEN -Dsonar.sources=Sources -Dsonar.swift.coverage.reportPath=.build/cov.txt
-   
-  download_dependancies:
-    steps:
-      - aws-s3/copy:
-          from: '${SOURCE_BUCKET}/ios/${W3W_SDK_VERSION}/what3words-ios-sdk-${W3W_SDK_VERSION}.tar.gz'
-          to: .
-      - run:
-          name: Unzip Dependancies
-          command: |
-            mkdir Frameworks
-            tar -zxvf what3words-ios-sdk-${W3W_SDK_VERSION}.tar.gz -C Frameworks/
-            mv Frameworks/lib/w3w.xcframework/ Frameworks/
-            ls -la Frameworks
-
-  build:
-    steps:
-      - checkout  # pull down code from
-      - run:
-          name: Build Framework
-          command: |-
-              ./AltBuild/build.sh
-              mkdir -p s3
-              cd build
-              tar zcf ../s3/W3WSwiftApi-${CIRCLE_TAG:-$CIRCLE_BRANCH}-[sdk-${W3W_SDK_VERSION}].tar.gz W3WSwiftApi.xcframework
-              cd ..
-
-  deploy:
-    steps:
-      - aws-s3/sync:
-          from: ./s3
-          to: '${SOURCE_BUCKET}/swift-packages/w3w-swift-wrapper/${CIRCLE_TAG:-$CIRCLE_BRANCH}/'
-
 
 jobs: # the jobs
 
   build_test_deploy:
     macos:
       xcode: 14.0.0 # version of Xcode
-    environment:
-      W3W_SDK_VERSION: v4.0.0
     steps:
       - test
-      - download_dependancies
-      - build
-      - deploy
 
 workflows:
 
