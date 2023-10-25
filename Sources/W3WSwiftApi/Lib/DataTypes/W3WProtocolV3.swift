@@ -140,9 +140,41 @@ extension W3WProtocolV3 {
   }
   
   
-  /// Uses the regex to determine if a String fits the three word address form of three words in any language separated by two separator characters
+  /**
+   Checks to see if the text follows the form of a three word address via regex, that is,
+   a word followed by a separator followed by a word followed by a separator followed by
+   a word.  A word is defined as series of letters that belong to any writing system.
+   This does not validate the address as being a real location on the earth, just that
+   it follows the textual form of one.  For example, xx.xx.xx would pass this test even
+   though it is not a valid address.
+   - parameter text: A string holding the potential address to verify
+   */
   public func isPossible3wa(text: String) -> Bool {
     return regexMatch(text: text, regex: W3WSettings.regex_match)
+  }
+  
+  
+  /**
+   Verifies that the text is a valid three word address that successfully represents a square on earth.
+   - parameter text: The text to search through
+   - parameter completion: returns true if the address is a real three word address
+   */
+  public func isValid3wa(words: String, completion: @escaping (Bool) -> ()) {
+    autosuggest(text: words) { suggestions, error in
+      for suggestion in suggestions ?? [] {
+        // remove slashes and make lowercase for comparison
+        let w1 = suggestion.words?.trimmingCharacters(in: CharacterSet(charactersIn: "/")).lowercased()
+        let w2 = words.trimmingCharacters(in: CharacterSet(charactersIn: "/")).lowercased()
+
+        if w1 == w2 {
+          completion(true)
+          return
+        }
+      }
+      
+      // no match found
+      completion(false)
+    }
   }
   
   
@@ -166,7 +198,13 @@ extension W3WProtocolV3 {
   }
   
   
-  /// searches a string for possible three word address matches
+  /**
+   Finds any number of possible three word addresses in a block of text. The term "possible
+   three word addresses" refers to text that matches the regex used in isPossible3wa(), that
+   is, these are pieces of text that appear to be three word address, but have not been veified
+   against the engine as actually representing an actual place on earth.
+   - parameter text: The text to search through
+   */
   public func findPossible3wa(text: String) -> [String] {
     var results = [String]()
     

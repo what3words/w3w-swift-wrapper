@@ -802,6 +802,30 @@ final class w3w_swift_apiTests: XCTestCase {
   }
 
   
+  func testisValid3wa() {
+    validate3wa(text: "///xx.xx.xx", result: false)
+    validate3wa(text: "///filled.count.soap", result: true)
+    validate3wa(text: "filled.count.soap", result: true)
+    validate3wa(text: "/filled.count.soap", result: true)
+    validate3wa(text: "xx.xx.xx", result: false)
+    validate3wa(text: "one.two.three", result: false)
+    validate3wa(text: "filled.two.three", result: false)
+    validate3wa(text: "djowejdojwedoijweodijwejdwefwefwefw.wefwefwerfrwfw.wefwrfwrfwerfrefefrferf", result: false)
+
+    waitForExpectations(timeout: 30.0, handler: nil)
+  }
+  
+  
+  func validate3wa(text: String, result: Bool) {
+    let expectation = self.expectation(description: "isValid3wa1")
+    
+    api.isValid3wa(words: text) { valid in
+      print(text, valid)
+      XCTAssertEqual(valid, result)
+      expectation.fulfill()
+    }
+  }
+  
 
   // MARK: - Voice API tests
   

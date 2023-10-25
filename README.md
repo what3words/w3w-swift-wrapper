@@ -305,6 +305,47 @@ api.gridSection(southWest: southWest, northEast: northEast) { (lines, error) in
 }
 ```
 
+## Validation Functions
+
+These are some functions that will search or validate three word addresses.
+
+#### isPossible3wa(text: String) -> Bool
+
+ Checks to see if the text follows the form of a three word address via regex, that is, a word followed by a separator followed by a word followed by a separator followed by a word.  A word is defined as series of letters that belong to any writing system.
+This does not validate the address as being a real location on the earth, just that it follows the textual form of one.  For example, xx.xx.xx would pass this test even though it is not a valid address.
+
+```Swift
+if api.isPossible3wa(text: "abc.def.ghi") {
+  print("does match the text pattern for a three word address")
+}
+```
+
+This would print the result because even though "abc.def.ghi" is **not** a valid three word address, still it **does** fit the form of one, [word][separator][word][separator][word].
+
+#### isValid3wa(words: String, completion: @escaping (Bool) -> ())
+
+Verifies that the text is a valid three word address that successfully represents a square on earth.  This makes a call to the API to verify.  The other validation functions only run a regex locally.
+
+```Swift
+api.isValid3wa(words: "filled.count.soap") { valid in
+  if valid {
+    print("the address provided is a real address somewhere on earth")
+  }
+}
+```
+
+#### findPossible3wa(text: String) -> [String]
+
+Finds any number of possible three word addresses in a block of text. The term "possible three word addresses" refers to text that matches the regex used in isPossible3wa(), that is, these are pieces of text that appear to be three word address, but have not been veified against the engine as representing an actual place on earth.
+
+```Swift
+let twas = api.findPossible3wa(text: "This is a filled.count.soap sentence with index.home.raft fun in it nowhere near grilled.cheese.sandwhich")
+print(twas)
+```
+
+This will print out: `["filled.count.soap", "index.home.raft", "grilled.cheese.sandwhich"]`
+
+
 <a name="errors"></a>
 ## Handling Errors
 

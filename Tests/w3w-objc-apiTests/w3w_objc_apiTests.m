@@ -164,7 +164,7 @@
   XCTestExpectation *expectation = [self expectationWithDescription:@"Auto Suggest"];
   
   [api autosuggest:@"geschaft.planter.carciofi" completion:^(NSArray<W3WObjcSuggestion *> *suggestions, NSError *error)
-   {
+  {
   XCTAssertNil(error);
   
   XCTAssertGreaterThan([suggestions count], 0);
@@ -181,7 +181,7 @@
   [expectation fulfill];
   }];
   
-  [self waitForExpectationsWithTimeout:3.0 handler:nil];
+  [self waitForExpectationsWithTimeout:5.0 handler:nil];
 }
 
 
