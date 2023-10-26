@@ -160,7 +160,7 @@ final class w3w_swift_apiTests: XCTestCase {
       
       expectation.fulfill()
     }
-    waitForExpectations(timeout: 3.0, handler: nil)
+    waitForExpectations(timeout: 5.0, handler: nil)
   }
   
   //options: BoundingBox(southWest: , northEast:

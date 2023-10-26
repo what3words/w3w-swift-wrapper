@@ -143,7 +143,7 @@ public class W3WVoiceSocket {
       case "NotFound":
         self.error(W3WVoiceError.notFound)
       default:
-        self.error(W3WVoiceError.invalidApiKey)
+        self.error(W3WVoiceError.voiceSocketError(error: .message(message: message ?? "unknown")))
       }
     }
   }
