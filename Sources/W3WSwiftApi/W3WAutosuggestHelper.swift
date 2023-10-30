@@ -7,10 +7,7 @@
 
 import Foundation
 import CoreLocation
-
-
-@available(*, deprecated, renamed: "W3WAutoSuggestHelper")
-public typealias W3WAutosuggestHelper = W3WAutoSuggestHelper
+import W3WSwiftCore
 
 
 /// Wrapper for autosuggest calls including a debouncer to throttle calls and an onSelected to
@@ -18,13 +15,13 @@ public typealias W3WAutosuggestHelper = W3WAutoSuggestHelper
 public class W3WAutoSuggestHelper {
   
   /// The API or SDK
-  var w3w: W3WProtocolV3?
+  var w3w: W3WProtocolV4?
   
   /// Suggestions found using the last text provided to update(text:completion)
   public var suggestions = [W3WSuggestion]()
   
   /// The debouncer
-  var debouncer: W3WTextDebouncer?
+  var debouncer: W3WDebouncer<String>?
   
   /// Debounce delay
   public var debounceDelay = W3WSettings.defaultDebounceDelay
@@ -35,7 +32,7 @@ public class W3WAutoSuggestHelper {
   
   /// initilise with the API or SDK
   /// - parameter w3w: The API or SDK
-  public init(_ w3w: W3WProtocolV3) {
+  public init(_ w3w: W3WProtocolV4) {
     self.w3w = w3w
   }
   
@@ -45,9 +42,9 @@ public class W3WAutoSuggestHelper {
   /// - parameter text: the text to search from
   /// - parameter options: options for the autosuggest call
   /// - parameter completion: indicates when new results are ready (typically used to trigger a results table reload)
-  public func update(text: String, options: [W3WOptionProtocol] = [], completion: @escaping (W3WError?) -> () = { _ in }) {
+  public func update(text: String, options: [W3WOption]? = [], completion: @escaping ([W3WSuggestion], W3WError?) -> () = { _,_ in }) {
     if debouncer == nil {
-      debouncer = W3WTextDebouncer(delay: debounceDelay) { text in
+      debouncer = W3WDebouncer<String>(delay: debounceDelay) { text in
         self.lastAutosuggestTextUsed = text
         self.w3w?.autosuggest(text: text, options: options) { suggestions, error in
           if let s = suggestions {
@@ -56,16 +53,20 @@ public class W3WAutoSuggestHelper {
             self.suggestions = []
           }
           DispatchQueue.main.async {
-            completion(error)
+            completion(self.suggestions, error)
           }
         }
       }
     }
-    
+        
     if w3w?.isPossible3wa(text: text) ?? false {
-      debouncer?.call(text: text)
+      debouncer?.execute(text)
     } else {
       suggestions = []
+      DispatchQueue.main.async {
+        // TODO: check this works
+        completion([], nil)
+      }
     }
   }
   
@@ -75,7 +76,7 @@ public class W3WAutoSuggestHelper {
   /// - parameter text: the text to search from
   /// - parameter options: options for the autosuggest call
   /// - parameter completion: indicates when new results are ready (typically used to trigger a results table reload)
-  public func update(text: String, options: W3WOptions, completion: @escaping (W3WError?) -> () = { _ in }) {
+  public func update(text: String, options: W3WOptions, completion: @escaping ([W3WSuggestion], W3WError?) -> () = { _,_ in }) {
     update(text: text, options: options.options, completion: completion)
   }
   
@@ -85,7 +86,7 @@ public class W3WAutoSuggestHelper {
   /// - parameter text: the text to search from
   /// - parameter options: options for the autosuggest call
   /// - parameter completion: indicates when new results are ready (typically used to trigger a results table reload)
-  public func update(text: String, options: W3WOptionProtocol..., completion: @escaping (W3WError?) -> () = { _ in }) {
+  public func update(text: String, options: W3WOption..., completion: @escaping ([W3WSuggestion], W3WError?) -> () = { _,_ in }) {
     update(text: text, options: options, completion: completion)
   }
   
@@ -117,7 +118,7 @@ public class W3WAutoSuggestHelper {
   /// - parameter suggestion: a suggestion contained in the suggestions list
   /// - parameter completion: returns a W3WSquare containing lat,lng,  or W3WError when completed
   public func selected(suggestion: W3WSuggestion, completion: @escaping W3WSquareResponse) {
-    if let api = w3w as? What3WordsV3 {
+    if let api = w3w as? What3WordsV4 {
       
       // find the rank of the suggestion
       var rank = getIndex(suggestion: suggestion)
