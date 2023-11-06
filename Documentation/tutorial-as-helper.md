@@ -12,16 +12,6 @@ This is a tutorial for using `W3WAutosuggestHelper` to incorporate what3words in
 
 This tutorial is intended for anyone that already has an autocomplete UI element in their app showing possible addresses in a `UITableView`.  It explains a method of adding what3words suggestions alongside your existing address results.
 
-### Examples
-
-###### UIKit
-
-There is an example provided in the [Examples/AutosuggestPlusYourData/](../Examples/AutosuggestPlusYourData/AutosuggestPlusYourData.xcodeproj) folder of the API wrapper repository.  The example uses Apple's `MKLocalSearchCompleter` address autocompleter to provide standard address autocompletion, and it augments those results with wha3words suggestions using `autosuggest` in the manner described below.
-
-###### SwiftUI
-
-There is also a SwiftUI example provided in the [Examples/AutosuggestHelperSwiftUI/](../Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj) folder of the API wrapper repository.
-
 
 #### Authentication
 To use the what3words API you’ll need a what3words API key, which can be signed up for [here](https://what3words.com/select-plan).
