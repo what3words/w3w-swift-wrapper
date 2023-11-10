@@ -41,38 +41,6 @@ This package works with:
 
 To use this library you’ll need a what3words API key, which can be signed up for [here](https://what3words.com/select-plan).  If you wish to use the Voice API calls then you must add a Voice API plan to your [account](https://accounts.what3words.com/billing).
 
-# Examples
-
-Examples in this package:
-
-#### macOS terminal:
-A macOS terminal example demonstrating `convertToCoordinates` is at:  
-[Examples/ConvertToCoords/ConvertToCoords.xcodeproj](./Examples/ConvertToCoords/ConvertToCoords.xcodeproj)
-
-#### iOS UIKit Voice API:
-An iOS UIKit example using the VoiceAPI is at:  
-[Examples/VoiceAPI/VoiceAPI.xcodeproj](./Examples/VoiceAPI/VoiceAPI.xcodeproj)
-
-#### iOS UIKit GridLine:
-An iOS example using MapKit to show what3words gridlines on a map:  
-[Examples/GridLines/GridLines.xcodeproj](./Examples/GridLines/GridLines.xcodeproj)
-
-#### Objective-C
-An example using Objective-C.  
-[Examples/ObjectiveC/ObjectiveC.xcodeproj](./Examples/ObjectiveC/ObjectiveC.xcodeproj)
-
-#### iOS SwiftUI:
-A very simple SwiftUI example that calls `autosuggest` and displays the results.  
-[Examples/AutoSuggest/AutoSuggest.xcodeproj](./Examples/AutoSuggest/AutoSuggest.xcodeproj)
-
-#### iOS SwiftUI Autosuggest Helper:
-A SwiftUI example using `W3WAutosuggestHelper` to create an autocomplete `TextField` with suggestions in a `List`.  
-[Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj](./Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj)
-
-#### Using Autosuggest Helper to augment your autocomplete:
-An iOS example using `W3WAutosuggestHelper` to augment another address datasource.  In other words, it shows how to use what3words in tandem with another address service.  The example uses Apple's `MKLocalSearchCompleter` and mixes it's results with what3words suggestions.  
-[Examples/AutosuggestPlusYourData/AutosuggestPlusYourData.xcodeproj](./Examples/AutosuggestPlusYourData/AutosuggestPlusYourData.xcodeproj)
-
 
 # Installation
 
