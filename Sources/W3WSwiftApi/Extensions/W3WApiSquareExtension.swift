@@ -16,12 +16,13 @@ extension W3WApiSquare {
     
     // parse the language code which could be of the form 'XX', or, 'XX_XX'
     var lang: W3WApiLanguage? = nil
+    
     if let code = jsonSquare?.language {
-      var l = W3WApiLanguage(code: code)
       if let locale = jsonSquare?.locale {
-        l.locale = locale
+        lang = W3WApiLanguage(locale: locale)
+      } else {
+        lang = W3WApiLanguage(code: code)
       }
-      lang = l
     }
     
     var coords: CLLocationCoordinate2D? = nil

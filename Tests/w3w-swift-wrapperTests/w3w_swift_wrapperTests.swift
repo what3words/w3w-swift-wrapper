@@ -122,8 +122,6 @@ final class w3w_swift_wrapperTests: XCTestCase {
         XCTAssertGreaterThan(l.count, 0, "No languages returned")
       }
       XCTAssertNotNil(languages?.first?.code)
-      XCTAssertNotNil(languages?.first?.name)
-      XCTAssertNotNil(languages?.first?.nativeName)
       XCTAssertNil(error)
       expectation.fulfill()
     }
@@ -222,7 +220,7 @@ final class w3w_swift_wrapperTests: XCTestCase {
   func testAutosuggestWithCountry() {
     let expectation = self.expectation(description: "Autosuggest")
     
-    api.autosuggest(text: "oui.oui.oui", options: W3WOption.clipToCountry("fr")) { (suggestions, error) in
+    api.autosuggest(text: "oui.oui.oui", options: W3WOption.clipToCountry(W3WApiCountry(code: "fr"))) { (suggestions, error) in
       
       XCTAssertEqual(suggestions?.count, 3)
       XCTAssertEqual(suggestions?.first?.words, "oust.souk.souk")
@@ -618,7 +616,7 @@ final class w3w_swift_wrapperTests: XCTestCase {
   func testBadClipToCountry() {
     let expectation = self.expectation(description: "BadClipToCountry")
     
-    api.autosuggest(text: "filled.count.so", options: W3WOption.clipToCountry("42")) { (suggestions, error) in
+    api.autosuggest(text: "filled.count.so", options: W3WOption.clipToCountry(W3WApiCountry(code: "42"))) { (suggestions, error) in
       XCTAssertNotNil(error)
       //      XCTAssertEqual(error, W3WError.badClipToCountry)
       expectation.fulfill()

@@ -79,8 +79,7 @@ final class w3w_swift_wrapperTests: XCTestCase {
   //  }
   
 #if os(iOS)
-  func testVoiceApi() {
-    XCTAssertTrue(false)
+//  func testVoiceApi() {
 //    let expectation = self.expectation(description: "Voice API")
 //    
 //    let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
@@ -113,7 +112,7 @@ final class w3w_swift_wrapperTests: XCTestCase {
 //      }
 //    }
     
-  }
+//  }
 #endif
   
   

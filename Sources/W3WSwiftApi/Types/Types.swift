@@ -23,19 +23,19 @@ public typealias W3WApiLanguage   = W3WBaseLanguage
 public struct W3WApiSuggestion: W3WSuggestion, W3WRanked, CustomStringConvertible {
   
   /// three word address
-  public var words: String?
+  public let words: String?
   
   /// contains ISO 3166-1 alpha-2 country codes, such as US,CA
-  public var country: W3WCountry?
+  public let country: W3WCountry?
   
   /// nearest place
-  public var nearestPlace: String?
+  public let nearestPlace: String?
   
   /// distance from focus
-  public var distanceToFocus: W3WDistance?
+  public let distanceToFocus: W3WDistance?
   
   /// the language to use
-  public var language: W3WLanguage?
+  public let language: W3WLanguage?
   
   /// an integer indicating `n` for the nth suggestion
   public var rank: Int?
@@ -70,28 +70,28 @@ public struct W3WApiSuggestion: W3WSuggestion, W3WRanked, CustomStringConvertibl
 public struct W3WApiSquare: W3WSquare {
 
   /// three word address
-  public var words: String?
+  public let words: String?
   
   /// ISO 3166-1 alpha-2 country codes, such as US,CA
-  public var country: W3WCountry?
+  public let country: W3WCountry?
   
   /// nearest place
-  public var nearestPlace: String?
+  public let nearestPlace: String?
   
   /// distance from focus in kilometers
-  public var distanceToFocus: W3WDistance?
+  public let distanceToFocus: W3WDistance?
   
   /// the language to use
-  public var language: W3WLanguage?
+  public let language: W3WLanguage?
   
   /// coordinates of the square
-  public var coordinates: CLLocationCoordinate2D?
+  public let coordinates: CLLocationCoordinate2D?
   
   /// the square's bounds
-  public var bounds: W3WApiBox?
+  public let bounds: W3WApiBox?
 
   /// a URL for the map (generally used as a convenience value for web applications)
-  public var map: String?
+  public let map: String?
 
   public init(words: String? = nil, country: W3WApiCountry? = nil, nearestPlace: String? = nil, distanceToFocus: W3WApiDistance? = nil, language: W3WApiLanguage? = nil, coordinates: CLLocationCoordinate2D? = nil, bounds: W3WApiBox? = nil, map: String? = nil) {
     self.words = words
