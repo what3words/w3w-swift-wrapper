@@ -43,36 +43,8 @@ To use this library you’ll need a what3words API key, which can be signed up f
 
 # Examples
 
-Examples in this package:
-
-#### macOS terminal:
-A macOS terminal example demonstrating `convertToCoordinates` is at:  
-[Examples/ConvertToCoords/ConvertToCoords.xcodeproj](./Examples/ConvertToCoords/ConvertToCoords.xcodeproj)
-
-#### iOS UIKit Voice API:
-An iOS UIKit example using the VoiceAPI is at:  
-[Examples/VoiceAPI/VoiceAPI.xcodeproj](./Examples/VoiceAPI/VoiceAPI.xcodeproj)
-
-#### iOS UIKit GridLine:
-An iOS example using MapKit to show what3words gridlines on a map:  
-[Examples/GridLines/GridLines.xcodeproj](./Examples/GridLines/GridLines.xcodeproj)
-
-#### Objective-C
-An example using Objective-C.  
-[Examples/ObjectiveC/ObjectiveC.xcodeproj](./Examples/ObjectiveC/ObjectiveC.xcodeproj)
-
-#### iOS SwiftUI:
-A very simple SwiftUI example that calls `autosuggest` and displays the results.  
-[Examples/AutoSuggest/AutoSuggest.xcodeproj](./Examples/AutoSuggest/AutoSuggest.xcodeproj)
-
-#### iOS SwiftUI Autosuggest Helper:
-A SwiftUI example using `W3WAutosuggestHelper` to create an autocomplete `TextField` with suggestions in a `List`.  
-[Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj](./Examples/AutosuggestHelperSwiftUI/AutosuggestHelperSwiftUI.xcodeproj)
-
-#### Using Autosuggest Helper to augment your autocomplete:
-An iOS example using `W3WAutosuggestHelper` to augment another address datasource.  In other words, it shows how to use what3words in tandem with another address service.  The example uses Apple's `MKLocalSearchCompleter` and mixes it's results with what3words suggestions.  
-[Examples/AutosuggestPlusYourData/AutosuggestPlusYourData.xcodeproj](./Examples/AutosuggestPlusYourData/AutosuggestPlusYourData.xcodeproj)
-
+Examples for this package can be ofund in our exmaples repository:
+[https://github.com/what3words/w3w-swift-samples](https://github.com/what3words/w3w-swift-samples)
 
 # Installation
 
@@ -91,10 +63,6 @@ You can use CocoaPods to install w3w-swift-wrapper by adding it to the target in
 ```
 pod 'W3WSwiftApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
 ```
-
-#### XCFramework
-
-There is a `build.sh` script can be run to build this code as an XCFramework.  This uses the included `w3w-swift-wrapper.xcodeproj`.
 
 ## Usage
 
@@ -146,7 +114,7 @@ Convert coordinates, expressed as latitude and longitude to a 3 word address. Th
 
 ```swift
 let coords = CLLocationCoordinate2D(latitude: 51.4243877, longitude: -0.34745)
-api.convertTo3wa(coordinates: coords, language: "en") { square, error in
+api.convertTo3wa(coordinates: coords, language: W3WApiLanguage(locale: "en")) { square, error in
     print(square?.words ?? "")
 }
 ```
@@ -259,7 +227,7 @@ This example instantiates a `W3WMicrophone` which provides an audio stream to `a
 let microphone = W3WMicrophone()
 
 // call autosuggest
-api.autosuggest(audio: microphone, language: "en") { suggestions, error in
+api.autosuggest(audio: microphone, options: .voiceLanguage(W3WApiLanguage(locale: "en"))) { suggestions, error in
   for suggestion in suggestions ?? [] {
     print(suggestion.words ?? "no suggestions")
   }
@@ -349,7 +317,7 @@ This will print out: `["filled.count.soap", "index.home.raft", "grilled.cheese.s
 <a name="errors"></a>
 ## Handling Errors
 
-All functions call the completion block with `error` as the second parameter.  All Swift what3words `error` types are of `enum` type and conform to [`CustomStringConvertible`](https://developer.apple.com/documentation/swift/customstringconvertible), so they can be used with `String(describing: error)`:
+All functions call the completion block with `error` as the second parameter.  All Swift what3words `error` are `W3WError` and conform to [`CustomStringConvertible`](https://developer.apple.com/documentation/swift/customstringconvertible), so they can be used with `String(describing: error)`, and they also conform to `Error` of course:
 
 #### Code Example
 ```swift

@@ -4,7 +4,7 @@
 Overview
 --------
 
-The SDK and API are designed to be interoperable. This is done by making them conform to a common protocol called `W3WProtocolV3`.  To upgrade your code from using the API to the SDK, you should only have to change the line that instantiates the API to instantiate the SDK instead.  All other subsequent calls can remain exactly the same.
+The SDK and API are designed to be interoperable. This is done by making them conform to a common protocol called `W3WProtocolV4`.  To upgrade your code from using the API to the SDK, you should only have to change the line that instantiates the API to instantiate the SDK instead.  All other subsequent calls can remain exactly the same.
 
 #### convertToCoordinates Example
 
@@ -13,7 +13,7 @@ To call `convertToCoordinates` using the API you would use something like this:
 ```
 import W3WSwiftApi
 
-var api = What3WordsV3(apiKey: "YourApiKey")
+var api = What3WordsV4(apiKey: "YourApiKey")
 
 api.convertToCoordinates(words: "filled.count.soap") { square, error in
   print(square?.coordinates?.latitude, square?.coordinates?.longitude)
@@ -34,19 +34,19 @@ sdk.convertToCoordinates(words: "filled.count.soap") { square, error in
 }
 ```
 
-Note that `W3WSwiftApi` is still imported in the SDK example. This is because the API has the `W3WProtocolV3` definition.
+Note that `W3WSwiftApi` is still imported in the SDK example. This is because the API has the `W3WProtocolV4` definition.
 
 For more info on parameters required when constructing the SDK's `What3Words` object, please refer to the SDK documentation.  Generally it needs the path to the what3words language data (`w3w-data`).  There is also an optional second parameter called `engineType` which for all Apple devices you'll almost certainly want to leave as the default `.device` type.
 
-### W3WProtocolV3
+### W3WProtocolV4
 
-The `W3WProtocolV3` protocol ensures the following functions are present in the api's `What3WordsV3` and the sdk's `What3Words` objects:
+The `W3WProtocolV4` protocol ensures the following functions are present in the api's `What3WordsV4` and the sdk's `What3Words` objects:
 
 `convertToCoordinates`, `convertTo3wa`, `autosuggest`, `autosuggestWithCoordinates`, `gridSection`, `availableLanguages`, `distance`, `isPossible3wa`, `findPossible3wa`, `didYouMean`
 
 ### Additional SDK functionality
 
-As mentioned earlier, if you are switching from the API to the SDK, all you need to do is change the api's `What3WordsV3` to the sdk's `What3Words`, and everything will work the same.  However, the SDK contains additional functions that the API does not have.  This is because the API call takes time to execute and the SDK can return a result immediately.
+As mentioned earlier, if you are switching from the API to the SDK, all you need to do is change the api's `What3WordsV4` to the sdk's `What3Words`, and everything will work the same.  However, the SDK contains additional functions that the API does not have.  This is because the API call takes time to execute and the SDK can return a result immediately.
 
 For each function common to the SDK and API there is one additional function in the SDK that does not take a completion block, but instead returns the values directly.  If you are not concerned about also using the API interoperably, you might decide to change to them to make the code cleaner.
 
@@ -60,23 +60,23 @@ print(coordinates?.latitude, coordinates?.longitude)
 However, note that it returns only the coordinates and not the whole square.  To get a square from this, there is also an additional convenience function for that: `convertToSquare`:
 
 ```
-let square = try? sdk.convertToSquare(coordinates: coords, language: "en")
+let square = try? sdk.convertToSquare(coordinates: coords, language: W3WBaseLanguage(locale: "en"))
 ```
 
 ### The what3words Swift Component library
 
-What3words maintains a component library which contains text fields with autosuggest and map UI components.  The entire library is built against `W3WProtocolV3` and not specifically the API or SDK.  Therefore if you use any of those components, you can pass in either an api or sdk object wherever one is needed.
+What3words maintains a component library which contains text fields with autosuggest and map UI components.  The entire library is built against `W3WProtocolV4` and not specifically the API or SDK.  Therefore if you use any of those components, you can pass in either an api or sdk object wherever one is needed.
 
 The component library can be found here: [https://github.com/what3words/w3w-swift-components](https://github.com/what3words/w3w-swift-components)
 
-##### Consider using W3WProtocolV3 in your code
+##### Consider using W3WProtocolV4 in your code
 
-If you pass the API or SDK object around your code, consider using ``W3WProtocolV3` as a type in your functions so that they can also take either the API's`What3WordsV3` or the sdk's `What3Words` object. This is what we did with the `W3WSwiftComponents` library.
+If you pass the API or SDK object around your code, consider using ``W3WProtocolV4` as a type in your functions so that they can also take either the API's`What3WordsV4` or the sdk's `What3Words` object. This is what we did with the `W3WSwiftComponents` library.
 
 For example:
 
 ```
-  func printCoordinates(w3w: W3WProtocolV3, words: String) {
+  func printCoordinates(w3w: W3WProtocolV4, words: String) {
     w3w.convertToCoordinates(words: words) { square, error in
       print(square?.coordinates?.latitude, square?.coordinates?.longitude)
     }
@@ -91,61 +91,80 @@ For example:
 
 
 
-### The W3WProtocolV3 functions
+### The W3WProtocolV4 functions
 
-Here are definitions of the `W3WProtocolV3` available functions:
-
-```
-convertToCoordinates(words: String, completion: @escaping W3WSquareResponse)
-
-convertTo3wa(coordinates: CLLocationCoordinate2D, language: String, completion: @escaping W3WSquareResponse)
-
-autosuggest(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsResponse)
-
-autosuggest(text: String, options: W3WOptionProtocol..., completion: @escaping W3WSuggestionsResponse)
-
-autosuggest(text: String, completion: @escaping W3WSuggestionsResponse)
-
-autosuggestWithCoordinates(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsWithCoordinatesResponse)
-
-autosuggestWithCoordinates(text: String, options: W3WOptionProtocol..., completion: @escaping W3WSuggestionsWithCoordinatesResponse)
-
-autosuggestWithCoordinates(text: String, completion: @escaping W3WSuggestionsWithCoordinatesResponse)
-
-gridSection(south_lat:Double, west_lng:Double, north_lat:Double, east_lng:Double,   
-
-gridSection(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D, completion: @escaping W3WGridResponse)
-
-availableLanguages(completion: @escaping W3WLanguagesResponse)
-```
-
-### Additional SDK functions
-
-These functions are available with the SDK, but not part of the `W3WProtocolV3`
+Here are definitions of the `W3WProtocolV4` available functions:
 
 ```
-convertToCoordinates(words: String) throws -> CLLocationCoordinate2D?
+ /**
+   Converts a 3 word address to a position, expressed as coordinates of latitude and longitude.
+   - parameter words: A 3 word address as a string
+   - parameter format: Return data format type; can be one of json (the default) or geojson
+   - parameter completion: A W3ResponsePlace completion handler
+   */
+  func convertToCoordinates(words: String, completion: @escaping W3WSquareResponse)
+  
+  
+  /**
+   Returns a three word address from a latitude and longitude
+   - parameter coordinates: A CLLocationCoordinate2D object
+   - parameter language: A supported 3 word address language as an ISO 639-1 2 letter code. Defaults to en
+   - parameter format: Return data format type; can be one of json (the default) or geojson
+   - parameter completion: A W3ResponsePlace completion handler
+   */
+  func convertTo3wa(coordinates: CLLocationCoordinate2D, language: W3WLanguage, completion: @escaping W3WSquareResponse)
+  
+  
+  /**
+   Returns a list of 3 word addresses based on user input and other parameters.
+   - parameter input: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
+   - options are provided by instantiating W3Option objects in the varidic length parameter list.  Eg:
+   */
+  func autosuggest(text: String, options: [W3WOption]?, completion: @escaping W3WSuggestionsResponse)
+  func autosuggest(text: String, options: W3WOptions?, completion: @escaping W3WSuggestionsResponse)
+  func autosuggest(text: String, options: W3WOption..., completion: @escaping W3WSuggestionsResponse)
+  func autosuggest(text: String, completion: @escaping W3WSuggestionsResponse)
+  
+  
+  /**
+   Returns a list of 3 word addresses based on user input and other parameters, including coordinates of each suggestion
+   - parameter input: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
+   - options are provided by instantiating W3Option objects in the varidic length parameter list.  Eg:
+   */
+  func autosuggestWithCoordinates(text: String, options: [W3WOption]?, completion: @escaping W3WSquaresResponse)
+  func autosuggestWithCoordinates(text: String, options: W3WOptions?, completion: @escaping W3WSquaresResponse)
+  func autosuggestWithCoordinates(text: String, options: W3WOption..., completion: @escaping W3WSquaresResponse)
+  func autosuggestWithCoordinates(text: String, completion: @escaping W3WSquaresResponse)
+  
+  
+  /**
+   Returns a section of the 3m x 3m what3words grid for a given area.
+   - parameter southWest: The southwest corner of the box
+   - parameter northEast: The northeast corner of the box
+   - parameter format: Return data format type; can be one of json (the default) or geojson Example value:format=Format.json
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
+   */
+  func gridSection(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D, completion: @escaping W3WGridResponse)
+  
+  /**
+   Returns a section of the 3m x 3m what3words grid for a given area.
+   - parameter bounds: The bounds of the box
+   - parameter format: Return data format type; can be one of json (the default) or geojson Example value:format=Format.json
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
+   */
+  func gridSection(bounds: W3WBox, completion: @escaping W3WGridResponse)
 
-convertTo3wa(coordinates: CLLocationCoordinate2D, language: String) throws -> String?
-
-autosuggest(text: String, options: [W3WSdkOption]) throws -> [W3WSdkSuggestion]
-
-autosuggest(text: String, options: W3WSdkOptions) throws -> [W3WSdkSuggestion]
-
-autosuggest(text: String, options: W3WSdkOption) throws -> [W3WSdkSuggestion]
-
-version() -> String
-
-dataVersion() -> String
-
-gridSection(south: Double, west: Double, north: Double, east: Double) -> [W3WSdkLine]?
-
-gridSection(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) -> [W3WSdkLine]?
-
-availableLanguages() -> [W3WSdkLanguage]
-
-convertToSquare(words: String) throws -> W3WSdkSquare?
-
-convertToSquare(coordinates: CLLocationCoordinate2D, language: String) throws -> W3WSdkSquare?
+  /**
+   Retrieves a list of the currently loaded and available 3 word address languages.
+   - parameter completion: A W3wGeocodeResponseHandler completion handler
+   */
+  func availableLanguages(completion: @escaping W3WLanguagesResponse)
+  
+  /**
+   Verifies that the text is a valid three word address that successfully represents a square on earth.
+   - parameter text: The text to search through
+   - parameter completion: returns true if the address is a real three word address
+   */
+  func isValid3wa(words: String, completion: @escaping (Bool) -> ())
 
 ```

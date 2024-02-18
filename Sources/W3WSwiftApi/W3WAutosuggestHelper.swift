@@ -9,6 +9,9 @@ import Foundation
 import CoreLocation
 import W3WSwiftCore
 
+@available(*, deprecated, renamed: "W3WAutoSuggestHelper")
+public typealias W3WAutosuggestHelper = W3WAutoSuggestHelper
+
 
 /// Wrapper for autosuggest calls including a debouncer to throttle calls and an onSelected to
 /// find the coordinates only for the selected result.
