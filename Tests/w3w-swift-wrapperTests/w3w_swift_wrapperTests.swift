@@ -9,7 +9,8 @@ final class w3w_swift_wrapperTests: XCTestCase {
   
   
   var headers = [String:String]()
-  var api:What3WordsV3!
+  var api:What3WordsV4!
+  var apiKey: String!
   
   // run all tests twice, once with no custom headers and one with
   override func invokeTest() {
@@ -20,10 +21,12 @@ final class w3w_swift_wrapperTests: XCTestCase {
   override func setUp() {
     super.setUp()
     
-    if let apikey = ProcessInfo.processInfo.environment["PROD_API_KEY"] {
-      api = What3WordsV3(apiKey: apikey, apiUrl: W3WSettings.apiUrl, customHeaders: headers)
-    } else if let apikey = getApikeyFromFile() {
-      api = What3WordsV3(apiKey: apikey, apiUrl: W3WSettings.apiUrl, customHeaders: headers)
+    if let key = ProcessInfo.processInfo.environment["PROD_API_KEY"] {
+      api = What3WordsV4(apiKey: key, apiUrl: W3WSettings.apiUrl, headers: headers)
+      self.apiKey = key
+    } else if let key = getApikeyFromFile() {
+      api = What3WordsV4(apiKey: key, apiUrl: W3WSettings.apiUrl, headers: headers)
+      self.apiKey = key
     } else {
       print("Environment variable PROD_API_KEY must be set")
       abort()
@@ -633,7 +636,7 @@ final class w3w_swift_wrapperTests: XCTestCase {
     
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
     
-    let helper = W3WAutoSuggestHelper(What3WordsV4(apiKey: api.apiV4.apiKey))
+    let helper = W3WAutoSuggestHelper(What3WordsV4(apiKey: apiKey))
     helper.update(text: "filled.count.so", options: W3WOption.focus(somewhereInLondon)) { suggestions, error in
       XCTAssertEqual(3, helper.getSuggestionCount())
       XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
@@ -649,7 +652,7 @@ final class w3w_swift_wrapperTests: XCTestCase {
     
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
     
-    let helper = W3WAutoSuggestHelper(What3WordsV4(apiKey: api.apiV4.apiKey))
+    let helper = W3WAutoSuggestHelper(What3WordsV4(apiKey: apiKey))
     helper.update(text: "filled.count.so", options: W3WOptions().focus(somewhereInLondon)) { suggestions, error in
       XCTAssertEqual(3, helper.getSuggestionCount())
       XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
@@ -665,7 +668,7 @@ final class w3w_swift_wrapperTests: XCTestCase {
     
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
     
-    let helper = W3WAutoSuggestHelper(What3WordsV4(apiKey: api.apiV4.apiKey))
+    let helper = W3WAutoSuggestHelper(What3WordsV4(apiKey: apiKey))
     helper.update(text: "filled.count.so", options: [W3WOption.focus(somewhereInLondon)]) { suggestions, error in
       XCTAssertEqual(3, helper.getSuggestionCount())
       XCTAssertEqual("filled.count.soap", helper.getSuggestion(row: 0)?.words)
@@ -682,7 +685,7 @@ final class w3w_swift_wrapperTests: XCTestCase {
     
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
     
-    let helper = W3WAutoSuggestHelper(What3WordsV4(apiKey: api.apiV4.apiKey))
+    let helper = W3WAutoSuggestHelper(What3WordsV4(apiKey: apiKey))
     helper.update(text: "filled.count.soa", options: W3WOptions().focus(somewhereInLondon)) { suggestions, error in
       helper.selected(row: 0) { square, error in
         XCTAssertEqual("filled.count.soap", square?.words)
@@ -701,7 +704,7 @@ final class w3w_swift_wrapperTests: XCTestCase {
     
     let somewhereInLondon = CLLocationCoordinate2D(latitude: 51.520847,longitude: -0.195521)
     
-    let helper = W3WAutoSuggestHelper(What3WordsV4(apiKey: api.apiV4.apiKey))
+    let helper = W3WAutoSuggestHelper(What3WordsV4(apiKey: apiKey))
     
     // "daring.lion.race" is used, but because 3 more are immediately sent in, only the last one, "filled.count.soap", should return
     helper.update(text: "daring.lion.race", options: W3WOption.focus(somewhereInLondon)) { suggestions, error in
@@ -817,57 +820,8 @@ final class w3w_swift_wrapperTests: XCTestCase {
   }
   
   
-  func testObcCTypes() {
-    // fail so I come back here
-    XCTAssertTrue(false)
-    
-    //    let expectation = self.expectation(description: "ObjjcTypes")
-    //
-    //    let sugg = W3WObjcSuggestion(words: "filled.count.soap", country: W3WApiCountry(code: "GB"), nearestPlace: "Bayswater", distanceToFocus: nil, language: "en")
-    //    XCTAssertEqual(sugg.words, "filled.count.soap")
-    //
-    //    let s = W3WObjcSquare(words: "filled.count.soap", country: W3WApiCountry(code: "GB"), nearestPlace: "Bayswater", distanceToFocus: NSNumber(floatLiteral: 1.0), language: "en", coordinates: W3WObjcCoordinates(latitude: 51.521, longitude: -0.343))
-    //    XCTAssertEqual(s.words, "filled.count.soap")
-    //
-    //    let c = W3WObjcCoordinates(latitude: 51.521, longitude: -0.343)
-    //    XCTAssertEqual(c.latitude, 51.521)
-    //    XCTAssertEqual(c.longitude, -0.343)
-    //    c.latitude = 0.0
-    //    c.longitude = 0.0
-    //    XCTAssertEqual(c.latitude, 0.0)
-    //    XCTAssertEqual(c.longitude, 0.0)
-    //
-    //    let option1 = W3WObjcOptions()
-    //    option1.addVoiceLanguage("en")
-    //    XCTAssertEqual(option1.options.first?.asString(), "en")
-    //
-    //    let option2 = W3WObjcOptions()
-    //    option2.addClipToCountries(["en", "fr"])
-    //    XCTAssertEqual(option2.options.first?.asString(), "en,fr")
-    //
-    //    let option3 = W3WObjcOptions()
-    //    option3.addInputType(.nmdpAsr)
-    //    XCTAssertEqual(option3.options.first?.asString(), "nmdp-asr")
-    //    let option4 = W3WObjcOptions()
-    //    option4.addInputType(.speechmatics)
-    //    XCTAssertEqual(option4.options.first?.asString(), "speechmatics")
-    //    let option5 = W3WObjcOptions()
-    //    option5.addInputType(.text)
-    //    XCTAssertEqual(option5.options.first?.asString(), "text")
-    //    let option6 = W3WObjcOptions()
-    //    option6.addInputType(.mawdoo3)
-    //    XCTAssertEqual(option6.options.first?.asString(), "mawdoo3")
-    //    let option7 = W3WObjcOptions()
-    //    option7.addInputType(.ocrSdk)
-    //    XCTAssertEqual(option7.options.first?.asString(), "w3w-ocr-sdk")
-    //
-    //    expectation.fulfill()
-    
-    waitForExpectations(timeout: 3.0, handler: nil)
-  }
-  
-  
   // MARK: Utility Tests
+  
   
   func testDistanceSquares() {
     let expectation = self.expectation(description: "Distance")
