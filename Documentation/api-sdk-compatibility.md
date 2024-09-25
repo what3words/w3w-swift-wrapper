@@ -160,11 +160,4 @@ Here are definitions of the `W3WProtocolV4` available functions:
    */
   func availableLanguages(completion: @escaping W3WLanguagesResponse)
   
-  /**
-   Verifies that the text is a valid three word address that successfully represents a square on earth.
-   - parameter text: The text to search through
-   - parameter completion: returns true if the address is a real three word address
-   */
-  func isValid3wa(words: String, completion: @escaping (Bool) -> ())
-
 ```
