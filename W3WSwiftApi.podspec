@@ -15,9 +15,14 @@ Pod::Spec.new do |s|
     :branch => "task/MT-6899-Core-lib-update-does-not-support-cocoapods"
 
   }
-  s.source_files = "Sources/**/*.swift"
-  s.swift_version = '5.0'
-
-  # Add dependency on w3w-swift-core
-  s.dependency 'W3WSwiftCore'
+  s.swift_version = "5.0"
+  s.dependency "W3WSwiftCore", "~> 1.1.1"
+  
+  s.subspec 'SwiftApi' do |api|
+    api.source_files = "Sources/W3WSwiftApi/**/*"
+  end
+  
+  s.subspec 'VoiceApi' do |voice|
+    voice.source_files = "Sources/W3WSwiftVoiceApi/**/*"
+  end
 end
