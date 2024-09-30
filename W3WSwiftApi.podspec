@@ -12,4 +12,7 @@ Pod::Spec.new do |s|
   s.source   = { :git => "https://github.com/what3words/w3w-swift-wrapper.git", :tag => "v4.0.0" }
   s.source_files = "Sources/**/*.swift"
   s.swift_version = '5.0'
+  
+  # Add dependency on w3w-swift-core
+  s.dependency 'W3WSwiftCore', :git => 'https://github.com/what3words/w3w-swift-core.git', :branch => 'task/MT-6899-Core-lib-update-does-not-support-cocoapods'
 end
