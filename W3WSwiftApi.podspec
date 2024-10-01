@@ -10,7 +10,17 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = "10.13"
   s.ios.deployment_target = "11.0"
   s.source   = { :git => "https://github.com/what3words/w3w-swift-wrapper.git", :tag => "v4.0.0", :branch => "task/MT-6899-Core-lib-update-does-not-support-cocoapods" }
-  s.source_files = "Sources/**/*.swift"
   s.swift_version = '5.0'
   s.dependency "W3WSwiftCore", "~> 1.1.1"
+
+  s.default_subspec = 'Core'
+
+  s.subspec 'Core' do |ss|
+    ss.source_files = "Sources/W3WSwiftApi/**/*.swift"
+  end
+
+  s.subspec 'Voice' do |ss|
+    ss.source_files = "Sources/W3WSwiftVoiceApi/**/*.swift"
+    ss.dependency 'W3WSwiftApi/Core'
+  end
 end
