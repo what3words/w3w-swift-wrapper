@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "W3WSwiftCore"
-  s.version     = "1.1.1"
+  s.version     = "1.1.0"
   s.summary     = "w3w-swift-core contains the core types used by many of the what3words Swift libraries, as well as some utility classes for things like networking, audio and localisation"
   s.homepage    = "https://github.com/what3words/w3w-swift-core"
   s.license     = { :type => "MIT" }
