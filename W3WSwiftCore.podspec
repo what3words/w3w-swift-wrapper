@@ -10,6 +10,6 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = "10.13"
   s.ios.deployment_target = "11.0"
   s.source   = { :git => "https://github.com/what3words/w3w-swift-core.git", :branch => "task/MT-6899-Core-lib-update-does-not-support-cocoapods"}
-  s.source_files = "Sources/**/*.swift"
+  s.source_files = "Sources/W3WSwiftCore/**/*.swift"
   s.swift_version = '5.0'
 end
