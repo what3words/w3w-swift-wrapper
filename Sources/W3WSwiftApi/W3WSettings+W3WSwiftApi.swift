@@ -2,7 +2,7 @@
 //  W3WSettings.swift
 //  
 //
-//  Created by Dave Duprey on 07/11/2022.
+//  Created by Dave DuprW3WVoiceApiey on 07/11/2022.
 //
 
 import W3WSwiftCore
