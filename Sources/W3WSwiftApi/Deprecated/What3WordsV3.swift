@@ -12,146 +12,167 @@ import CoreLocation
 
 @available(*, deprecated, message: "Use What3WordsV4 instead")
 public class What3WordsV3: W3WProtocolV3 {
-  
-  var apiV4: What3WordsV4
-  
-  
-  // MARK: Constructors
-  
-  /// Initialize the API wrapper
-  /// - Parameters:
-  ///     - apiKey: Your api key.  Register for one at: https://accounts.what3words.com/create-api-key
-  public init(apiKey: String) {
-    apiV4 = What3WordsV4(apiKey: apiKey, apiUrl: W3WSettings.apiUrl)
-  }
-  
-  
-  /// Initialize the API wrapper
-  /// - Parameters:
-  ///     - apiKey: Your api key.  Register for one at: https://accounts.what3words.com/create-api-key
-  ///     - apiUrl: Url for custom server - for enterprise customers
-  public init(apiKey: String, apiUrl: String) {
-    apiV4 = What3WordsV4(apiKey: apiKey, apiUrl: apiUrl)
-  }
-  
-  
-  /// Initialize the API wrapper
-  /// - Parameters:
-  ///     - apiKey: Your api key.  Register for one at: https://accounts.what3words.com/create-api-key
-  ///     - apiUrl: Url for custom server - for enterprise customers
-  ///     - customHeaders: additional HTTP headers to send on requests - for enterprise customers
-  public init(apiKey: String, apiUrl: String, customHeaders: [String: String]) {
-    apiV4 = What3WordsV4(apiKey: apiKey, apiUrl: apiUrl, headers: customHeaders)
-  }
-  
-  
-  
-  // MARK: API Convert Functions
-  
-  /**
-   Converts a 3 word address to a position, expressed as coordinates of latitude and longitude.
-   - parameter words: A 3 word address as a string
-   - parameter completion: A W3ResponsePlace completion handler
-   */
-  public func convertToCoordinates(words: String, completion: @escaping W3WSquareResponse) {
-    apiV4.convertToCoordinates(words: words, completion: completion)
-  }
-  
-  
-  /**
-   Returns a three word address from a latitude and longitude
-   - parameter coordinates: A CLLocationCoordinate2D object
-   - parameter language: A supported 3 word address language as an ISO 639-1 2 letter code. Defaults to en
-   - parameter completion: A W3ResponsePlace completion handler
-   */
-  public func convertTo3wa(coordinates: CLLocationCoordinate2D, language: String = W3WApiLanguage.english.code, completion: @escaping W3WSquareResponse) {
-    apiV4.convertTo3wa(coordinates: coordinates, language: W3WBaseLanguage(locale: language), completion: completion)
-  }
-  
-  
-  // MARK: Autosuggest
-  
-  
-  /**
-   Returns a list of 3 word addresses based on user input and other parameters.
-   - parameter text: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
-   - parameter options: are provided as an array of W3Option objects. They can also be passed as a  varidic length parameter list, or in a W3WOptopns() object thanks to the W3WProtocolV3 protocol conformity
-   - parameter callback: A completion block providing the suggestions and any error - ([W3WVoiceSuggestion]?, W3WVoiceError?) -> Void
-   -  autosuggest(input: "filled.count.soap", options: FallbackLanguage("en"), BoundingCircle(51.4243877, -0.3474524, 4.0), NumberResults(5), completion_handler)
-   */
-  public func autosuggest(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsResponse) {
-    apiV4.autosuggest(text: text, options: options, completion: completion)
-  }
-  
-  
-  /**
-   Returns a list of 3 word addresses based on user input and other parameters.
-   - parameter text: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
-   - parameter options: are provided as an array of W3Option objects. They can also be passed as a  varidic length parameter list, or in a W3WOptopns() object thanks to the W3WProtocolV3 protocol conformity
-   - parameter callback: A completion block providing the suggestions and any error - ([W3WVoiceSuggestion]?, W3WVoiceError?) -> Void
-   -  autosuggest(input: "filled.count.soap", options: FallbackLanguage("en"), BoundingCircle(51.4243877, -0.3474524, 4.0), NumberResults(5), completion_handler)
-   */
-  public func autosuggestWithCoordinates(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsWithCoordinatesResponse) {
-    apiV4.autosuggestWithCoordinates(text: text, options: options, completion: completion)
-  }
-  
-  // MARK: Other API calls
-  
-  /**
-   Returns a section of the 3m x 3m what3words grid for a given area.
-   - parameter bounding-box: Bounding box, as a lat,lng,lat,lng, for which the grid should be returned. The requested box must not exceed 4km from corner to corner, or a BadBoundingBoxTooBig error will be returned. Latitudes must be >= -90 and <= 90, but longitudes are allowed to wrap around 180. To specify a bounding-box that crosses the anti-meridian, use longitude greater than 180. Example value: "50.0,179.995,50.01,180.0005" .
-   - parameter completion: A W3wGeocodeResponseHandler completion handler
-   */
-  public func gridSection(south_lat:Double, west_lng:Double, north_lat:Double, east_lng:Double, completion: @escaping W3WGridResponse) {
-    apiV4.gridSection(south_lat: south_lat, west_lng: west_lng, north_lat: north_lat, east_lng: east_lng, completion: completion)
-  }
-  
-  
-  /**
-   Returns a section of the 3m x 3m what3words grid for a given area.
-   - parameter southWest: The southwest corner of the box
-   - parameter northEast: The northeast corner of the box
-   - parameter completion: A W3wGeocodeResponseHandler completion handler
-   */
-  public func gridSection(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D, completion: @escaping W3WGridResponse) {
-    apiV4.gridSection(south_lat: southWest.latitude, west_lng: southWest.longitude, north_lat: northEast.latitude, east_lng: northEast.longitude, completion: completion)
-  }
-  
-  
-  /**
-   Retrieves a list of the currently loaded and available 3 word address languages.
-   - parameter completion: A W3wGeocodeResponseHandler completion handler
-   */
-  public func availableLanguages(completion: @escaping W3WLanguagesResponse) {
-    apiV4.availableLanguages(completion: completion)
-  }
-  
-  
-  /**
-   Inform the server that the user has made a selection in the autosuggest results
-   - parameter selection: The three word address that the user selected
-   - parameter input: The text input used to call autosuggest in the first place
-   - parameter source: Indicated if the autosuggest was called using text, or voice input
-   */
-  public func autosuggestSelection(selection: String, rank: Int, rawInput: String, sourceApi: W3WSelectionType = .text) {
-    apiV4.autosuggestSelection(selection: selection, rank: rank, rawInput: rawInput)
-  }
-  
-  
-  // MARK: Other API calls
-  
-  
-  /**
-   Determines if the currently set URL points to a what3words server or not
-   This is useful because some functions like autosuggestSelection only work
-   with w3w servers, and not the enterprise server product
-   */
-  public func isCurrentServerW3W() -> Bool {
-    return apiV4.isCurrentServerW3W()
-  }
-  
-  
-
+    
+    var apiV4: What3WordsV4
+    
+    
+    // MARK: Constructors
+    
+    /// Initialize the API wrapper
+    /// - Parameters:
+    ///     - apiKey: Your api key.  Register for one at: https://accounts.what3words.com/create-api-key
+    public init(apiKey: String) {
+        apiV4 = What3WordsV4(apiKey: apiKey, apiUrl: W3WSettings.apiUrl)
+    }
+    
+    
+    /// Initialize the API wrapper
+    /// - Parameters:
+    ///     - apiKey: Your api key.  Register for one at: https://accounts.what3words.com/create-api-key
+    ///     - apiUrl: Url for custom server - for enterprise customers
+    public init(apiKey: String, apiUrl: String) {
+        apiV4 = What3WordsV4(apiKey: apiKey, apiUrl: apiUrl)
+    }
+    
+    
+    /// Initialize the API wrapper
+    /// - Parameters:
+    ///     - apiKey: Your api key.  Register for one at: https://accounts.what3words.com/create-api-key
+    ///     - apiUrl: Url for custom server - for enterprise customers
+    ///     - customHeaders: additional HTTP headers to send on requests - for enterprise customers
+    public init(apiKey: String, apiUrl: String, customHeaders: [String: String]) {
+        apiV4 = What3WordsV4(apiKey: apiKey, apiUrl: apiUrl, headers: customHeaders)
+    }
+    
+    
+    
+    // MARK: API Convert Functions
+    
+    /**
+     Converts a 3 word address to a position, expressed as coordinates of latitude and longitude.
+     - parameter words: A 3 word address as a string
+     - parameter completion: A W3ResponsePlace completion handler
+     */
+    public func convertToCoordinates(words: String, completion: @escaping W3WSquareResponse) {
+        apiV4.convertToCoordinates(words: words, completion: completion)
+    }
+    
+    
+    /**
+     Returns a three word address from a latitude and longitude
+     - parameter coordinates: A CLLocationCoordinate2D object
+     - parameter language: A supported 3 word address language as an ISO 639-1 2 letter code. Defaults to en
+     - parameter completion: A W3ResponsePlace completion handler
+     */
+    public func convertTo3wa(coordinates: CLLocationCoordinate2D, language: String = W3WApiLanguage.english.code, completion: @escaping W3WSquareResponse) {
+        apiV4.convertTo3wa(coordinates: coordinates, language: W3WBaseLanguage(locale: language), completion: completion)
+    }
+    
+    
+    // MARK: Autosuggest
+    
+    
+    /**
+     Returns a list of 3 word addresses based on user input and other parameters.
+     - parameter text: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
+     - parameter options: are provided as an array of W3Option objects. They can also be passed as a  varidic length parameter list, or in a W3WOptopns() object thanks to the W3WProtocolV3 protocol conformity
+     - parameter callback: A completion block providing the suggestions and any error - ([W3WVoiceSuggestion]?, W3WVoiceError?) -> Void
+     -  autosuggest(input: "filled.count.soap", options: FallbackLanguage("en"), BoundingCircle(51.4243877, -0.3474524, 4.0), NumberResults(5), completion_handler)
+     */
+    public func autosuggest(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsResponse) {
+        apiV4.autosuggest(text: text, options: options, completion: completion)
+    }
+    
+    
+    /**
+     Returns a list of 3 word addresses based on user input and other parameters.
+     - parameter text: The full or partial 3 word address to obtain suggestions for. At minimum this must be the first two complete words plus at least one character from the third word.
+     - parameter options: are provided as an array of W3Option objects. They can also be passed as a  varidic length parameter list, or in a W3WOptopns() object thanks to the W3WProtocolV3 protocol conformity
+     - parameter callback: A completion block providing the suggestions and any error - ([W3WVoiceSuggestion]?, W3WVoiceError?) -> Void
+     -  autosuggest(input: "filled.count.soap", options: FallbackLanguage("en"), BoundingCircle(51.4243877, -0.3474524, 4.0), NumberResults(5), completion_handler)
+     */
+    public func autosuggestWithCoordinates(text: String, options: [W3WOptionProtocol], completion: @escaping W3WSuggestionsWithCoordinatesResponse) {
+        apiV4.autosuggestWithCoordinates(text: text, options: options, completion: completion)
+    }
+    
+    // MARK: Other API calls
+    
+    /**
+     Returns a section of the 3m x 3m what3words grid for a given area.
+     - parameter bounding-box: Bounding box, as a lat,lng,lat,lng, for which the grid should be returned. The requested box must not exceed 4km from corner to corner, or a BadBoundingBoxTooBig error will be returned. Latitudes must be >= -90 and <= 90, but longitudes are allowed to wrap around 180. To specify a bounding-box that crosses the anti-meridian, use longitude greater than 180. Example value: "50.0,179.995,50.01,180.0005" .
+     - parameter completion: A W3wGeocodeResponseHandler completion handler
+     */
+    public func gridSection(south_lat:Double, west_lng:Double, north_lat:Double, east_lng:Double, completion: @escaping W3WGridResponse) {
+        apiV4.gridSection(south_lat: south_lat, west_lng: west_lng, north_lat: north_lat, east_lng: east_lng, completion: completion)
+    }
+    
+    
+    /**
+     Returns a section of the 3m x 3m what3words grid for a given area.
+     - parameter southWest: The southwest corner of the box
+     - parameter northEast: The northeast corner of the box
+     - parameter completion: A W3wGeocodeResponseHandler completion handler
+     */
+    public func gridSection(southWest:CLLocationCoordinate2D, northEast:CLLocationCoordinate2D, completion: @escaping W3WGridResponse) {
+        apiV4.gridSection(south_lat: southWest.latitude, west_lng: southWest.longitude, north_lat: northEast.latitude, east_lng: northEast.longitude, completion: completion)
+    }
+    
+    
+    /**
+     Retrieves a list of the currently loaded and available 3 word address languages.
+     - parameter completion: A W3wGeocodeResponseHandler completion handler
+     */
+    public func availableLanguages(completion: @escaping W3WLanguagesResponse) {
+        apiV4.availableLanguages(completion: completion)
+    }
+    
+    
+    /**
+     Inform the server that the user has made a selection in the autosuggest results
+     - parameter selection: The three word address that the user selected
+     - parameter input: The text input used to call autosuggest in the first place
+     - parameter source: Indicated if the autosuggest was called using text, or voice input
+     */
+    public func autosuggestSelection(selection: String, rank: Int, rawInput: String, sourceApi: W3WSelectionType = .text) {
+        apiV4.autosuggestSelection(selection: selection, rank: rank, rawInput: rawInput)
+    }
+    
+    
+    // MARK: Other API calls
+    
+    
+    /**
+     Determines if the currently set URL points to a what3words server or not
+     This is useful because some functions like autosuggestSelection only work
+     with w3w servers, and not the enterprise server product
+     */
+    public func isCurrentServerW3W() -> Bool {
+        return apiV4.isCurrentServerW3W()
+    }
+    
+    /**
+     Verifies that the text is a valid three word address that successfully represents a square on earth.
+     - parameter text: The text to search through
+     - parameter completion: returns true if the address is a real three word address
+     */
+    public func isValid3wa(words: String, completion: @escaping (Bool) -> ()) {
+      autosuggest(text: words) { suggestions, error in
+        for suggestion in suggestions ?? [] {
+          // remove slashes and make lowercase for comparison
+          let w1 = suggestion.words?.trimmingCharacters(in: CharacterSet(charactersIn: "/")).lowercased()
+          let w2 = words.trimmingCharacters(in: CharacterSet(charactersIn: "/")).lowercased()
+          
+          if w1 == w2 {
+            completion(true)
+            return
+          }
+        }
+        
+        // no match found
+        completion(false)
+      }
+    }
+}
 //public class What3WordsV3: W3WRequest, W3WProtocolV3 {
 //
 //  var apiKey: String
