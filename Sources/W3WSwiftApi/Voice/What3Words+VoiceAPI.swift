@@ -14,7 +14,6 @@ import W3WSwiftCore
 #if canImport(W3WSwiftVoiceApi)
 import W3WSwiftVoiceApi
 
-
 #if !os(watchOS)
 
 /// Extension to the What3Words API allowing an autosuggest accepting voice

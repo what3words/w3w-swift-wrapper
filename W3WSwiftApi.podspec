@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   # Dependencies
   s.dependency 'W3WSwiftCore', '~> 1.1.2'
   #s.dependency 'W3WSwiftVoiceApi'
-  s.source_files = 'Sources/**/*'
+  s.source_files = 'Sources/W3WSwiftApi/**/*'
  
 
   # Define subspecs
