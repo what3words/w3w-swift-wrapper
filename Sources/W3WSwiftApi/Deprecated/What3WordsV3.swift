@@ -45,7 +45,6 @@ public class What3WordsV3: W3WProtocolV3 {
     }
     
     
-    
     // MARK: API Convert Functions
     
     /**
