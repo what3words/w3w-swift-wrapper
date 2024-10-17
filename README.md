@@ -82,14 +82,6 @@ import W3WSwiftApi
 import CoreLocation
 ```
 
-or, if you are using `CocoaPods`, import  the following
-
-```
-import W3WSwiftApi
-import CoreLocation
-```
-
-
 ##### Note:
 
 * If you are using CocoaPods use 
