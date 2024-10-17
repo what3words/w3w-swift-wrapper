@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		"w3w-swift-wrapper::w3w-swift-wrapperPackageTests::ProductTarget" /* w3w-swift-wrapperPackageTests */ = {
+		w3w-swift-wrapper::w3w-swift-wrapperPackageTests::ProductTarget /* w3w-swift-wrapperPackageTests */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = OBJ_106 /* Build configuration list for PBXAggregateTarget "w3w-swift-wrapperPackageTests" */;
 			buildPhases = (
@@ -36,10 +36,10 @@
 		OBJ_77 /* W3WSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_36 /* W3WSettings.swift */; };
 		OBJ_78 /* What3WordsV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_37 /* What3WordsV3.swift */; };
 		OBJ_85 /* w3w_objc_apiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* w3w_objc_apiTests.m */; };
-		OBJ_87 /* W3WSwiftApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "w3w-swift-wrapper::W3WSwiftApi::Product" /* W3WSwiftApi.framework */; };
+		OBJ_87 /* W3WSwiftApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = w3w-swift-wrapper::W3WSwiftApi::Product /* W3WSwiftApi.framework */; };
 		OBJ_94 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_42 /* XCTestManifests.swift */; };
 		OBJ_95 /* w3w_swift_apiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_43 /* w3w_swift_apiTests.swift */; };
-		OBJ_97 /* W3WSwiftApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "w3w-swift-wrapper::W3WSwiftApi::Product" /* W3WSwiftApi.framework */; };
+		OBJ_97 /* W3WSwiftApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = w3w-swift-wrapper::W3WSwiftApi::Product /* W3WSwiftApi.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,9 +96,9 @@
 		OBJ_51 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_52 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		"w3w-swift-wrapper::W3WSwiftApi::Product" /* W3WSwiftApi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = W3WSwiftApi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		"w3w-swift-wrapper::w3w-objc-apiTests::Product" /* w3w-objc-apiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "w3w-objc-apiTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		"w3w-swift-wrapper::w3w-swift-apiTests::Product" /* w3w-swift-apiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "w3w-swift-apiTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		w3w-swift-wrapper::W3WSwiftApi::Product /* W3WSwiftApi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = W3WSwiftApi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		w3w-swift-wrapper::w3w-objc-apiTests::Product /* w3w-objc-apiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "w3w-objc-apiTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		w3w-swift-wrapper::w3w-swift-apiTests::Product /* w3w-swift-apiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = "w3w-swift-apiTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,13 +128,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		019BF06E291A846400272563 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		OBJ_11 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,9 +215,9 @@
 		OBJ_44 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				"w3w-swift-wrapper::W3WSwiftApi::Product" /* W3WSwiftApi.framework */,
-				"w3w-swift-wrapper::w3w-objc-apiTests::Product" /* w3w-objc-apiTests.xctest */,
-				"w3w-swift-wrapper::w3w-swift-apiTests::Product" /* w3w-swift-apiTests.xctest */,
+				w3w-swift-wrapper::W3WSwiftApi::Product /* W3WSwiftApi.framework */,
+				w3w-swift-wrapper::w3w-objc-apiTests::Product /* w3w-objc-apiTests.xctest */,
+				w3w-swift-wrapper::w3w-swift-apiTests::Product /* w3w-swift-apiTests.xctest */,
 			);
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -241,7 +234,6 @@
 				OBJ_50 /* what3words.podspec */,
 				OBJ_51 /* README.md */,
 				OBJ_52 /* LICENSE.txt */,
-				019BF06E291A846400272563 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -269,7 +261,7 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		"w3w-swift-wrapper::SwiftPMPackageDescription" /* w3w-swift-wrapperPackageDescription */ = {
+		w3w-swift-wrapper::SwiftPMPackageDescription /* w3w-swift-wrapperPackageDescription */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_100 /* Build configuration list for PBXNativeTarget "w3w-swift-wrapperPackageDescription" */;
 			buildPhases = (
@@ -283,7 +275,7 @@
 			productName = "w3w-swift-wrapperPackageDescription";
 			productType = "com.apple.product-type.framework";
 		};
-		"w3w-swift-wrapper::W3WSwiftApi" /* W3WSwiftApi */ = {
+		w3w-swift-wrapper::W3WSwiftApi /* W3WSwiftApi */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_54 /* Build configuration list for PBXNativeTarget "W3WSwiftApi" */;
 			buildPhases = (
@@ -296,10 +288,10 @@
 			);
 			name = W3WSwiftApi;
 			productName = W3WSwiftApi;
-			productReference = "w3w-swift-wrapper::W3WSwiftApi::Product" /* W3WSwiftApi.framework */;
+			productReference = w3w-swift-wrapper::W3WSwiftApi::Product /* W3WSwiftApi.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		"w3w-swift-wrapper::w3w-objc-apiTests" /* w3w-objc-apiTests */ = {
+		w3w-swift-wrapper::w3w-objc-apiTests /* w3w-objc-apiTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_81 /* Build configuration list for PBXNativeTarget "w3w-objc-apiTests" */;
 			buildPhases = (
@@ -313,10 +305,10 @@
 			);
 			name = "w3w-objc-apiTests";
 			productName = w3w_objc_apiTests;
-			productReference = "w3w-swift-wrapper::w3w-objc-apiTests::Product" /* w3w-objc-apiTests.xctest */;
+			productReference = w3w-swift-wrapper::w3w-objc-apiTests::Product /* w3w-objc-apiTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		"w3w-swift-wrapper::w3w-swift-apiTests" /* w3w-swift-apiTests */ = {
+		w3w-swift-wrapper::w3w-swift-apiTests /* w3w-swift-apiTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_90 /* Build configuration list for PBXNativeTarget "w3w-swift-apiTests" */;
 			buildPhases = (
@@ -330,7 +322,7 @@
 			);
 			name = "w3w-swift-apiTests";
 			productName = w3w_swift_apiTests;
-			productReference = "w3w-swift-wrapper::w3w-swift-apiTests::Product" /* w3w-swift-apiTests.xctest */;
+			productReference = w3w-swift-wrapper::w3w-swift-apiTests::Product /* w3w-swift-apiTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -354,11 +346,11 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				"w3w-swift-wrapper::W3WSwiftApi" /* W3WSwiftApi */,
-				"w3w-swift-wrapper::w3w-objc-apiTests" /* w3w-objc-apiTests */,
-				"w3w-swift-wrapper::w3w-swift-apiTests" /* w3w-swift-apiTests */,
-				"w3w-swift-wrapper::SwiftPMPackageDescription" /* w3w-swift-wrapperPackageDescription */,
-				"w3w-swift-wrapper::w3w-swift-wrapperPackageTests::ProductTarget" /* w3w-swift-wrapperPackageTests */,
+				w3w-swift-wrapper::W3WSwiftApi /* W3WSwiftApi */,
+				w3w-swift-wrapper::w3w-objc-apiTests /* w3w-objc-apiTests */,
+				w3w-swift-wrapper::w3w-swift-apiTests /* w3w-swift-apiTests */,
+				w3w-swift-wrapper::SwiftPMPackageDescription /* w3w-swift-wrapperPackageDescription */,
+				w3w-swift-wrapper::w3w-swift-wrapperPackageTests::ProductTarget /* w3w-swift-wrapperPackageTests */,
 			);
 		};
 /* End PBXProject section */
@@ -413,22 +405,22 @@
 /* Begin PBXTargetDependency section */
 		OBJ_109 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = "w3w-swift-wrapper::w3w-swift-apiTests" /* w3w-swift-apiTests */;
+			target = w3w-swift-wrapper::w3w-swift-apiTests /* w3w-swift-apiTests */;
 			targetProxy = 01CB04412795B79C007723AC /* PBXContainerItemProxy */;
 		};
 		OBJ_110 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = "w3w-swift-wrapper::w3w-objc-apiTests" /* w3w-objc-apiTests */;
+			target = w3w-swift-wrapper::w3w-objc-apiTests /* w3w-objc-apiTests */;
 			targetProxy = 01CB04422795B79C007723AC /* PBXContainerItemProxy */;
 		};
 		OBJ_88 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = "w3w-swift-wrapper::W3WSwiftApi" /* W3WSwiftApi */;
+			target = w3w-swift-wrapper::W3WSwiftApi /* W3WSwiftApi */;
 			targetProxy = 01CB043F2795B4F2007723AC /* PBXContainerItemProxy */;
 		};
 		OBJ_98 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = "w3w-swift-wrapper::W3WSwiftApi" /* W3WSwiftApi */;
+			target = w3w-swift-wrapper::W3WSwiftApi /* W3WSwiftApi */;
 			targetProxy = 01CB04402795B4F2007723AC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */

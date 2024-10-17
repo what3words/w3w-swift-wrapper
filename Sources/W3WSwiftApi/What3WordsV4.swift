@@ -32,7 +32,7 @@ public class What3WordsV4: W3WRequest, W3WProtocolV4 {
   ///     - headers: any additional HTTP headers to send on requests - for enterprise customers
   public init(apiKey: String, apiUrl: String? = nil, headers: [String: String]? = nil) {
     self.apiKey = apiKey
-    super.init(baseUrl: apiUrl ?? W3WSettings.apiUrl, parameters: ["key":apiKey], headers: headers ?? [:])
+    super.init(baseUrl: apiUrl ?? "", parameters: ["key":apiKey], headers: headers ?? [:])
   }
   
   

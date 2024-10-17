@@ -5,8 +5,9 @@
 //  Created by Dave Duprey on 07/11/2022.
 //
 
-import W3WSwiftCore
+//#if W3WSwiftVoiceApi
 
+import W3WSwiftCore
 
 extension W3WSettings {
   
@@ -28,3 +29,4 @@ extension W3WSettings {
 
   
 }
+//#endif

@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license     = { :type => "MIT" }
   s.authors     = { "what3words" => "support@what3words.com" }
 
-  s.requires_arc = true
+  #s.requires_arc = true
   s.osx.deployment_target = "10.13"
   s.ios.deployment_target = "11.0"
   s.source   = { :git => "https://github.com/what3words/w3w-swift-wrapper.git", :tag => "v4.0.0", :branch => "task/MT-6899-Core-lib-update-does-not-support-cocoapods" }

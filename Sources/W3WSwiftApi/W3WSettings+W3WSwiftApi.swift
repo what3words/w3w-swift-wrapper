@@ -5,8 +5,8 @@
 //  Created by Dave DuprW3WVoiceApiey on 07/11/2022.
 //
 
+//#if W3WSwiftApi
 import W3WSwiftCore
-
 
 extension W3WSettings {
   
@@ -34,3 +34,5 @@ extension W3WSettings {
   static let defaulMaxAmplitude         = 0.25
   
 }
+
+//#endif
