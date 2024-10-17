@@ -75,12 +75,21 @@ pod 'W3WSwiftVoiceApi', :git => 'https://github.com/what3words/w3w-swift-wrapper
 
 ### Import
 
-In any file you use the what3words API in, import the following:
+In any file where you use the What3words API in, import the following:
 
-```swift
+```
 import W3WSwiftApi
 import CoreLocation
 ```
+
+or, if you are using `CocoaPods`, import  the following
+
+```
+import W3WSwiftApi
+import W3WSwiftVoiceApi
+import CoreLocation
+```
+
 
 ##### Note:
 
