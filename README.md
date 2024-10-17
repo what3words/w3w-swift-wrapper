@@ -43,7 +43,7 @@ To use this library you’ll need a what3words API key, which can be signed up f
 
 # Examples
 
-Examples for this package can be ofund in our exmaples repository:
+Examples for this package can be found in our exmaples repository:
 [https://github.com/what3words/w3w-swift-samples](https://github.com/what3words/w3w-swift-samples)
 
 # Installation
@@ -58,10 +58,17 @@ https://github.com/what3words/w3w-swift-wrapper.git
 
 #### CocoaPods (iOS 9+, OS X 10.10+)
 
-You can use CocoaPods to install w3w-swift-wrapper by adding it to the target in your Podfile:
+You can use CocoaPods to install the `w3w-swift-wrapper` by adding it to the target in your Podfile:
 
 ```
 pod 'W3WSwiftApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+```
+or,  if you would like to use both the W3WSwiftApi and W3WSwiftVoiceApi libraries: 
+
+```
+pod 'W3WSwiftApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+pod 'W3WSwiftVoiceApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+
 ```
 
 ## Usage
