@@ -11,8 +11,6 @@ import Foundation
 import CoreLocation
 import W3WSwiftCore
 
-
-
 #if canImport(W3WSwiftVoiceApi)
 import W3WSwiftVoiceApi
 
@@ -43,7 +41,7 @@ extension What3WordsV4: W3WVoiceProtocol {
    - parameter options: An varidic paraameter of W3WOption providing various options, see API documentation for details
    - parameter callback: A completion block providing the suggestions and any error - ([W3WVoiceSuggestion]?, W3WVoiceError?) -> Void
    */
-  public func cltosuggest(audio: W3WAudioStream, options: W3WOption..., callback: @escaping W3WVoiceSuggestionsResponse) {
+  public func autosuggest(audio: W3WAudioStream, options: W3WOption..., callback: @escaping W3WVoiceSuggestionsResponse) {
     let voiceApi = W3WVoiceApi(apiKey: apiKey)
     voiceApi.autosuggest(audio: audio, options: options, callback: callback)
   }
