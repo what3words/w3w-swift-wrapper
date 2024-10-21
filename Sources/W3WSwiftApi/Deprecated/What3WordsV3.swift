@@ -22,7 +22,7 @@ public class What3WordsV3: W3WProtocolV3 {
     /// - Parameters:
     ///     - apiKey: Your api key.  Register for one at: https://accounts.what3words.com/create-api-key
     public init(apiKey: String) {
-        apiV4 = What3WordsV4(apiKey: apiKey, apiUrl: "")
+        apiV4 = What3WordsV4(apiKey: apiKey, apiUrl:  W3WSettings.apiUrl)
     }
     
     
