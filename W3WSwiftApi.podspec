@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "W3WSwiftApi"
-  s.version     = "4.0.0"
+  s.version     = "4.0.1"
   s.summary     = "w3w-swift-wrapper allows you to convert a 3 word address to coordinates or to convert coordinates to a 3 word address"
   s.homepage    = "https://github.com/what3words/w3w-swift-wrapper"
   s.license     = { :type => "MIT" }
@@ -10,8 +10,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "11.0"
   s.source   = { 
     :git => "https://github.com/what3words/w3w-swift-wrapper.git", 
-    :tag => "v#{s.version}",
-    :branch => "task/MT-6899-Core-lib-update-does-not-support-cocoapods"
+    :tag => "v#{s.version}"
   }
   s.swift_version = '5.0'
 
