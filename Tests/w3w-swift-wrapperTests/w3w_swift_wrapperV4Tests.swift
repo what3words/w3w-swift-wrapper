@@ -9,7 +9,7 @@ final class w3w_swift_wrapperTests: XCTestCase {
   
   
   var headers = [String:String]()
-  var api:What3WordsV4!
+  var api: What3WordsV4!
   var apiKey: String!
   
   // run all tests twice, once with no custom headers and one with
