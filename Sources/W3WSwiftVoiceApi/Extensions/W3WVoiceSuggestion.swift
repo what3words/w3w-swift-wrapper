@@ -9,7 +9,6 @@
 import CoreLocation
 import W3WSwiftCore
 
-
 extension W3WVoiceSuggestion {
   
   init(jsonVoiceSuggestion: JsonVoiceSuggestion?) {
@@ -19,9 +18,6 @@ extension W3WVoiceSuggestion {
 
     if let code = jsonVoiceSuggestion?.language {
       let l = W3WVoiceLanguage(code: code)
-      //if let locale = jsonVoiceSuggestion?.locale {
-      //  l = W3WVoiceLanguage(locale: locale)
-      //}
       lang = l
     }
     

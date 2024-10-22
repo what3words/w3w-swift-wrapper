@@ -43,7 +43,7 @@ To use this library you’ll need a what3words API key, which can be signed up f
 
 # Examples
 
-Examples for this package can be ofund in our exmaples repository:
+Examples for this package can be found in our exmaples repository:
 [https://github.com/what3words/w3w-swift-samples](https://github.com/what3words/w3w-swift-samples)
 
 # Installation
@@ -58,26 +58,40 @@ https://github.com/what3words/w3w-swift-wrapper.git
 
 #### CocoaPods (iOS 9+, OS X 10.10+)
 
-You can use CocoaPods to install w3w-swift-wrapper by adding it to the target in your Podfile:
+You can use CocoaPods to install the `w3w-swift-wrapper` by adding it to the target in your Podfile:
 
 ```
 pod 'W3WSwiftApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+```
+or,  if you would like to use both the W3WSwiftApi and W3WSwiftVoiceApi libraries: 
+
+```
+pod 'W3WSwiftApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+pod 'W3WSwiftVoiceApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+
 ```
 
 ## Usage
 
 ### Import
 
-In any file you use the what3words API in, import the following:
+In any file where you use the What3words API in, import the following:
 
-```swift
+```
 import W3WSwiftApi
 import CoreLocation
 ```
 
 ##### Note:
 
-* If you are using CocoaPods use `import what3words` instead.
+* If you are using CocoaPods use 
+
+```
+import W3WSwiftApi
+import W3WSwiftVoiceApi
+import CoreLocation
+```
+
 * If you are using this package's Voice API features on device, you should include Microphone permissions:
 
 <img src="Documentation/plist2.png" width="75%">
@@ -289,18 +303,6 @@ if api.isPossible3wa(text: "abc.def.ghi") {
 ```
 
 This would print the result because even though "abc.def.ghi" is **not** a valid three word address, still it **does** fit the form of one, [word][separator][word][separator][word].
-
-#### isValid3wa(words: String, completion: @escaping (Bool) -> ())
-
-Verifies that the text is a valid three word address that successfully represents a square on earth.  This makes a call to the API to verify.  The other validation functions only run a regex locally.
-
-```Swift
-api.isValid3wa(words: "filled.count.soap") { valid in
-  if valid {
-    print("the address provided is a real address somewhere on earth")
-  }
-}
-```
 
 #### findPossible3wa(text: String) -> [String]
 
