@@ -5,8 +5,6 @@
 //  Created by Dave Duprey on 07/11/2022.
 //
 
-//#if W3WSwiftVoiceApi
-
 import W3WSwiftCore
 
 extension W3WSettings {
@@ -26,7 +24,5 @@ extension W3WSettings {
   static let voiceSocketPath    = "/autosuggest"
   static let voiceApiVersion    = "1.0.1"
   static let voiceHeaderKey     = "what3words-Swift"
-
   
 }
-//#endif
