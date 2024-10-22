@@ -15,22 +15,9 @@ extension W3WSettings {
   
   static var domains     = ["what3words.com", "w3w.io"]
     
-  
   // MARK: Defaults
   
   static var defaultDebounceDelay = 0.3
-  
-  // MARK: Constants
-  
-  public static var maxMetersDiagonalForGrid = 4000.0
-  
-  // MARK: Audio
-  
-  static let maxRecordingLength         = 4.0
-  static let minVoiceSampleLength       = 2.5
-  static let endOfSpeechQuietTime       = 0.75
-  static let defaultSampleRate          = Int32(44100)
-  static let defaulMaxAmplitude         = 0.25
   
 }
 

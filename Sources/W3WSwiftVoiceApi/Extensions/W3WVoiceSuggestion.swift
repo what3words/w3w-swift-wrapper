@@ -9,7 +9,6 @@
 import CoreLocation
 import W3WSwiftCore
 
-
 extension W3WVoiceSuggestion {
   
   init(jsonVoiceSuggestion: JsonVoiceSuggestion?) {
