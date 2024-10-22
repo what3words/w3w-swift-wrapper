@@ -17,7 +17,6 @@ final class w3w_swift_wrapperTests: XCTestCase {
     super.invokeTest()
   }
   
-  
   override func setUp() {
     super.setUp()
     
