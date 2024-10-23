@@ -67,7 +67,7 @@ or,  if you would like to use both the W3WSwiftApi and W3WSwiftVoiceApi librarie
 
 ```
 pod 'W3WSwiftApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
-pod 'W3WSwiftVoiceApi', :git => 'https://github.com/what3words/w3w-swift-wrapper.git'
+pod 'W3WSwiftVoiceApi', :git => 'https://github.com/what3words/w3w-swift-voice-api.git'
 
 ```
 
