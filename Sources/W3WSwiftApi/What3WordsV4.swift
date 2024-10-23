@@ -10,7 +10,6 @@ import W3WSwiftCore
 import CoreLocation
 
 
-
 public class What3WordsV4: W3WRequest, W3WProtocolV4 {
       
   var apiKey: String
@@ -247,31 +246,6 @@ public class What3WordsV4: W3WRequest, W3WProtocolV4 {
       }
     }
   }
-  
-
-  /**
-   Verifies that the text is a valid three word address that successfully represents a square on earth.
-   - parameter text: The text to search through
-   - parameter completion: returns true if the address is a real three word address
-   */
-  public func isValid3wa(words: String, completion: @escaping (Bool) -> ()) {
-    autosuggest(text: words) { suggestions, error in
-      for suggestion in suggestions ?? [] {
-        // remove slashes and make lowercase for comparison
-        let w1 = suggestion.words?.trimmingCharacters(in: CharacterSet(charactersIn: "/")).lowercased()
-        let w2 = words.trimmingCharacters(in: CharacterSet(charactersIn: "/")).lowercased()
-        
-        if w1 == w2 {
-          completion(true)
-          return
-        }
-      }
-      
-      // no match found
-      completion(false)
-    }
-  }
-
   
   // MARK: Util
   

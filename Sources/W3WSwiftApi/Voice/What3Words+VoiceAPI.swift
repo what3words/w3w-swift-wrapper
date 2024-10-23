@@ -10,8 +10,9 @@
 import Foundation
 import CoreLocation
 import W3WSwiftCore
-import W3WSwiftVoiceApi
 
+#if canImport(W3WSwiftVoiceApi)
+import W3WSwiftVoiceApi
 
 #if !os(watchOS)
 
@@ -115,3 +116,4 @@ extension What3WordsV4: W3WVoiceProtocol {
 }
 
 #endif // if os(watchOS) // from top of file
+#endif //if import W3WSwiftVoiceApi

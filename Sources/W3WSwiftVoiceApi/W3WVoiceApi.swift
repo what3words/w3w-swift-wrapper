@@ -11,7 +11,6 @@ import Foundation
 import CoreLocation
 import W3WSwiftCore
 
-
 #if !os(watchOS)
 
 
