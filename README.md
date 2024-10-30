@@ -79,6 +79,7 @@ In any file where you use the What3words API in, import the following:
 
 ```
 import W3WSwiftApi
+import W3WSwiftVoiceApi
 import CoreLocation
 ```
 
