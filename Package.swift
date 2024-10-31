@@ -23,7 +23,7 @@ let package = Package(
   targets: [
     .target(name: "W3WSwiftApi", dependencies: [
         .product(name: "W3WSwiftCore", package: "w3w-swift-core"),
-        .product(name: "W3WSwiftVoiceApi", package: "w3w-swift-voice-api"),
+        .product(name: "W3WSwiftVoiceApi", package: "w3w-swift-voice-api")
     ]),
     .testTarget(name: "w3w-swift-wrapperTests", dependencies: ["W3WSwiftApi"])
   ]
