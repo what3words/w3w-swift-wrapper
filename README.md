@@ -85,14 +85,6 @@ import CoreLocation
 
 ##### Note:
 
-* If you are using CocoaPods use 
-
-```
-import W3WSwiftApi
-import W3WSwiftVoiceApi
-import CoreLocation
-```
-
 * If you are using this package's Voice API features on device, you should include Microphone permissions:
 
 <img src="Documentation/plist2.png" width="75%">
