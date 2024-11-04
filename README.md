@@ -296,6 +296,18 @@ if api.isPossible3wa(text: "abc.def.ghi") {
 
 This would print the result because even though "abc.def.ghi" is **not** a valid three word address, still it **does** fit the form of one, [word][separator][word][separator][word].
 
+#### isValid3wa(words: String, completion: @escaping (Bool) -> ())
+
+Verifies that the text is a valid three word address that successfully represents a square on earth.  This makes a call to the API to verify.  The other validation functions only run a regex locally.
+
+```Swift
+api.isValid3wa(words: "filled.count.soap") { valid in
+  if valid {
+    print("the address provided is a real address somewhere on earth")
+  }
+}
+```
+
 #### findPossible3wa(text: String) -> [String]
 
 Finds any number of possible three word addresses in a block of text. The term "possible three word addresses" refers to text that matches the regex used in isPossible3wa(), that is, these are pieces of text that appear to be three word addresses, but have not been verified against the engine as representing an actual place on earth.
