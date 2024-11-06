@@ -5,11 +5,11 @@ import W3WSwiftCore
 import XCTest
 @testable import W3WSwiftApi
 
-final class w3w_swift_wrapperTests: XCTestCase {
+final class w3w_swift_wrapper_v3_tests: XCTestCase {
   
   
   var headers = [String:String]()
-  var api:What3WordsV4!
+  var api: What3WordsV3!
   var apiKey: String!
   
   // run all tests twice, once with no custom headers and one with
@@ -22,10 +22,10 @@ final class w3w_swift_wrapperTests: XCTestCase {
     super.setUp()
     
     if let key = ProcessInfo.processInfo.environment["PROD_API_KEY"] {
-      api = What3WordsV4(apiKey: key, apiUrl: W3WSettings.apiUrl, headers: headers)
+        api = What3WordsV3(apiKey: key, apiUrl: W3WSettings.apiUrl, customHeaders: headers)
       self.apiKey = key
     } else if let key = getApikeyFromFile() {
-      api = What3WordsV4(apiKey: key, apiUrl: W3WSettings.apiUrl, headers: headers)
+        api = What3WordsV3(apiKey: key, apiUrl: W3WSettings.apiUrl, customHeaders: headers)
       self.apiKey = key
     } else {
       print("Environment variable PROD_API_KEY must be set")

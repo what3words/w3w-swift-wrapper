@@ -27,7 +27,7 @@ public class W3WAutoSuggestHelper {
   var debouncer: W3WDebouncer<String>?
   
   /// Debounce delay
-  public var debounceDelay = W3WSettings.defaultDebounceDelay
+    public var debounceDelay = W3WSettings.defaultDebounceDelay
 
   /// To remember the last autosugggest text so that the autosuggest-selected can be called
   var lastAutosuggestTextUsed = ""
