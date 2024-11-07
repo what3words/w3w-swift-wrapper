@@ -19,5 +19,17 @@ extension W3WSettings {
   
   static var defaultDebounceDelay = 0.3
   
+  // MARK: Constants
+  
+  public static var maxMetersDiagonalForGrid = 4000.0
+  
+  // MARK: Audio
+  
+  static let max_recording_length       = 4.0
+  static let min_voice_sample_length    = 2.5
+  static let end_of_speech_quiet_time   = 0.75
+  static let defaultSampleRate          = Int32(44100)
+  static let defaulMaxAmplitude         = 0.25
+  
 }
 
